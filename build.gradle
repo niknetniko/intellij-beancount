@@ -1,101 +1,74 @@
-buildscript {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-    }
+plugins {
+    id 'io.franzbecker.gradle-lombok' version '4.0.0'
+    id 'org.jetbrains.intellij' version '0.6.5'
+    id "org.jetbrains.grammarkit" version "2020.3.2"
+    id 'java'
+    id 'idea'
 }
 
-plugins {
-    id 'io.franzbecker.gradle-lombok' version '1.11'
-    id 'org.jetbrains.intellij' version '0.3.0'
+apply {
+    plugin("idea")
+    plugin("java")
+    plugin("org.jetbrains.grammarkit")
+    plugin("org.jetbrains.intellij")
 }
 
 group 'com.outskirtslabs'
-version version
+version '0.0.1'
 
-allprojects {
-    apply plugin: 'java'
+repositories {
+    mavenCentral()
+}
 
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-    tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
-
-    sourceSets {
-        main {
-            java.srcDirs 'src', 'gen'
-            resources.srcDirs 'resources'
-        }
-        test {
-            java.srcDir 'tests'
-            resources.srcDirs 'resources-test'
-        }
+sourceSets {
+    main {
+        java.srcDirs("src/gen/java", "src/main/java")
+        resources.srcDirs("src/main/resources")
     }
-
-
-    apply plugin: 'org.jetbrains.intellij'
-
-    intellij {
-        version ideaVersion
-        // always have these plugins installed
-        plugins = [
-                "PsiViewer:3.28.93"]
-        downloadSources Boolean.valueOf(sources)
-        pluginName 'intellij-beancount'
-        updateSinceUntilBuild = false
+    test {
+        java.srcDirs("src/test/kotlin")
+        resources.srcDirs("src/test/resources")
     }
 }
 
+intellij {
+    version ideaVersion
+    // always have these plugins installed
+    plugins = ['java', 'PsiViewer:203-SNAPSHOT']
+    downloadSources true
+    pluginName 'intelliledge'
+    updateSinceUntilBuild = false
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
 dependencies {
-    compile('io.vavr:vavr:0.9.2')
+    compile 'io.vavr:vavr:0.9.2'
     // force-pull org.apache.commons.lang3.StringUtils - seems to not exist in all jetbrains-products
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 }
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-}
-
-apply plugin: 'idea'
-idea {
-    project {
-        jdkName = javaVersion
-        languageLevel = javaVersion
-    }
-    module {
-//        generatedSourceDirs += file('gen')
-    }
-}
-
-/*
-grammar kit plugin is disabled until https://github.com/JetBrains/gradle-grammar-kit-plugin/issues/3
-is fixed
-
-grammarkit {
-    jflexRelease = "c779429" // 1.7.0
-    grammarKitRelease = "2017.1.2"
+grammarKit {
+    jflexRelease = "1.7.0-1" // 1.7.0
+    grammarKitRelease = "2020.3.1"
 }
 
 task generateBeancountLexer(type: org.jetbrains.grammarkit.tasks.GenerateLexer) {
-    source = "src/com/outskirtslabs/beancount/Beancount.flex"
-    targetDir = "gen/com/outskirtslabs/beancount/"
+    source = "src/main/java/com/outskirtslabs/beancount/Beancount.flex"
+    targetDir = "src/gen/java/com/outskirtslabs/beancount/"
     targetClass = "_BeancountLexer"
     purgeOldFiles = true
 }
 
 task generateBeancountParser(type: org.jetbrains.grammarkit.tasks.GenerateParser) {
-    source = "src/com/outskirtslabs/beancount/Beancount.bnf"
-    targetRoot = 'gen'
+    source = "src/main/java/com/outskirtslabs/beancount/Beancount.bnf"
+    targetRoot = 'src/gen/java'
     pathToParser = '/com/outskirtslabs/beancount/parser/BeancountParser.java'
     pathToPsiRoot = '/com/outskirtslabs/beancount/psi'
     purgeOldFiles = true
-}
-*/
-
-patchPluginXml {
-    changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
 }
 
 test {
