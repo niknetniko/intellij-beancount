@@ -25,7 +25,7 @@
     </change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="173.0"/>
+    <idea-version since-build="173.0" />
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -33,24 +33,37 @@
     <depends>com.intellij.modules.lang</depends>
 
     <!--@formatter:off-->
-  <extensions defaultExtensionNs="com.intellij">
-    <colorSettingsPage implementation="com.outskirtslabs.beancount.features.highlighting.BeancountColorSettingsPage"/>
-    <completion.contributor language="Beancount" implementationClass="com.outskirtslabs.beancount.features.completion.BeancountCompletionContributor"/>
-    <fileTypeFactory implementation="com.outskirtslabs.beancount.BeancountFileTypeFactory"/>
-    <lang.findUsagesProvider language="Beancount" implementationClass="com.outskirtslabs.beancount.features.references.BeancountFindUsagesProvider"/>
-    <lang.formatter language="Beancount" implementationClass="com.outskirtslabs.beancount.features.formatter.BeancountFormattingModelBuilder"/>
-    <lang.parserDefinition language="Beancount" implementationClass="com.outskirtslabs.beancount.BeancountParserDefinition"/>
-    <lang.refactoringSupport language="Beancount" implementationClass="com.outskirtslabs.beancount.features.references.BeancountRefactoringSupportProvider"/>
-    <lang.syntaxHighlighterFactory language="Beancount" implementationClass="com.outskirtslabs.beancount.features.highlighting.BeancountSyntaxHighlighterFactory"/>
-    <moduleBuilder builderClass="com.outskirtslabs.beancount.features.module.BeancountModuleBuilder"/>
-    <moduleType id="BEANCOUNT_MODULE_TYPE" implementationClass="com.outskirtslabs.beancount.features.module.BeancountModuleType"/>
-    <projectStructureDetector implementation="com.outskirtslabs.beancount.features.module.BeancountProjectStructureDetector"/>
-    <psi.referenceContributor language="Beancount" implementation="com.outskirtslabs.beancount.features.references.BeancountReferenceContributor"/>
-    <stubElementTypeHolder class="com.outskirtslabs.beancount.psi.BeancountTypes"/>
-    <stubIndex implementation="com.outskirtslabs.beancount.psi.stub.index.AccountStubIndex"/>
-    <stubIndex implementation="com.outskirtslabs.beancount.psi.stub.index.CurrencySymbolStubIndex"/>
-  </extensions>
-  <!--@formatter:on-->
+    <extensions defaultExtensionNs="com.intellij">
+        <colorSettingsPage
+            implementation="com.outskirtslabs.beancount.features.highlighting.BeancountColorSettingsPage" />
+        <completion.contributor language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.features.completion.BeancountCompletionContributor" />
+        <fileTypeFactory implementation="com.outskirtslabs.beancount.BeancountFileTypeFactory" />
+        <lang.findUsagesProvider language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.features.references.BeancountFindUsagesProvider" />
+        <lang.formatter language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.features.formatter.BeancountFormattingModelBuilder" />
+        <lang.parserDefinition language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.BeancountParserDefinition" />
+        <lang.refactoringSupport language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.features.references.BeancountRefactoringSupportProvider" />
+        <lang.syntaxHighlighterFactory language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.features.highlighting.BeancountSyntaxHighlighterFactory" />
+        <moduleBuilder builderClass="com.outskirtslabs.beancount.features.module.BeancountModuleBuilder" />
+        <moduleType id="BEANCOUNT_MODULE_TYPE"
+            implementationClass="com.outskirtslabs.beancount.features.module.BeancountModuleType" />
+        <projectStructureDetector
+            implementation="com.outskirtslabs.beancount.features.module.BeancountProjectStructureDetector" />
+        <psi.referenceContributor language="Beancount"
+            implementation="com.outskirtslabs.beancount.features.references.BeancountReferenceContributor" />
+        <stubElementTypeHolder class="com.outskirtslabs.beancount.psi.BeancountTypes" />
+        <stubIndex implementation="com.outskirtslabs.beancount.psi.stub.index.AccountStubIndex" />
+        <stubIndex implementation="com.outskirtslabs.beancount.psi.stub.index.CurrencySymbolStubIndex" />
+        <intentionAction>
+            <className>com.outskirtslabs.beancount.features.actions.CalcIntentionAction</className>
+        </intentionAction>
+    </extensions>
+    <!--@formatter:on-->
 
     <actions>
         <!-- Add your actions here -->

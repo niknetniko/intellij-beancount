@@ -70,7 +70,7 @@ META_KEY=[a-z][a-zA-Z0-9_-]+
 TAG_LINK_VAL=[A-Za-z0-9\-_/.]+
 
 // i know this probably isn't a "good" lexer design, it is too stateful but :\ it's my first one
-%state Directive, sOPT, sEVENT, sDATE_ENTRY, sOPEN, sBALANCE, sPRICE, sCOMMODITY, sMETA_LIST, sPOSTING, sACCOUNT, sCUSTOM, sPAD, sQUERY, sNOTE, sDOCUMENT, sINCLUDE,sPLUGIN
+%state sOPT, sEVENT, sDATE_ENTRY, sOPEN, sBALANCE, sPRICE, sCOMMODITY, sMETA_LIST, sPOSTING, sACCOUNT, sCUSTOM, sPAD, sQUERY, sNOTE, sDOCUMENT, sINCLUDE,sPLUGIN
 %xstate sTXN
 
 %%
@@ -111,6 +111,9 @@ TAG_LINK_VAL=[A-Za-z0-9\-_/.]+
 <sTXN> {
 "#"                  { return HASH; }
 "^"                  { return CARET; }
+{COMMENT}      { return COMMENT; }
+^\s*{COMMENT}{EOL}{2}      { yypopstate(); return COMMENT; }
+^\s*{COMMENT}{EOL}      { return COMMENT; }
 {TAG_LINK_VAL}       { return TAG_LINK_VALUE; }
 ^{LINE_SPACE}+{META_KEY} {  yypushback(nonWsIndex(yytext())); yypushstate(sMETA_LIST); return INDENT; }
 {EOL}{2}             { yypopstate();  return EOL; }
@@ -118,7 +121,6 @@ TAG_LINK_VAL=[A-Za-z0-9\-_/.]+
 ^{LINE_SPACE}+{ACCOUNT_WORD} { yypushback(nonWsIndex(yytext())); yypushstate(sPOSTING); yypushstate(sACCOUNT); return INDENT;}
 {LINE_SPACE}+        { return WHITE_SPACE; }
 {STRING}             { return STRING; }
-{COMMENT}            { return COMMENT; }
 [^]                  { /*this effectively detects the last posting line*/ yypushback(yylength()); yypopstate(); }
 }
 <sMETA_LIST> {
@@ -131,9 +133,9 @@ TAG_LINK_VAL=[A-Za-z0-9\-_/.]+
 
 
 <sPOSTING> {
+  {COMMENT}            { return COMMENT; }
   {LINE_SPACE}         { return WHITE_SPACE; }      
   {EOL_SINGLE}         { yypushback(yylength()); yypopstate(); }
-  {COMMENT}            { return COMMENT; }
 }
 
 <sDATE_ENTRY> {
@@ -181,6 +183,7 @@ TAG_LINK_VAL=[A-Za-z0-9\-_/.]+
 {NUMBER}            { return NUMBER; }
 {NEGATIVE_NUMBER}   { return NEGATIVE_NUMBER; }
 {STRING}            { return STRING; }
+{COMMENT}         { return COMMENT; }      
 
 <sOPT, sEVENT, sDATE_ENTRY, sOPEN, sBALANCE, sCOMMODITY, sMETA_LIST, sPOSTING, sACCOUNT, sTXN, sPRICE, sCUSTOM, sPAD, sDOCUMENT, sNOTE, sQUERY, sINCLUDE, sPLUGIN>
 {

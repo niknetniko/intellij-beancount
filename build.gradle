@@ -1,3 +1,6 @@
+import org.jetbrains.grammarkit.tasks.GenerateLexer
+import org.jetbrains.grammarkit.tasks.GenerateParser
+
 plugins {
     id 'io.franzbecker.gradle-lombok' version '4.0.0'
     id 'org.jetbrains.intellij' version '0.6.5'
@@ -49,6 +52,7 @@ dependencies {
     compile 'io.vavr:vavr:0.9.2'
     // force-pull org.apache.commons.lang3.StringUtils - seems to not exist in all jetbrains-products
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+    compile 'net.objecthunter:exp4j:0.4.8'
 }
 
 grammarKit {
@@ -56,14 +60,14 @@ grammarKit {
     grammarKitRelease = "2020.3.1"
 }
 
-task generateBeancountLexer(type: org.jetbrains.grammarkit.tasks.GenerateLexer) {
+task generateBeancountLexer(type: GenerateLexer) {
     source = "src/main/java/com/outskirtslabs/beancount/Beancount.flex"
     targetDir = "src/gen/java/com/outskirtslabs/beancount/"
     targetClass = "_BeancountLexer"
     purgeOldFiles = true
 }
 
-task generateBeancountParser(type: org.jetbrains.grammarkit.tasks.GenerateParser) {
+task generateBeancountParser(type: GenerateParser) {
     source = "src/main/java/com/outskirtslabs/beancount/Beancount.bnf"
     targetRoot = 'src/gen/java'
     pathToParser = '/com/outskirtslabs/beancount/parser/BeancountParser.java'
