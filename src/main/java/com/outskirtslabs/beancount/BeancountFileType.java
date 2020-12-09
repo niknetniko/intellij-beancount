@@ -26,7 +26,7 @@ public class BeancountFileType
     @Override
     public String getName()
     {
-        return "Beancount journal";
+        return "Beancount Journal";
     }
 
     @NotNull

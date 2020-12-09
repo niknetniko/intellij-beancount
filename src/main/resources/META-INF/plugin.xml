@@ -25,20 +25,20 @@
     </change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="173.0" />
+    <idea-version since-build="203" />
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <!-- enable plugin in all products -->
     <depends>com.intellij.modules.lang</depends>
 
-    <!--@formatter:off-->
     <extensions defaultExtensionNs="com.intellij">
         <colorSettingsPage
             implementation="com.outskirtslabs.beancount.features.highlighting.BeancountColorSettingsPage" />
         <completion.contributor language="Beancount"
             implementationClass="com.outskirtslabs.beancount.features.completion.BeancountCompletionContributor" />
-        <fileTypeFactory implementation="com.outskirtslabs.beancount.BeancountFileTypeFactory" />
+        <fileType name="Beancount Journal" implementationClass="com.outskirtslabs.beancount.BeancountFileType"
+            fieldName="INSTANCE" language="Beancount" extensions="beancount" />
         <lang.findUsagesProvider language="Beancount"
             implementationClass="com.outskirtslabs.beancount.features.references.BeancountFindUsagesProvider" />
         <lang.formatter language="Beancount"
@@ -63,10 +63,4 @@
             <className>com.outskirtslabs.beancount.features.actions.CalcIntentionAction</className>
         </intentionAction>
     </extensions>
-    <!--@formatter:on-->
-
-    <actions>
-        <!-- Add your actions here -->
-    </actions>
-
 </idea-plugin>

@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-@SuppressWarnings("MissingRecentApi")
 public class CalcIntentionAction implements IntentionAction, Iconable {
 
     @Override
