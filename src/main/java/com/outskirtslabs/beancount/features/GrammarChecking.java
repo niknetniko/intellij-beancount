@@ -77,8 +77,6 @@ public class GrammarChecking implements GrammarCheckingStrategy {
     public LinkedHashSet<IntRange> getStealthyRanges(@NotNull PsiElement psiElement, @NotNull CharSequence charSequence) {
         IElementType type = psiElement.getNode().getElementType();
         if (psiElement instanceof PsiComment) {
-            System.out.println("Char sequence is");
-            System.out.println(charSequence);
             var set = new LinkedHashSet<IntRange>();
             int location = charSequence.toString().indexOf(';');
             set.add(new IntRange(location, location));

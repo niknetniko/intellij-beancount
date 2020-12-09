@@ -64,6 +64,9 @@
         <intentionAction>
             <className>com.outskirtslabs.beancount.features.actions.CalcIntentionAction</className>
         </intentionAction>
-        <spellchecker.support language="Beancount" implementationClass="com.outskirtslabs.beancount.features.SpellChecking" />
+        <spellchecker.support language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.features.SpellChecking" />
+        <lang.foldingBuilder language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.features.folding.TransactionFoldingBuilder" />
     </extensions>
 </idea-plugin>

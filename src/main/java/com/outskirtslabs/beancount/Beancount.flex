@@ -51,8 +51,6 @@ import static com.outskirtslabs.beancount.BeancountLexerUtil.*;
 %unicode
 
 //EOL=\R
-WHITE_SPACE=\s+
-
 NUMBER=(\d+)((\d{1,3})*([\,]\d{3})*)(\.\d+)?
 NEGATIVE_NUMBER=-{NUMBER}
 DATE=[:digit:]{4}-[:digit:]{2}-[:digit:]{2}
@@ -151,7 +149,8 @@ TAG_LINK_VAL=[A-Za-z0-9\-_/.]+
   "note"             { yylogstate(sNOTE); return NOTE;}
   "document"         { yylogstate(sDOCUMENT); return DOCUMENT;}
   "query"            { yylogstate(sQUERY); return QUERY;}
-  {COMMENT}          { return COMMENT; }    
+  {EOL}              { return EOL; }
+  {COMMENT}          { return COMMENT; }
 }
 
 <YYINITIAL> {
@@ -163,8 +162,6 @@ TAG_LINK_VAL=[A-Za-z0-9\-_/.]+
   {EOL}             { return EOL; }
 }
 
-"TRUE"              { return BOOLEAN; }
-"FALSE"             { return BOOLEAN; }
 "{{"                { return LCURLCURL; }
 "}}"                { return RCURLCURL; }
 "{"                 { return LCURL; }
