@@ -10,10 +10,10 @@ plugins {
 }
 
 apply {
-    plugin("idea")
-    plugin("java")
-    plugin("org.jetbrains.grammarkit")
-    plugin("org.jetbrains.intellij")
+    plugin "idea"
+    plugin "java"
+    plugin "org.jetbrains.grammarkit"
+    plugin "org.jetbrains.intellij"
 }
 
 group 'com.outskirtslabs'
@@ -37,7 +37,7 @@ sourceSets {
 intellij {
     version ideaVersion
     // always have these plugins installed
-    plugins = ['java', 'PsiViewer:203-SNAPSHOT']
+    plugins = ['java', 'PsiViewer:203-SNAPSHOT', 'tanvd.grazi']
     downloadSources true
     pluginName 'intelliledge'
     updateSinceUntilBuild = false

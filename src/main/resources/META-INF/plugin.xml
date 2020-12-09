@@ -32,6 +32,8 @@
     <!-- enable plugin in all products -->
     <depends>com.intellij.modules.lang</depends>
 
+    <depends optional="true" config-file="plugin-grazie.xml">tanvd.grazi</depends>
+
     <extensions defaultExtensionNs="com.intellij">
         <colorSettingsPage
             implementation="com.outskirtslabs.beancount.features.highlighting.BeancountColorSettingsPage" />
@@ -62,5 +64,6 @@
         <intentionAction>
             <className>com.outskirtslabs.beancount.features.actions.CalcIntentionAction</className>
         </intentionAction>
+        <spellchecker.support language="Beancount" implementationClass="com.outskirtslabs.beancount.features.SpellChecking" />
     </extensions>
 </idea-plugin>
