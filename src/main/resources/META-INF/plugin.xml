@@ -35,8 +35,8 @@
     <depends optional="true" config-file="plugin-grazie.xml">tanvd.grazi</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-<!--        <colorSettingsPage-->
-<!--            implementation="com.outskirtslabs.beancount.features.highlighting.BeancountColorSettingsPage" />-->
+        <colorSettingsPage
+            implementation="com.outskirtslabs.beancount.features.highlighting.BeancountColorSettingsPage" />
 <!--        <completion.contributor language="Beancount"-->
 <!--            implementationClass="com.outskirtslabs.beancount.features.completion.BeancountCompletionContributor" />-->
         <fileType name="Beancount Journal" implementationClass="com.outskirtslabs.beancount.BeancountFileType"
@@ -49,8 +49,8 @@
             implementationClass="com.outskirtslabs.beancount.BeancountParserDefinition" />
 <!--        <lang.refactoringSupport language="Beancount"-->
 <!--            implementationClass="com.outskirtslabs.beancount.features.references.BeancountRefactoringSupportProvider" />-->
-<!--        <lang.syntaxHighlighterFactory language="Beancount"-->
-<!--            implementationClass="com.outskirtslabs.beancount.features.highlighting.BeancountSyntaxHighlighterFactory" />-->
+        <lang.syntaxHighlighterFactory language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.features.highlighting.BeancountSyntaxHighlighterFactory" />
         <moduleBuilder builderClass="com.outskirtslabs.beancount.features.module.BeancountModuleBuilder" />
         <moduleType id="BEANCOUNT_MODULE_TYPE"
             implementationClass="com.outskirtslabs.beancount.features.module.BeancountModuleType" />

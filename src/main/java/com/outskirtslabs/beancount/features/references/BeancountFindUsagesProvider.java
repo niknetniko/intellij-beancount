@@ -8,7 +8,7 @@
 //import com.intellij.lang.findUsages.FindUsagesProvider;
 //import com.intellij.psi.PsiElement;
 //import com.intellij.psi.tree.TokenSet;
-//import com.outskirtslabs.beancount.parser.BeancountLexerAdapter;
+//import com.outskirtslabs.beancount.parser.LexerAdapter;
 //import com.outskirtslabs.beancount.psi.BeancountAccount;
 //import com.outskirtslabs.beancount.psi.BeancountCurrencySymbol;
 //import com.outskirtslabs.beancount.psi.BeancountTypes;
@@ -20,7 +20,7 @@
 //    @Override
 //    public WordsScanner getWordsScanner()
 //    {
-//        return new DefaultWordsScanner(new BeancountLexerAdapter(),
+//        return new DefaultWordsScanner(new LexerAdapter(),
 //            TokenSet.create(BeancountTypes.ACCOUNT, BeancountTypes.ACCOUNT_WORD,
 //                BeancountTypes.CURRENCY),
 //            TokenSet.create(BeancountTypes.COMMENT),

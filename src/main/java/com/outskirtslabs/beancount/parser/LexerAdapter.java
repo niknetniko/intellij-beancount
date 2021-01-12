@@ -2,8 +2,8 @@ package com.outskirtslabs.beancount.parser;
 
 import com.intellij.lexer.FlexAdapter;
 
-public class BeancountLexerAdapter extends FlexAdapter {
-    public BeancountLexerAdapter() {
+public class LexerAdapter extends FlexAdapter {
+    public LexerAdapter() {
         super(new BeancountLexer(null));
     }
 }

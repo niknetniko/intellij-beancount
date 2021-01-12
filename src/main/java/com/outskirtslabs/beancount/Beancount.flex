@@ -12,7 +12,7 @@ import static com.outskirtslabs.beancount.psi.BeancountTypes.*;
 
 %%
 
-%debug
+//%debug
 %class BeancountLexer
 %implements FlexLexer
 %function advance
@@ -59,7 +59,7 @@ FLAGS=[!&#?%PSTCURM]
  * and followed by a regular character. This is how we detect an
  * initial indent and thus group syntax elements in the grammar. */
 ^[ \t]+/[^ \t\r\n] { return INDENT; }
-[ \t\r]+ { }
+[ \t\r]+ { return WHITE_SPACE; }
 
  /* Comments. */
 ;.* { return COMMENT; }
@@ -139,12 +139,6 @@ FLAGS=[!&#?%PSTCURM]
 {KEY} {
     return KEY;
 }
-
- /* end of file */
-//<<eof>> {
-//    return EOF; 
-//}
-
 
  /* Lines starting with an asterisk, a colon, an hash, or a character
   * in the FLAGS characters set are ignored. This rule is inserted
