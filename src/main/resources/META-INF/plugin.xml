@@ -45,6 +45,7 @@
 <!--            implementationClass="com.outskirtslabs.beancount.features.references.BeancountFindUsagesProvider" />-->
 <!--        <lang.formatter language="Beancount"-->
 <!--            implementationClass="com.outskirtslabs.beancount.features.formatter.BeancountFormattingModelBuilder" />-->
+        <lang.commenter language="Beancount" implementationClass="com.outskirtslabs.beancount.BeancountCommenter" />
         <lang.parserDefinition language="Beancount"
             implementationClass="com.outskirtslabs.beancount.BeancountParserDefinition" />
 <!--        <lang.refactoringSupport language="Beancount"-->

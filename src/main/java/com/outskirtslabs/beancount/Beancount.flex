@@ -12,7 +12,7 @@ import static com.outskirtslabs.beancount.psi.BeancountTypes.*;
 
 %%
 
-//%debug
+%debug
 %class BeancountLexer
 %implements FlexLexer
 %function advance
@@ -46,7 +46,7 @@ ACCOUNTNAME=([A-Z0-9]|{UTF_8_ONLY})([A-Za-z0-9\-]|{UTF_8_ONLY})*
 
 FLAGS=[!&#?%PSTCURM]
 
-%state sINVALID, sIGNORE
+%state sIGNORE
 
 %%
 
@@ -145,16 +145,10 @@ FLAGS=[!&#?%PSTCURM]
   * here to give higher precedence to rules matching valid tokens. */
 ^[\*\:\#]/.	{ yybegin(sIGNORE); }
 ^{FLAGS}/.	{ yybegin(sIGNORE); }
-      
 }
 
  /* Default rule. {bf253a29a820} */
-. { yybegin(sINVALID); }
-
-<sINVALID>[^ \t\n\r]+ {
-    yybegin(sINVALID);
-    return BAD_CHARACTER;
-}
+. { yybegin(YYINITIAL); return BAD_CHARACTER; }
 
  /* Ignore input till the newline. */
 <sIGNORE>.* {

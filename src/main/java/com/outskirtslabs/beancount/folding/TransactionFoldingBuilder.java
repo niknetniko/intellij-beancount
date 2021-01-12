@@ -25,7 +25,7 @@ import java.util.List;
  * @author Niko Strijbol
  */
 public class TransactionFoldingBuilder extends CustomFoldingBuilder implements DumbAware {
-
+    
     @Override
     protected void buildLanguageFoldRegions(@NotNull List<FoldingDescriptor> descriptors, @NotNull PsiElement root, @NotNull Document document, boolean quick) {
         Collection<BeancountTransaction> elements = PsiTreeUtil.collectElementsOfType(root, BeancountTransaction.class);
