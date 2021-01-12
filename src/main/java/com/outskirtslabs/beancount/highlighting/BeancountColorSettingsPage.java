@@ -1,4 +1,4 @@
-package com.outskirtslabs.beancount.features.highlighting;
+package com.outskirtslabs.beancount.highlighting;
 
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.options.colors.AttributesDescriptor;

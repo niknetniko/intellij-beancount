@@ -1,4 +1,4 @@
-package com.outskirtslabs.beancount.features.highlighting;
+package com.outskirtslabs.beancount.highlighting;
 
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;

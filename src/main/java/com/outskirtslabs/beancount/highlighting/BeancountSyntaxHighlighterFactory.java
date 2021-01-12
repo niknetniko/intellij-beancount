@@ -1,4 +1,4 @@
-package com.outskirtslabs.beancount.features.highlighting;
+package com.outskirtslabs.beancount.highlighting;
 
 import org.jetbrains.annotations.NotNull;
 

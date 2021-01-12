@@ -36,7 +36,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <colorSettingsPage
-            implementation="com.outskirtslabs.beancount.features.highlighting.BeancountColorSettingsPage" />
+            implementation="com.outskirtslabs.beancount.highlighting.BeancountColorSettingsPage" />
 <!--        <completion.contributor language="Beancount"-->
 <!--            implementationClass="com.outskirtslabs.beancount.features.completion.BeancountCompletionContributor" />-->
         <fileType name="Beancount Journal" implementationClass="com.outskirtslabs.beancount.BeancountFileType"
@@ -50,7 +50,7 @@
 <!--        <lang.refactoringSupport language="Beancount"-->
 <!--            implementationClass="com.outskirtslabs.beancount.features.references.BeancountRefactoringSupportProvider" />-->
         <lang.syntaxHighlighterFactory language="Beancount"
-            implementationClass="com.outskirtslabs.beancount.features.highlighting.BeancountSyntaxHighlighterFactory" />
+            implementationClass="com.outskirtslabs.beancount.highlighting.BeancountSyntaxHighlighterFactory" />
         <moduleBuilder builderClass="com.outskirtslabs.beancount.features.module.BeancountModuleBuilder" />
         <moduleType id="BEANCOUNT_MODULE_TYPE"
             implementationClass="com.outskirtslabs.beancount.features.module.BeancountModuleType" />
@@ -64,8 +64,8 @@
         <intentionAction>
             <className>com.outskirtslabs.beancount.features.actions.CalcIntentionAction</className>
         </intentionAction>
-<!--        <spellchecker.support language="Beancount"-->
-<!--            implementationClass="com.outskirtslabs.beancount.features.SpellChecking" />-->
+        <spellchecker.support language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.spelling.SpellChecking" />
 <!--        <lang.foldingBuilder language="Beancount"-->
 <!--            implementationClass="com.outskirtslabs.beancount.features.folding.TransactionFoldingBuilder" />-->
     </extensions>
