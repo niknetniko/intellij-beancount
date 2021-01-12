@@ -66,7 +66,7 @@
         </intentionAction>
         <spellchecker.support language="Beancount"
             implementationClass="com.outskirtslabs.beancount.spelling.SpellChecking" />
-<!--        <lang.foldingBuilder language="Beancount"-->
-<!--            implementationClass="com.outskirtslabs.beancount.features.folding.TransactionFoldingBuilder" />-->
+        <lang.foldingBuilder language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.folding.TransactionFoldingBuilder" /> 
     </extensions>
 </idea-plugin>
