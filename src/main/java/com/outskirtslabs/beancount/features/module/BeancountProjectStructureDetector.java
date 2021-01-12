@@ -30,8 +30,8 @@ public class BeancountProjectStructureDetector extends ProjectStructureDetector
     @NotNull
     @Override
     public DirectoryProcessingResult detectRoots(@NotNull final File dir,
-        @NotNull final File[] children, @NotNull final File base,
-        @NotNull final List<DetectedProjectRoot> result)
+                                                 final File @NotNull [] children, @NotNull final File base,
+                                                 @NotNull final List<DetectedProjectRoot> result)
     {
         List<File> mask = FileUtil
             .findFilesByMask(BeancountFileType.EXTENSION_PATTERN, base);

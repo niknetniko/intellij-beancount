@@ -25,12 +25,18 @@ repositories {
 
 sourceSets {
     main {
-        java.srcDirs("src/gen/java", "src/main/java")
+        java.srcDirs("src/main/gen", "src/main/java")
         resources.srcDirs("src/main/resources")
     }
     test {
         java.srcDirs("src/test/kotlin")
         resources.srcDirs("src/test/resources")
+    }
+}
+
+idea {
+    module {
+        generatedSourceDirs += file('src/main/gen')
     }
 }
 

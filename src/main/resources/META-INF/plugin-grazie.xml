@@ -1,5 +1,5 @@
-<idea-plugin>
-    <extensions defaultExtensionNs="com.intellij.grazie">
-        <grammar.strategy language="Beancount" implementationClass="com.outskirtslabs.beancount.features.GrammarChecking"/>
-    </extensions>
-</idea-plugin>
+<!--<idea-plugin>-->
+<!--    <extensions defaultExtensionNs="com.intellij.grazie">-->
+<!--        <grammar.strategy language="Beancount" implementationClass="com.outskirtslabs.beancount.features.GrammarChecking"/>-->
+<!--    </extensions>-->
+<!--</idea-plugin>-->

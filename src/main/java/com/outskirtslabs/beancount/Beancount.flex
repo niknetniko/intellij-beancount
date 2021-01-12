@@ -1,6 +1,6 @@
+// This lexer is adapter from the flex lexer at
+// https://github.com/beancount/beancount/blob/v2/beancount/parser/lexer.l
 package com.outskirtslabs.beancount.parser;
-
-import java.util.LinkedList;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
@@ -8,40 +8,12 @@ import com.intellij.psi.tree.IElementType;
 import static com.intellij.psi.TokenType.BAD_CHARACTER;
 import static com.intellij.psi.TokenType.WHITE_SPACE;
 import static com.outskirtslabs.beancount.psi.BeancountTypes.*;
-import static com.outskirtslabs.beancount.BeancountLexerUtil.*;
+//import static com.outskirtslabs.beancount.BeancountLexerUtil.*;
 
 %%
 
-%{
-  public _BeancountLexer() {
-    this((java.io.Reader)null);
-  }
-
-  private final LinkedList<Integer> states = new LinkedList();
-
-  private void yypushstate(int state) {
-      states.addFirst(yystate());
-        yylogstate(state);
-  }
-
-    private void yypopstate() {
-      if(states.isEmpty()) {
-        yylogstate(YYINITIAL);
-      } else  {
-        final int state = states.removeFirst();
-        yylogstate(state);
-      }
-    }
-    private void yylogstate(int state) {
-//    System.out.println("   state is now "+ state);
-    yybegin(state);
-    }
-
-%}
-
-//%debug
-%public
-%class _BeancountLexer
+%debug
+%class BeancountLexer
 %implements FlexLexer
 %function advance
 %type IElementType
@@ -50,140 +22,147 @@ import static com.outskirtslabs.beancount.BeancountLexerUtil.*;
 
 %unicode
 
-//EOL=\R
-NUMBER=(\d+)((\d{1,3})*([\,]\d{3})*)(\.\d+)?
-NEGATIVE_NUMBER=-{NUMBER}
-DATE=[:digit:]{4}-[:digit:]{2}-[:digit:]{2}
-STRING=(\"([^\"\\]|\\.)*\")
-COMMENT=;.*
-EOL_SINGLE=[\n\r]
-EOL=[\n\r]+
-LINE_SPACE=[ ]+
-FLAG=[*!]
-ACCOUNT_START=[:uppercase:]
-ACCOUNT_PART=[a-zA-Z0-9_-]+
-ACCOUNT_WORD={ACCOUNT_START}{ACCOUNT_PART}*
-CURRENCY=[A-Z][A-Z_-]*[A-Z]
-META_KEY=[a-z][a-zA-Z0-9_-]+
-TAG_LINK_VAL=[A-Za-z0-9\-_/.]+
+NEWLINE=[\n\r]
 
-// i know this probably isn't a "good" lexer design, it is too stateful but :\ it's my first one
-%state sOPT, sEVENT, sDATE_ENTRY, sOPEN, sBALANCE, sPRICE, sCOMMODITY, sMETA_LIST, sPOSTING, sACCOUNT, sCUSTOM, sPAD, sQUERY, sNOTE, sDOCUMENT, sINCLUDE,sPLUGIN
-%xstate sTXN
+DATE=[0-9]{4}[\-/][0-9]+[\-/][0-9]+
+CURRENCY=[A-Z][A-Z0-9\'\.\_\-]{0,22}[A-Z0-9]
+LITERAL=\"([^\\\"]|\\.)*\"
+NUMBER=([0-9]+|[0-9][0-9,]+[0-9])(\.[0-9]*)?
+TAG=#[A-Za-z0-9\-_/.]+
+LINK=\^[A-Za-z0-9\-_/.]+
+KEY=[a-z][a-zA-Z0-9\-_]+:
+
+
+ASCII=[\x00-\x7f]
+UTF_8_1=[\x80-\xbf]
+UTF_8_2=[\xc2-\xdf]{UTF_8_1}
+UTF_8_3=\xe0[\xa0-\xbf]{UTF_8_1}|[\xe1-\xec]{UTF_8_1}{UTF_8_1}|\xed[\x80-\x9f]{UTF_8_1}|[\xee-\xef]{UTF_8_1}{UTF_8_1}
+UTF_8_4=\xf0[\x90-\xbf]{UTF_8_1}{UTF_8_1}|[\xf1-\xf3]{UTF_8_1}{UTF_8_1}{UTF_8_1}|\xf4[\x80-\x8f]{UTF_8_1}{UTF_8_1}
+UTF_8_ONLY={UTF_8_2}|{UTF_8_3}|{UTF_8_4}
+UTF_8={ASCII}|{UTF_8_ONLY}
+
+ACCOUNTTYPE=([A-Z]|{UTF_8_ONLY})([A-Za-z0-9\-]|{UTF_8_ONLY})*
+ACCOUNTNAME=([A-Z0-9]|{UTF_8_ONLY})([A-Za-z0-9\-]|{UTF_8_ONLY})*
+
+FLAGS=[!&#?%PSTCURM]
+
+%state sINVALID, sIGNORE
 
 %%
 
-<sACCOUNT> {
-{LINE_SPACE}       { yypopstate(); return WHITE_SPACE; }
-{EOL_SINGLE}       { yypushback(yylength()); yypopstate(); }
-":"                { return COLON; }
-{ACCOUNT_WORD}     { return ACCOUNT_WORD; }
-{COMMENT}         { return COMMENT; }      
-}
-
-^{LINE_SPACE}+{META_KEY} {  yypushback(nonWsIndex(yytext())); yypushstate(sMETA_LIST); return INDENT; }
-{CURRENCY}          { return CURRENCY; }
-{COMMENT}         { return COMMENT; }
-
-<sOPT, sEVENT, sPRICE, sINCLUDE, sQUERY, sPLUGIN> {
-{EOL}               { yylogstate(YYINITIAL); return EOL; }
-{LINE_SPACE}+       { return WHITE_SPACE; }
-{STRING}            { return STRING; }
-{COMMENT}           { return COMMENT; }
-}
-
-<sCOMMODITY> {
-{EOL}               { yylogstate(YYINITIAL); return EOL; }
-{LINE_SPACE}+       { return WHITE_SPACE; }
-{COMMENT}         { return COMMENT; }      
-}
-<sOPEN, sBALANCE, sCUSTOM, sPAD, sNOTE, sDOCUMENT> {
-{EOL}               { yylogstate(YYINITIAL); return EOL; }
-{LINE_SPACE}+       { return WHITE_SPACE; }
-{ACCOUNT_WORD}      { yypushstate(sACCOUNT); return ACCOUNT_WORD; }
-{COMMENT}            { return COMMENT; }
-}
-
-// Transaction state.
-// 
-<sTXN> {
-"#"                  { return HASH; }
-"^"                  { return CARET; }
-{COMMENT}      { return COMMENT; }
-^\s*{COMMENT}{EOL}{2}      { yypopstate(); return COMMENT; }
-^\s*{COMMENT}{EOL}      { return COMMENT; }
-{TAG_LINK_VAL}       { return TAG_LINK_VALUE; }
-^{LINE_SPACE}+{META_KEY} {  yypushback(nonWsIndex(yytext())); yypushstate(sMETA_LIST); return INDENT; }
-{EOL}{2}             { yypopstate();  return EOL; }
-{EOL}                { return EOL; }
-^{LINE_SPACE}+{ACCOUNT_WORD} { yypushback(nonWsIndex(yytext())); yypushstate(sPOSTING); yypushstate(sACCOUNT); return INDENT;}
-{LINE_SPACE}+        { return WHITE_SPACE; }
-{STRING}             { return STRING; }
-[^]                  { /*this effectively detects the last posting line*/ yypushback(yylength()); yypopstate(); }
-}
-<sMETA_LIST> {
-  {META_KEY}           { return META_KEY; }
-  {LINE_SPACE}+        { return WHITE_SPACE; }
-   ":"                 { return META_KV_DELIMITER; }
-  {EOL}                { yypopstate(); return EOL; }
-  {COMMENT}            { return COMMENT; }    
-}
-
-
-<sPOSTING> {
-  {COMMENT}            { return COMMENT; }
-  {LINE_SPACE}         { return WHITE_SPACE; }      
-  {EOL_SINGLE}         { yypushback(yylength()); yypopstate(); }
-}
-
-<sDATE_ENTRY> {
-  {LINE_SPACE}+      { return WHITE_SPACE; }
-  "price"            { yylogstate(sPRICE); return PRICE; }
-  "open"             { yylogstate(sOPEN); return OPEN; }
-  "balance"          { yylogstate(sBALANCE); return BALANCE; }
-  "commodity"        { yylogstate(sCOMMODITY); return COMMODITY; }
-  "event"            { yylogstate(sEVENT); return EVENT; }
-  "txn"|{FLAG}       { yylogstate(sTXN); return TXN; }
-  "custom"           { yylogstate(sCUSTOM); return CUSTOM;}
-  "pad"              { yylogstate(sPAD); return PAD;}
-  "note"             { yylogstate(sNOTE); return NOTE;}
-  "document"         { yylogstate(sDOCUMENT); return DOCUMENT;}
-  "query"            { yylogstate(sQUERY); return QUERY;}
-  {EOL}              { return EOL; }
-  {COMMENT}          { return COMMENT; }
-}
+ /* Newlines matter. */
 
 <YYINITIAL> {
-  ^"option"         { yylogstate(sOPT); return OPTION; }
-  ^"include"        { yylogstate(sINCLUDE); return INCLUDE;}
-  ^"plugin"         { yylogstate(sPLUGIN); return PLUGIN;}
-  ^{DATE}           { yylogstate(sDATE_ENTRY); return DATE; }
-  {COMMENT}         { return COMMENT; }
-  {EOL}             { return EOL; }
-}
+{NEWLINE}                 { return EOL; }
 
-"{{"                { return LCURLCURL; }
-"}}"                { return RCURLCURL; }
-"{"                 { return LCURL; }
-"}"                 { return RCURL; }
-","                 { return COMMA; }
-"#"                 { return HASH; }
+/* Whitespace: ignored, except when found at the beginning of a line
+ * and followed by a regular character. This is how we detect an
+ * initial indent and thus group syntax elements in the grammar. */
+^[ \t]+/[^ \t\r\n] { return INDENT; }
+[ \t\r]+ { }
+
+ /* Comments. */
+;.* { return COMMENT; }
+      
+ /* Characters with special meanings. */
+"|"		              { return PIPE; }
 "@@"                { return ATAT; }
-"@"                 { return AT;}
-"("                 { return LPAREN; }
-")"                 { return RPAREN; }
-"-"                 { return MINUS; }
-\+                  { return PLUS; }
-"/"                 { return DIVIDE; }
-"*"                 { return ASTERISK; }
-{DATE}              { return DATE; }
-{NUMBER}            { return NUMBER; }
-{NEGATIVE_NUMBER}   { return NEGATIVE_NUMBER; }
-{STRING}            { return STRING; }
-{COMMENT}         { return COMMENT; }      
+"@"		              { return AT; }
+"{{"		            { return LCURLCURL; }
+"}}"		            { return RCURLCURL; }
+"{"		              { return LCURL; }
+"}"		              { return RCURL; }
+","                 { return COMMA; }
+"~"		              { return TILDE; }
+"+"		              { return PLUS; }
+"-"	    	          { return MINUS; }
+"/"		              { return SLASH; }
+"("		              { return LPAREN; }
+")"		              { return RPAREN; }
+"#"		              { return HASH; }
+"*"		              { return ASTERISK; }
+//":"		              { return COLON; }
 
-<sOPT, sEVENT, sDATE_ENTRY, sOPEN, sBALANCE, sCOMMODITY, sMETA_LIST, sPOSTING, sACCOUNT, sTXN, sPRICE, sCUSTOM, sPAD, sDOCUMENT, sNOTE, sQUERY, sINCLUDE, sPLUGIN>
-{
-    [^] { return BAD_CHARACTER; }
+{FLAGS}             { return FLAG; }
+
+/* Keywords. */
+"txn"		            { return TXN_KEY; }
+"balance"		        { return BALANCE_KEY; }
+"open"		          { return OPEN_KEY; }
+"close"		          { return CLOSE_KEY; }
+"commodity"	        { return COMMODITY_KEY; }
+"pad"		            { return PAD_KEY; }
+"event"		          { return EVENT_KEY; }
+"query"		          { return QUERY_KEY; }
+"custom"		        { return CUSTOM_KEY; }
+"price"		          { return PRICE_KEY; }
+"note"		          { return NOTE_KEY; }
+"document"	        { return DOCUMENT_KEY; }
+"pushtag"	          { return PUSHTAG_KEY; }
+"poptag"		        { return POPTAG_KEY; }
+"pushmeta"	        { return PUSHMETA_KEY; }
+"popmeta"		        { return POPMETA_KEY; }
+"option"		        { return OPTION_KEY; }
+"plugin"		        { return PLUGIN_KEY; }
+"include"		        { return INCLUDE_KEY; }
+
+
+ /* Dates. */
+{DATE}              { return DATE; }
+
+{ACCOUNTTYPE}(:{ACCOUNTNAME})+ { return ACCOUNT; }
+
+ /* Currencies. These are defined as uppercase only in order to
+  * disambiguate the syntax. This is to be kept in sync with
+  * beancount.core.amount.CURRENCY_RE. */
+{CURRENCY} { return CURRENCY; }
+
+ /* String literals. */
+{LITERAL} {
+    return STRING;
 }
-[^] { return SKIP; }
+
+/* Numbers. */
+{NUMBER} {
+    return NUMBER;
+}
+
+ /* Tags. */
+{TAG} {
+    return TAG;
+}
+ /* Links. */
+{LINK} {
+    return LINK;
+}
+ /* Keys. */
+{KEY} {
+    return KEY;
+}
+
+ /* end of file */
+//<<eof>> {
+//    return EOF; 
+//}
+
+
+ /* Lines starting with an asterisk, a colon, an hash, or a character
+  * in the FLAGS characters set are ignored. This rule is inserted
+  * here to give higher precedence to rules matching valid tokens. */
+^[\*\:\#]/.	{ yybegin(sIGNORE); }
+^{FLAGS}/.	{ yybegin(sIGNORE); }
+      
+}
+
+ /* Default rule. {bf253a29a820} */
+. { yybegin(sINVALID); }
+
+<sINVALID>[^ \t\n\r]+ {
+    yybegin(sINVALID);
+    return BAD_CHARACTER;
+}
+
+ /* Ignore input till the newline. */
+<sIGNORE>.* {
+    yybegin(YYINITIAL);
+}

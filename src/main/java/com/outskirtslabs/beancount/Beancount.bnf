@@ -2,7 +2,7 @@
   parserClass="com.outskirtslabs.beancount.parser.BeancountParser"
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
-  extends(".*expr")=expr
+//  extends(".*expr")=expr
 
   psiClassPrefix="Beancount"
   psiImplClassSuffix="Impl"
@@ -13,124 +13,221 @@
   elementTypeClass="com.outskirtslabs.beancount.psi.elements.BeancountElementType"
   tokenTypeClass="com.outskirtslabs.beancount.psi.BeancountTokenType"
 
-  psiImplUtilClass="com.outskirtslabs.beancount.psi.impl.BeancountPsiImplUtil"
+//  psiImplUtilClass="com.outskirtslabs.beancount.psi.impl.BeancountPsiImplUtil"
 
-  parserImports=[
-    'static com.outskirtslabs.beancount.psi.impl.BeancountPsiImplUtil.*'
-  ]
-
+//  parserImports=[
+//    'static com.outskirtslabs.beancount.psi.impl.BeancountPsiImplUtil.*'
+//  ]
+  
   tokens=[
-    NEGATIVE_NUMBER='regexp:-?\d+(\.\d*)?'
-    NUMBER='regexp:\d+(\.\d*)?'
-    STRING="regexp:(\"([^\"\\]|\\.)*\")"
-    comment='regexp:;.*'
-    END="regexp:[\n\r]+"
-    space='regexp:[\s]+'
+//    INDENT="regexp:^[ \t]+/[^ \t\r\n]"
+//    EOL="regexp:(\r\n|\r|\n)"        /* End-of-line */
+//    COMMENT="regexp:^([ \t]+/[^ \t\r\n])*;.*"
+//    PIPE="|"       /* | */
+//    ATAT="@@"       /* @@ */
+//    AT="@"         /* @ */
+//    LCURLCURL="{{"  /* {{ */
+//    RCURLCURL="}}"  /* }} */
+//    LCURL="{"      /* { */
+//    RCURL="}"      /* } */
+//    COMMA=","      /* , */
+//    TILDE="~"      /* ~ */
+//    HASH="#"       /* # */
+//    ASTERISK="*"   /* * */
+//    SLASH="/"      /* / */
+//    COLON=":"      /* : */
+//    PLUS="+"       /* + */
+//    MINUS="-"      /* - */
+//    LPAREN="("     /* ( */
+//    RPAREN=")"     /* ) */
+//    FLAG="regexp:[!&#?%PSTCURM]"    /* Valid characters for flags */
+//    TXN_KEY="txn"                 /* 'txn' keyword */
+//    BALANCE="balance"             /* 'balance' keyword */
+//    OPEN_KEY="open"                /* 'open' keyword */
+//    CLOSE_KEY="close"               /* 'close' keyword */
+//    COMMODITY_KEY="commodity"           /* 'commodity' keyword */
+//    PAD_KEY="pad"                 /* 'pad' keyword */
+//    EVENT_KEY="event"               /* 'event' keyword */
+//    PRICE_KEY="price"               /* 'price' keyword */
+//    NOTE_KEY="note"                /* 'note' keyword */
+//    DOCUMENT_KEY="document"            /* 'document' keyword */
+//    QUERY_KEY="query"               /* 'query' keyword */
+//    CUSTOM_KEY="custom"              /* 'custom' keyword */
+//    PUSHTAG_KEY="pushtag"             /* 'pushtag' keyword */
+//    POPTAG_KEY="poptag"              /* 'poptag' keyword */
+//    PUSHMETA_KEY="pushmeta"            /* 'pushmeta' keyword */
+//    POPMETA_KEY="popmeta"             /* 'popmeta' keyword */
+//    OPTION_KEY="option"              /* 'option' keyword */
+//    INCLUDE_KEY="include"             /* 'include' keyword */
+//    PLUGIN_KEY="plugin"              /* 'plugin' keyword */
+//    NUMBER="regexp:([0-9]+|[0-9][0-9,]+[0-9])(\.[0-9]*)?"
+//    DATE="regexp:[0-9]{4}[\-/][0-9]+[\-/][0-9]+"
+//    CURRENCY="regexp:[A-Z][A-Z0-9'._\-]{0,22}[A-Z0-9]"
+//    LITERAL="regexp:\"([^\\\"]|\\.)*\""
+//    NUMBER="regexp:([0-9]+|[0-9][0-9,]+[0-9])(\.[0-9]*)?"
+//    TAG="regexp:#[A-Za-z0-9\-_/.]+"
+//    LINK="regexp:\^[A-Za-z0-9\-_/.]+"
+//    KEY="regexp:[a-z][a-zA-Z0-9\-_]+/:"
   ]
 }
 
-beancountFile ::=  blank* item*
+file ::= declarations end?
 
-private item ::=  !<<eof>>  (metadata_carrier|option_dir|include_dir|plugin_dir|blank)
-private END ::= EOL | <<eof>>
-private blank ::= comment eol | eol | skip | ASTERISK | DIVIDE | PLUS
-    | LPAREN | RPAREN | MINUS | CARET | HASH | LCURL | RCURL | AT | NUMBER
+txn ::= TXN_KEY | FLAG | ASTERISK | HASH
 
+end ::= EOL
 
-private metadata_carrier ::= directive metadata_list
+number_expr ::= literal_expr
+    | plus_expr
+    | minus_expr
+    | asterisk_expr
+    | slash_expr
+    | unary_min
+    | unary_plus
+    | paren_expr
+    
+plus_expr ::= number_expr PLUS number_expr {extends=number_expr}
+minus_expr ::= number_expr MINUS number_expr {extends=number_expr}
+asterisk_expr ::= number_expr ASTERISK number_expr {extends=number_expr}
+slash_expr ::= number_expr SLASH number_expr {extends=number_expr}
+unary_min ::= MINUS number_expr {extends=number_expr}
+unary_plus ::= PLUS number_expr {extends=number_expr}
+paren_expr ::= LPAREN number_expr RPAREN {extends=number_expr}
+literal_expr ::= NUMBER {extends=number_expr}
 
-directive ::=
-    commodity_dir
-    | open_dir
-    | transaction_dir
-    | balance_dir
-    | event_dir
-    | price_dir
-    | custom_dir
-    | pad_dir
-    | document_dir
-    | note_dir
-    | query_dir
+txn_strings ::= (STRING | PIPE)+
 
-//    { recoverWhile = expressionRecoverWhile }
-//private expressionRecoverUntil ::= EOL
-//private expressionRecoverWhile ::= !expressionRecoverUntil
+tags_links ::= (LINK | TAG)*
 
+transaction ::= DATE txn txn_strings tags_links end posting_or_kv_list
 
-account_delimiter  ::= COLON
-account_name ::=  ACCOUNT_WORD
-account_segment ::= account_delimiter account_name
-account ::= ACCOUNT_WORD account_segment* { mixin="com.outskirtslabs.beancount.psi.impl.BeancountAccountElementImpl"
-                                 implements="com.outskirtslabs.beancount.psi.elements.BeancountAccountElement"
-                                 methods=[getName setName getNameIdentifier getReference]
-                                 stubClass= "com.outskirtslabs.beancount.psi.stub.AccountStub"
-                                 elementTypeFactory="com.outskirtslabs.beancount.psi.elements.BeancountElementTypeFactory.factoryAccount"
-                               }
+optflag ::= [ASTERISK | HASH | FLAG]
 
-currency_symbol ::= CURRENCY {
-mixin="com.outskirtslabs.beancount.psi.impl.BeancountCurrencyElementImpl"
-                                 implements="com.outskirtslabs.beancount.psi.elements.BeancountCurrencyElement"
-                                 methods=[getName setName getNameIdentifier getReference]
-                                 stubClass= "com.outskirtslabs.beancount.psi.stub.CurrencySymbolStub"
-                                 elementTypeFactory="com.outskirtslabs.beancount.psi.elements.BeancountElementTypeFactory.factoryCurrency"
-}
+price_annotation ::= incomplete_amount
 
-expr ::=
-    add_group
-  | mul_group
-  | unary_group
-  | primary_group
-   { implements="com.outskirtslabs.beancount.psi.elements.BeancountExprElement"
-     mixin="com.outskirtslabs.beancount.psi.impl.BeancountExprElementImpl"
-   }
+posting ::= INDENT optflag ACCOUNT incomplete_amount cost_spec end
+    | INDENT optflag ACCOUNT incomplete_amount cost_spec AT price_annotation end
+    | INDENT optflag ACCOUNT incomplete_amount cost_spec ATAT price_annotation end
+    | INDENT optflag ACCOUNT end
 
-private mul_group ::= mul_expr | div_expr
-private unary_group ::= unary_plus_expr | unary_min_expr
-private add_group ::= plus_expr | minus_expr
-private primary_group ::= literal_expr | paren_expr
+key_value ::= KEY key_value_value
 
-unary_min_expr ::= MINUS expr
-unary_plus_expr ::= PLUS expr
-div_expr ::= expr DIVIDE expr
-mul_expr ::= expr ASTERISK expr
-minus_expr ::= expr MINUS expr
-plus_expr ::= expr PLUS expr
-paren_expr ::= LPAREN expr RPAREN
-literal_expr ::= NUMBER | NEGATIVE_NUMBER
+key_value_line ::= INDENT key_value end
 
-amount ::= currency_symbol expr [space] | expr [space] currency_symbol
+key_value_value ::= [STRING
+    | ACCOUNT
+    | DATE
+    | CURRENCY
+    | TAG
+    | BOOL
+    | NONE
+    | number_expr
+    | amount]
+    
+posting_or_kv_list ::= (INDENT end
+    | INDENT tags_links end
+    | key_value_line
+    | posting)*
 
-key_value_value ::= STRING | account | DATE | currency_symbol | expr | amount | NUMBER | bool | tag | empty
-key_value ::= META_KEY META_KV_DELIMITER key_value_value
-private key_value_line ::= INDENT key_value END
-private metadata_list ::=  key_value_line*
+key_value_list ::= (INDENT end | key_value_line)+
 
+currency_list ::= [currency_one | currency_multiple]
 
-tag_value ::= HASH TAG_LINK_VALUE
-link_value ::= CARET TAG_LINK_VALUE
-tag_link ::= link_value | tag_value
+currency_one ::= CURRENCY {extends=currency_list}
+currency_multiple ::= currency_list COMMA CURRENCY {extends=currency_list}
 
-private incomplete_amount ::=  expr? currency_symbol?
+pushtag ::= PUSHTAG_KEY TAG end
 
-compound_amount ::= (expr HASH amount)
-cost_comp ::= compound_amount | amount | DATE | STRING | ASTERISK
-cost_comp_list ::=  cost_comp? (COMMA cost_comp)*
-cost_spec ::= (LCURL cost_comp_list? RCURL) | (LCURLCURL cost_comp_list? RCURLCURL)
-posting_price ::= (AT | ATAT) incomplete_amount
-posting_line ::= INDENT account amount cost_spec? posting_price? comment? END metadata_list
-posting_list ::= posting_line*
+poptag ::= POPTAG_KEY TAG end
 
-option_dir ::= OPTION STRING STRING comment? END {pin=1}
-include_dir ::= INCLUDE STRING comment? END {pin=1}
-plugin_dir ::= PLUGIN STRING STRING* comment? END {pin=1}
-price_dir ::= DATE PRICE currency_symbol amount comment? END {pin=2}
-open_dir ::= DATE OPEN account currency_symbol? comment? END {pin=2}
-balance_dir ::= DATE BALANCE account amount comment? END {pin=2}
-commodity_dir ::= DATE COMMODITY currency_symbol comment? END  {pin=2}
-transaction_dir ::=  DATE (TXN|FLAG) STRING? STRING? tag_link* comment? END comment? metadata_list comment? posting_list  {pin=2}
-event_dir ::= DATE EVENT STRING STRING comment? END {pin=2}
-custom_dir ::= DATE CUSTOM STRING (account|STRING|DATE|amount|expr|BOOLEAN)* comment? END {pin=2}
-pad_dir ::= DATE PAD account account comment? END {pin=2}
-note_dir ::= DATE NOTE account STRING comment? END {pin=2}
-document_dir ::= DATE DOCUMENT account STRING comment? END {pin=2}
-query_dir ::= DATE QUERY STRING STRING comment? END {pin=2}
+pushmeta ::= PUSHMETA_KEY key_value end
+
+popmeta ::= POPMETA_KEY KEY end
+
+open ::= DATE OPEN_KEY ACCOUNT currency_list? opt_booking end key_value_list?
+
+opt_booking ::= STRING?
+
+close ::= DATE CLOSE_KEY ACCOUNT end key_value_list?
+
+commodity ::= DATE COMMODITY_KEY CURRENCY end key_value_list?
+
+pad ::= DATE PAD_KEY ACCOUNT ACCOUNT end key_value_list?
+
+balance ::= DATE BALANCE_KEY ACCOUNT amount_tolerance end key_value_list?
+
+amount ::= number_expr CURRENCY
+
+amount_tolerance ::= number_expr CURRENCY | number_expr TILDE number_expr CURRENCY
+
+maybe_number ::= number_expr?
+
+maybe_currency ::= CURRENCY?
+
+compound_amount ::= maybe_number CURRENCY
+    | number_expr maybe_currency
+    | maybe_number HASH maybe_number CURRENCY
+
+incomplete_amount ::= maybe_number maybe_currency
+
+cost_spec ::= [LCURL cost_comp_list RCURL
+    | LCURLCURL cost_comp_list RCURLCURL]
+
+cost_comp_list ::= cost_comp (COMMA cost_comp)*
+
+cost_comp ::= compound_amount
+    | DATE
+    | STRING
+    | ASTERISK
+
+price ::= DATE PRICE_KEY CURRENCY amount end key_value_list?
+
+event ::= DATE EVENT_KEY STRING STRING end key_value_list?
+
+query ::= DATE QUERY_KEY STRING STRING end key_value_list?
+
+note ::= DATE NOTE_KEY ACCOUNT STRING end key_value_list?
+
+filename ::= STRING
+
+document ::= DATE DOCUMENT_KEY ACCOUNT filename tags_links end key_value_list?
+
+custom_value ::= STRING
+    | DATE
+    | BOOL
+    | amount
+    | number_expr
+    | ACCOUNT
+
+custom_value_list ::= custom_value*
+
+custom ::= DATE CUSTOM_KEY STRING custom_value_list end key_value_list?
+
+entry ::= (transaction
+    | balance
+    | open
+    | close
+    | pad
+    | document
+    | note
+    | event
+    | price
+    | commodity
+    | query
+    | custom) COMMENT?
+
+option ::= OPTION_KEY STRING STRING end
+
+include ::= INCLUDE_KEY STRING end
+
+plugin ::= PLUGIN_KEY STRING end | PLUGIN_KEY STRING STRING end
+
+directive ::= pushtag
+    | poptag
+    | pushmeta
+    | popmeta
+    | option
+    | include
+    | plugin
+
+declarations ::= (directive | entry | end | error)*

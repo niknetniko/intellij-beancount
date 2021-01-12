@@ -13,7 +13,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
-import com.outskirtslabs.beancount.parser.BeancountLexer;
+import com.outskirtslabs.beancount.parser.BeancountLexerAdapter;
 import com.outskirtslabs.beancount.parser.BeancountParser;
 import com.outskirtslabs.beancount.psi.BeancountFile;
 import com.outskirtslabs.beancount.psi.BeancountTypes;
@@ -28,7 +28,7 @@ public class BeancountParserDefinition implements ParserDefinition
     @Override
     public Lexer createLexer(Project project)
     {
-        return new BeancountLexer();
+        return new BeancountLexerAdapter();
     }
 
     @NotNull

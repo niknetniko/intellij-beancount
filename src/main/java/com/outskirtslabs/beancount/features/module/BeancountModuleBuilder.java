@@ -28,7 +28,7 @@ public class BeancountModuleBuilder extends ModuleBuilder implements ModuleBuild
     }
 
     @Override
-    public void setupRootModel(ModifiableRootModel rootModel)
+    public void setupRootModel(@NotNull ModifiableRootModel rootModel)
     {
         doAddContentEntry(rootModel);
     }
