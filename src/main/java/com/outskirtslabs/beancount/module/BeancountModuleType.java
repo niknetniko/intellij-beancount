@@ -1,4 +1,4 @@
-package com.outskirtslabs.beancount.features.module;
+package com.outskirtslabs.beancount.module;
 
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.module.ModuleTypeManager;

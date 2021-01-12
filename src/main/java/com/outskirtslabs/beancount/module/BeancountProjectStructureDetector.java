@@ -1,4 +1,4 @@
-package com.outskirtslabs.beancount.features.module;
+package com.outskirtslabs.beancount.module;
 
 import java.io.File;
 import java.util.ArrayList;

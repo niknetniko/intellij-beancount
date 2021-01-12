@@ -1,4 +1,4 @@
-package com.outskirtslabs.beancount.features.actions;
+package com.outskirtslabs.beancount.actions;
 
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInspection.util.IntentionFamilyName;
