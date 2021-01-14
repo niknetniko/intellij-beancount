@@ -37,8 +37,10 @@
     <extensions defaultExtensionNs="com.intellij">
         <colorSettingsPage
             implementation="com.outskirtslabs.beancount.highlighting.BeancountColorSettingsPage" />
-<!--        <completion.contributor language="Beancount"-->
-<!--            implementationClass="com.outskirtslabs.beancount.features.completion.BeancountCompletionContributor" />-->
+        <completion.contributor language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.features.completion.BeancountCompletionContributor" />
+        <completion.confidence language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.features.completion.Condidence" />
         <fileType name="Beancount Journal" implementationClass="com.outskirtslabs.beancount.BeancountFileType"
             fieldName="INSTANCE" language="Beancount" extensions="beancount" />
 <!--        <lang.findUsagesProvider language="Beancount"-->

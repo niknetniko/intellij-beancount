@@ -12,7 +12,7 @@ import static com.outskirtslabs.beancount.psi.BeancountTypes.*;
 
 %%
 
-%debug
+//%debug
 %class BeancountLexer
 %implements FlexLexer
 %function advance
@@ -46,7 +46,7 @@ ACCOUNTNAME=([A-Z0-9]|{UTF_8_ONLY})([A-Za-z0-9\-]|{UTF_8_ONLY})*
 
 FLAGS=[!&#?%PSTCURM]
 
-%state sIGNORE
+%state sIGNORE sINVALID
 
 %%
 
@@ -143,12 +143,20 @@ FLAGS=[!&#?%PSTCURM]
  /* Lines starting with an asterisk, a colon, an hash, or a character
   * in the FLAGS characters set are ignored. This rule is inserted
   * here to give higher precedence to rules matching valid tokens. */
-^[\*\:\#]/.	{ yybegin(sIGNORE); }
-^{FLAGS}/.	{ yybegin(sIGNORE); }
+^[*:#].	{ yybegin(sIGNORE); }
+^{FLAGS}.	{ yybegin(sIGNORE); }
 }
 
  /* Default rule. {bf253a29a820} */
-. { yybegin(YYINITIAL); return BAD_CHARACTER; }
+. { 
+  yybegin(sINVALID);
+  return BAD_CHARACTER; 
+}
+
+<sINVALID>[^ \t\n\r]* {
+  yybegin(YYINITIAL);
+  return BAD_CHARACTER;
+}
 
  /* Ignore input till the newline. */
 <sIGNORE>.* {
