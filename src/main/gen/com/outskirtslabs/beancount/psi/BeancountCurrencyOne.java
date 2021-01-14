@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface BeancountCurrencyOne extends BeancountCurrencyList {
 
+  @NotNull
+  BeancountCurrencySymbol getCurrencySymbol();
+
 }

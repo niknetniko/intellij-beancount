@@ -27,4 +27,10 @@ public class BeancountMaybeCurrencyImpl extends ASTWrapperPsiElement implements 
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public BeancountCurrencySymbol getCurrencySymbol() {
+    return PsiTreeUtil.getChildOfType(this, BeancountCurrencySymbol.class);
+  }
+
 }

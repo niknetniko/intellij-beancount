@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface BeancountCompoundAmount extends PsiElement {
 
   @Nullable
+  BeancountCurrencySymbol getCurrencySymbol();
+
+  @Nullable
   BeancountMaybeCurrency getMaybeCurrency();
 
   @Nullable

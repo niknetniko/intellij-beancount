@@ -30,19 +30,19 @@ public class BeancountCustomImpl extends ASTWrapperPsiElement implements Beancou
   @Override
   @NotNull
   public BeancountCustomValueList getCustomValueList() {
-    return findNotNullChildByClass(BeancountCustomValueList.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountCustomValueList.class));
   }
 
   @Override
   @NotNull
   public BeancountEnd getEnd() {
-    return findNotNullChildByClass(BeancountEnd.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountEnd.class));
   }
 
   @Override
   @Nullable
   public BeancountKeyValueList getKeyValueList() {
-    return findChildByClass(BeancountKeyValueList.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountKeyValueList.class);
   }
 
 }

@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface BeancountAmountTolerance extends PsiElement {
 
   @NotNull
+  BeancountCurrencySymbol getCurrencySymbol();
+
+  @NotNull
   List<BeancountNumberExpr> getNumberExprList();
 
 }

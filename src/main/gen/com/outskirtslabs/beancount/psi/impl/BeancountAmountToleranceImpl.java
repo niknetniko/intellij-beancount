@@ -29,6 +29,12 @@ public class BeancountAmountToleranceImpl extends ASTWrapperPsiElement implement
 
   @Override
   @NotNull
+  public BeancountCurrencySymbol getCurrencySymbol() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountCurrencySymbol.class));
+  }
+
+  @Override
+  @NotNull
   public List<BeancountNumberExpr> getNumberExprList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, BeancountNumberExpr.class);
   }

@@ -30,7 +30,7 @@ public class BeancountCostCompImpl extends ASTWrapperPsiElement implements Beanc
   @Override
   @Nullable
   public BeancountCompoundAmount getCompoundAmount() {
-    return findChildByClass(BeancountCompoundAmount.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountCompoundAmount.class);
   }
 
 }

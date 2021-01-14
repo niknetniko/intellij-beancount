@@ -30,7 +30,7 @@ public class BeancountPriceAnnotationImpl extends ASTWrapperPsiElement implement
   @Override
   @NotNull
   public BeancountIncompleteAmount getIncompleteAmount() {
-    return findNotNullChildByClass(BeancountIncompleteAmount.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountIncompleteAmount.class));
   }
 
 }

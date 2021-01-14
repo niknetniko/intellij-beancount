@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface BeancountAmount extends PsiElement {
 
   @NotNull
+  BeancountCurrencySymbol getCurrencySymbol();
+
+  @NotNull
   BeancountNumberExpr getNumberExpr();
 
 }

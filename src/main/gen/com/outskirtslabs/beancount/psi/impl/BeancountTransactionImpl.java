@@ -30,31 +30,31 @@ public class BeancountTransactionImpl extends ASTWrapperPsiElement implements Be
   @Override
   @NotNull
   public BeancountEnd getEnd() {
-    return findNotNullChildByClass(BeancountEnd.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountEnd.class));
   }
 
   @Override
   @NotNull
   public BeancountPostingOrKvList getPostingOrKvList() {
-    return findNotNullChildByClass(BeancountPostingOrKvList.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountPostingOrKvList.class));
   }
 
   @Override
   @NotNull
   public BeancountTagsLinks getTagsLinks() {
-    return findNotNullChildByClass(BeancountTagsLinks.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountTagsLinks.class));
   }
 
   @Override
   @NotNull
   public BeancountTxn getTxn() {
-    return findNotNullChildByClass(BeancountTxn.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountTxn.class));
   }
 
   @Override
   @NotNull
   public BeancountTxnStrings getTxnStrings() {
-    return findNotNullChildByClass(BeancountTxnStrings.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountTxnStrings.class));
   }
 
 }

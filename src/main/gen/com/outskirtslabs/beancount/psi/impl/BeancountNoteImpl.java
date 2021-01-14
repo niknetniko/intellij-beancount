@@ -30,13 +30,13 @@ public class BeancountNoteImpl extends ASTWrapperPsiElement implements Beancount
   @Override
   @NotNull
   public BeancountEnd getEnd() {
-    return findNotNullChildByClass(BeancountEnd.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountEnd.class));
   }
 
   @Override
   @Nullable
   public BeancountKeyValueList getKeyValueList() {
-    return findChildByClass(BeancountKeyValueList.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountKeyValueList.class);
   }
 
 }

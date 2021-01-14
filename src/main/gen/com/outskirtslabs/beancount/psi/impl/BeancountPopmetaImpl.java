@@ -30,7 +30,7 @@ public class BeancountPopmetaImpl extends ASTWrapperPsiElement implements Beanco
   @Override
   @NotNull
   public BeancountEnd getEnd() {
-    return findNotNullChildByClass(BeancountEnd.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountEnd.class));
   }
 
 }

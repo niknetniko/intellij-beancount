@@ -30,25 +30,25 @@ public class BeancountDocumentImpl extends ASTWrapperPsiElement implements Beanc
   @Override
   @NotNull
   public BeancountEnd getEnd() {
-    return findNotNullChildByClass(BeancountEnd.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountEnd.class));
   }
 
   @Override
   @NotNull
   public BeancountFilename getFilename() {
-    return findNotNullChildByClass(BeancountFilename.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountFilename.class));
   }
 
   @Override
   @Nullable
   public BeancountKeyValueList getKeyValueList() {
-    return findChildByClass(BeancountKeyValueList.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountKeyValueList.class);
   }
 
   @Override
   @NotNull
   public BeancountTagsLinks getTagsLinks() {
-    return findNotNullChildByClass(BeancountTagsLinks.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountTagsLinks.class));
   }
 
 }

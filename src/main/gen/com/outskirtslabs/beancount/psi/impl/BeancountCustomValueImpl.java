@@ -30,13 +30,13 @@ public class BeancountCustomValueImpl extends ASTWrapperPsiElement implements Be
   @Override
   @Nullable
   public BeancountAmount getAmount() {
-    return findChildByClass(BeancountAmount.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountAmount.class);
   }
 
   @Override
   @Nullable
   public BeancountNumberExpr getNumberExpr() {
-    return findChildByClass(BeancountNumberExpr.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountNumberExpr.class);
   }
 
 }

@@ -30,7 +30,7 @@ public class BeancountKeyValueImpl extends ASTWrapperPsiElement implements Beanc
   @Override
   @NotNull
   public BeancountKeyValueValue getKeyValueValue() {
-    return findNotNullChildByClass(BeancountKeyValueValue.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountKeyValueValue.class));
   }
 
 }

@@ -30,7 +30,7 @@ public class BeancountParenExprImpl extends BeancountNumberExprImpl implements B
   @Override
   @Nullable
   public BeancountNumberExpr getNumberExpr() {
-    return findChildByClass(BeancountNumberExpr.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountNumberExpr.class);
   }
 
 }

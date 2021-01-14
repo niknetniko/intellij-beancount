@@ -11,6 +11,9 @@ public interface BeancountKeyValueValue extends PsiElement {
   BeancountAmount getAmount();
 
   @Nullable
+  BeancountCurrencySymbol getCurrencySymbol();
+
+  @Nullable
   BeancountNumberExpr getNumberExpr();
 
 }

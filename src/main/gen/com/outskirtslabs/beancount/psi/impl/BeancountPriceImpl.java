@@ -30,19 +30,25 @@ public class BeancountPriceImpl extends ASTWrapperPsiElement implements Beancoun
   @Override
   @NotNull
   public BeancountAmount getAmount() {
-    return findNotNullChildByClass(BeancountAmount.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountAmount.class));
+  }
+
+  @Override
+  @NotNull
+  public BeancountCurrencySymbol getCurrencySymbol() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountCurrencySymbol.class));
   }
 
   @Override
   @NotNull
   public BeancountEnd getEnd() {
-    return findNotNullChildByClass(BeancountEnd.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountEnd.class));
   }
 
   @Override
   @Nullable
   public BeancountKeyValueList getKeyValueList() {
-    return findChildByClass(BeancountKeyValueList.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountKeyValueList.class);
   }
 
 }

@@ -10,6 +10,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.lang.PsiParser;
 import com.intellij.lang.LightPsiParser;
+import static com.outskirtslabs.beancount.psi.impl.BeancountPsiImplUtil.*;
 
 @SuppressWarnings({"SimplifiableIfStatement", "UnusedAssignment"})
 public class BeancountParser implements PsiParser, LightPsiParser {
@@ -43,19 +44,19 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   };
 
   /* ********************************************************** */
-  // number_expr CURRENCY
+  // number_expr currency_symbol
   public static boolean amount(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "amount")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, AMOUNT, "<amount>");
     r = number_expr(b, l + 1, -1);
-    r = r && consumeToken(b, CURRENCY);
+    r = r && currency_symbol(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
-  // number_expr CURRENCY | number_expr TILDE number_expr CURRENCY
+  // number_expr currency_symbol | number_expr TILDE number_expr currency_symbol
   public static boolean amount_tolerance(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "amount_tolerance")) return false;
     boolean r;
@@ -66,18 +67,18 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // number_expr CURRENCY
+  // number_expr currency_symbol
   private static boolean amount_tolerance_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "amount_tolerance_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = number_expr(b, l + 1, -1);
-    r = r && consumeToken(b, CURRENCY);
+    r = r && currency_symbol(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // number_expr TILDE number_expr CURRENCY
+  // number_expr TILDE number_expr currency_symbol
   private static boolean amount_tolerance_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "amount_tolerance_1")) return false;
     boolean r;
@@ -85,7 +86,7 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     r = number_expr(b, l + 1, -1);
     r = r && consumeToken(b, TILDE);
     r = r && number_expr(b, l + 1, -1);
-    r = r && consumeToken(b, CURRENCY);
+    r = r && currency_symbol(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -134,13 +135,14 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DATE COMMODITY_KEY CURRENCY end key_value_list?
+  // DATE COMMODITY_KEY currency_symbol end key_value_list?
   public static boolean commodity(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "commodity")) return false;
     if (!nextTokenIs(b, DATE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, DATE, COMMODITY_KEY, CURRENCY);
+    r = consumeTokens(b, 0, DATE, COMMODITY_KEY);
+    r = r && currency_symbol(b, l + 1);
     r = r && end(b, l + 1);
     r = r && commodity_4(b, l + 1);
     exit_section_(b, m, COMMODITY, r);
@@ -155,9 +157,9 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // maybe_number CURRENCY
+  // maybe_number currency_symbol
   //     | number_expr maybe_currency
-  //     | maybe_number HASH maybe_number CURRENCY
+  //     | maybe_number HASH maybe_number currency_symbol
   public static boolean compound_amount(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "compound_amount")) return false;
     boolean r;
@@ -169,13 +171,13 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // maybe_number CURRENCY
+  // maybe_number currency_symbol
   private static boolean compound_amount_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "compound_amount_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = maybe_number(b, l + 1);
-    r = r && consumeToken(b, CURRENCY);
+    r = r && currency_symbol(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -191,7 +193,7 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // maybe_number HASH maybe_number CURRENCY
+  // maybe_number HASH maybe_number currency_symbol
   private static boolean compound_amount_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "compound_amount_2")) return false;
     boolean r;
@@ -199,7 +201,7 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     r = maybe_number(b, l + 1);
     r = r && consumeToken(b, HASH);
     r = r && maybe_number(b, l + 1);
-    r = r && consumeToken(b, CURRENCY);
+    r = r && currency_symbol(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -299,6 +301,18 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     r = r && cost_comp_list(b, l + 1);
     r = r && consumeToken(b, RCURLCURL);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // CURRENCY
+  public static boolean currency_symbol(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "currency_symbol")) return false;
+    if (!nextTokenIs(b, CURRENCY)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, CURRENCY);
+    exit_section_(b, m, CURRENCY_SYMBOL, r);
     return r;
   }
 
@@ -650,7 +664,7 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   // [STRING
   //     | ACCOUNT
   //     | DATE
-  //     | CURRENCY
+  //     | currency_symbol
   //     | TAG
   //     | BOOL
   //     | NONE
@@ -667,7 +681,7 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   // STRING
   //     | ACCOUNT
   //     | DATE
-  //     | CURRENCY
+  //     | currency_symbol
   //     | TAG
   //     | BOOL
   //     | NONE
@@ -679,7 +693,7 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, STRING);
     if (!r) r = consumeToken(b, ACCOUNT);
     if (!r) r = consumeToken(b, DATE);
-    if (!r) r = consumeToken(b, CURRENCY);
+    if (!r) r = currency_symbol(b, l + 1);
     if (!r) r = consumeToken(b, TAG);
     if (!r) r = consumeToken(b, BOOL);
     if (!r) r = consumeToken(b, NONE);
@@ -689,11 +703,11 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // CURRENCY?
+  // currency_symbol?
   public static boolean maybe_currency(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "maybe_currency")) return false;
     Marker m = enter_section_(b, l, _NONE_, MAYBE_CURRENCY, "<maybe currency>");
-    consumeToken(b, CURRENCY);
+    currency_symbol(b, l + 1);
     exit_section_(b, l, m, true, false, null);
     return true;
   }
@@ -1021,13 +1035,14 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DATE PRICE_KEY CURRENCY amount end key_value_list?
+  // DATE PRICE_KEY currency_symbol amount end key_value_list?
   public static boolean price(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "price")) return false;
     if (!nextTokenIs(b, DATE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, DATE, PRICE_KEY, CURRENCY);
+    r = consumeTokens(b, 0, DATE, PRICE_KEY);
+    r = r && currency_symbol(b, l + 1);
     r = r && amount(b, l + 1);
     r = r && end(b, l + 1);
     r = r && price_5(b, l + 1);
@@ -1203,7 +1218,7 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     boolean r = true;
     while (true) {
       Marker m = enter_section_(b, l, _LEFT_, null);
-      if (g < 1 && parseTokensSmart(b, 0, COMMA, CURRENCY)) {
+      if (g < 1 && currency_multiple_0(b, l + 1)) {
         r = true;
         exit_section_(b, l, m, CURRENCY_MULTIPLE, r, true, null);
       }
@@ -1215,14 +1230,25 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // CURRENCY
+  // currency_symbol
   public static boolean currency_one(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "currency_one")) return false;
     if (!nextTokenIsSmart(b, CURRENCY)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokenSmart(b, CURRENCY);
+    r = currency_symbol(b, l + 1);
     exit_section_(b, m, CURRENCY_ONE, r);
+    return r;
+  }
+
+  // COMMA currency_symbol
+  private static boolean currency_multiple_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "currency_multiple_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokenSmart(b, COMMA);
+    r = r && currency_symbol(b, l + 1);
+    exit_section_(b, m, null, r);
     return r;
   }
 

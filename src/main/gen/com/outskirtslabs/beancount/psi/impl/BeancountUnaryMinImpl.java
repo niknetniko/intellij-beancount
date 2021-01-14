@@ -30,7 +30,7 @@ public class BeancountUnaryMinImpl extends BeancountNumberExprImpl implements Be
   @Override
   @Nullable
   public BeancountNumberExpr getNumberExpr() {
-    return findChildByClass(BeancountNumberExpr.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountNumberExpr.class);
   }
 
 }

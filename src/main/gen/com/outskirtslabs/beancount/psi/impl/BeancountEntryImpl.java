@@ -30,73 +30,73 @@ public class BeancountEntryImpl extends ASTWrapperPsiElement implements Beancoun
   @Override
   @Nullable
   public BeancountBalance getBalance() {
-    return findChildByClass(BeancountBalance.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountBalance.class);
   }
 
   @Override
   @Nullable
   public BeancountClose getClose() {
-    return findChildByClass(BeancountClose.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountClose.class);
   }
 
   @Override
   @Nullable
   public BeancountCommodity getCommodity() {
-    return findChildByClass(BeancountCommodity.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountCommodity.class);
   }
 
   @Override
   @Nullable
   public BeancountCustom getCustom() {
-    return findChildByClass(BeancountCustom.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountCustom.class);
   }
 
   @Override
   @Nullable
   public BeancountDocument getDocument() {
-    return findChildByClass(BeancountDocument.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountDocument.class);
   }
 
   @Override
   @Nullable
   public BeancountEvent getEvent() {
-    return findChildByClass(BeancountEvent.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountEvent.class);
   }
 
   @Override
   @Nullable
   public BeancountNote getNote() {
-    return findChildByClass(BeancountNote.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountNote.class);
   }
 
   @Override
   @Nullable
   public BeancountOpen getOpen() {
-    return findChildByClass(BeancountOpen.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountOpen.class);
   }
 
   @Override
   @Nullable
   public BeancountPad getPad() {
-    return findChildByClass(BeancountPad.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountPad.class);
   }
 
   @Override
   @Nullable
   public BeancountPrice getPrice() {
-    return findChildByClass(BeancountPrice.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountPrice.class);
   }
 
   @Override
   @Nullable
   public BeancountQuery getQuery() {
-    return findChildByClass(BeancountQuery.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountQuery.class);
   }
 
   @Override
   @Nullable
   public BeancountTransaction getTransaction() {
-    return findChildByClass(BeancountTransaction.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountTransaction.class);
   }
 
 }

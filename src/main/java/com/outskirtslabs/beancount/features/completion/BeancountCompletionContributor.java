@@ -1,13 +1,6 @@
 package com.outskirtslabs.beancount.features.completion;
 
 import com.intellij.codeInsight.completion.CompletionContributor;
-import com.intellij.codeInsight.completion.CompletionType;
-
-import static com.intellij.lang.parser.GeneratedParserUtilBase.DUMMY_BLOCK;
-import static com.intellij.patterns.PlatformPatterns.psiElement;
-import static com.intellij.psi.TokenType.ERROR_ELEMENT;
-import static com.intellij.psi.TokenType.WHITE_SPACE;
-import static com.outskirtslabs.beancount.psi.BeancountTypes.DATE;
 
 public class BeancountCompletionContributor extends CompletionContributor {
     public BeancountCompletionContributor() {
@@ -21,9 +14,7 @@ public class BeancountCompletionContributor extends CompletionContributor {
 //        );
 //
 //        // :: currency
-//        extend(CompletionType.BASIC,
-//            psiElement(CURRENCY)
-//            , new BeancountCurrencyCompletionProvider());
+        BeancountCurrencyCompletionProvider.register(this);
 //
 //        extend(CompletionType.BASIC,
 //            psiElement().withParent(psiElement(ERROR_ELEMENT)

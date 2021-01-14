@@ -30,7 +30,7 @@ public class BeancountMaybeNumberImpl extends ASTWrapperPsiElement implements Be
   @Override
   @Nullable
   public BeancountNumberExpr getNumberExpr() {
-    return findChildByClass(BeancountNumberExpr.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountNumberExpr.class);
   }
 
 }

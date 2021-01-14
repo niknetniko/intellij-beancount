@@ -30,13 +30,13 @@ public class BeancountIncompleteAmountImpl extends ASTWrapperPsiElement implemen
   @Override
   @NotNull
   public BeancountMaybeCurrency getMaybeCurrency() {
-    return findNotNullChildByClass(BeancountMaybeCurrency.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountMaybeCurrency.class));
   }
 
   @Override
   @NotNull
   public BeancountMaybeNumber getMaybeNumber() {
-    return findNotNullChildByClass(BeancountMaybeNumber.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountMaybeNumber.class));
   }
 
 }

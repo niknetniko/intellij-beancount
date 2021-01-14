@@ -30,31 +30,31 @@ public class BeancountPostingImpl extends ASTWrapperPsiElement implements Beanco
   @Override
   @Nullable
   public BeancountCostSpec getCostSpec() {
-    return findChildByClass(BeancountCostSpec.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountCostSpec.class);
   }
 
   @Override
   @NotNull
   public BeancountEnd getEnd() {
-    return findNotNullChildByClass(BeancountEnd.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountEnd.class));
   }
 
   @Override
   @Nullable
   public BeancountIncompleteAmount getIncompleteAmount() {
-    return findChildByClass(BeancountIncompleteAmount.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountIncompleteAmount.class);
   }
 
   @Override
   @NotNull
   public BeancountOptflag getOptflag() {
-    return findNotNullChildByClass(BeancountOptflag.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountOptflag.class));
   }
 
   @Override
   @Nullable
   public BeancountPriceAnnotation getPriceAnnotation() {
-    return findChildByClass(BeancountPriceAnnotation.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountPriceAnnotation.class);
   }
 
 }

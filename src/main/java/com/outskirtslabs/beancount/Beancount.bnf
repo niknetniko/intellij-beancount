@@ -13,11 +13,11 @@
   elementTypeClass="com.outskirtslabs.beancount.psi.elements.BeancountElementType"
   tokenTypeClass="com.outskirtslabs.beancount.psi.BeancountTokenType"
 
-//  psiImplUtilClass="com.outskirtslabs.beancount.psi.impl.BeancountPsiImplUtil"
+  psiImplUtilClass="com.outskirtslabs.beancount.psi.impl.BeancountPsiImplUtil"
 
-//  parserImports=[
-//    'static com.outskirtslabs.beancount.psi.impl.BeancountPsiImplUtil.*'
-//  ]
+  parserImports=[
+    'static com.outskirtslabs.beancount.psi.impl.BeancountPsiImplUtil.*'
+  ]
   
   tokens=[
 //    INDENT="regexp:^[ \t]+/[^ \t\r\n]"
@@ -117,7 +117,7 @@ key_value_line ::= INDENT key_value end
 key_value_value ::= [STRING
     | ACCOUNT
     | DATE
-    | CURRENCY
+    | currency_symbol
     | TAG
     | BOOL
     | NONE
@@ -131,10 +131,19 @@ posting_or_kv_list ::= (INDENT end
 
 key_value_list ::= (INDENT end | key_value_line)+
 
+// We give currency it's own entry, to be able to cache it.
+currency_symbol ::= CURRENCY {
+    mixin="com.outskirtslabs.beancount.psi.impl.BeancountCurrencyElementImpl"
+    implements="com.outskirtslabs.beancount.psi.elements.BeancountCurrencyElement"
+    methods=[getName setName getNameIdentifier getReference]
+    stubClass= "com.outskirtslabs.beancount.psi.stub.CurrencySymbolStub"
+    elementTypeFactory="com.outskirtslabs.beancount.psi.elements.BeancountElementTypeFactory.factoryCurrency"
+}
+
 currency_list ::= [currency_one | currency_multiple]
 
-currency_one ::= CURRENCY {extends=currency_list}
-currency_multiple ::= currency_list COMMA CURRENCY {extends=currency_list}
+currency_one ::= currency_symbol {extends=currency_list}
+currency_multiple ::= currency_list COMMA currency_symbol {extends=currency_list}
 
 pushtag ::= PUSHTAG_KEY TAG end
 
@@ -150,23 +159,23 @@ opt_booking ::= STRING?
 
 close ::= DATE CLOSE_KEY ACCOUNT end key_value_list?
 
-commodity ::= DATE COMMODITY_KEY CURRENCY end key_value_list?
+commodity ::= DATE COMMODITY_KEY currency_symbol end key_value_list?
 
 pad ::= DATE PAD_KEY ACCOUNT ACCOUNT end key_value_list?
 
 balance ::= DATE BALANCE_KEY ACCOUNT amount_tolerance end key_value_list?
 
-amount ::= number_expr CURRENCY
+amount ::= number_expr currency_symbol
 
-amount_tolerance ::= number_expr CURRENCY | number_expr TILDE number_expr CURRENCY
+amount_tolerance ::= number_expr currency_symbol | number_expr TILDE number_expr currency_symbol
 
 maybe_number ::= number_expr?
 
-maybe_currency ::= CURRENCY?
+maybe_currency ::= currency_symbol?
 
-compound_amount ::= maybe_number CURRENCY
+compound_amount ::= maybe_number currency_symbol
     | number_expr maybe_currency
-    | maybe_number HASH maybe_number CURRENCY
+    | maybe_number HASH maybe_number currency_symbol
 
 incomplete_amount ::= maybe_number maybe_currency
 
@@ -180,7 +189,7 @@ cost_comp ::= compound_amount
     | STRING
     | ASTERISK
 
-price ::= DATE PRICE_KEY CURRENCY amount end key_value_list?
+price ::= DATE PRICE_KEY currency_symbol amount end key_value_list?
 
 event ::= DATE EVENT_KEY STRING STRING end key_value_list?
 

@@ -27,4 +27,10 @@ public class BeancountCurrencyOneImpl extends BeancountCurrencyListImpl implemen
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public BeancountCurrencySymbol getCurrencySymbol() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountCurrencySymbol.class));
+  }
+
 }

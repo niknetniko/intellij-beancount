@@ -30,43 +30,43 @@ public class BeancountDirectiveImpl extends ASTWrapperPsiElement implements Bean
   @Override
   @Nullable
   public BeancountInclude getInclude() {
-    return findChildByClass(BeancountInclude.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountInclude.class);
   }
 
   @Override
   @Nullable
   public BeancountOption getOption() {
-    return findChildByClass(BeancountOption.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountOption.class);
   }
 
   @Override
   @Nullable
   public BeancountPlugin getPlugin() {
-    return findChildByClass(BeancountPlugin.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountPlugin.class);
   }
 
   @Override
   @Nullable
   public BeancountPopmeta getPopmeta() {
-    return findChildByClass(BeancountPopmeta.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountPopmeta.class);
   }
 
   @Override
   @Nullable
   public BeancountPoptag getPoptag() {
-    return findChildByClass(BeancountPoptag.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountPoptag.class);
   }
 
   @Override
   @Nullable
   public BeancountPushmeta getPushmeta() {
-    return findChildByClass(BeancountPushmeta.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountPushmeta.class);
   }
 
   @Override
   @Nullable
   public BeancountPushtag getPushtag() {
-    return findChildByClass(BeancountPushtag.class);
+    return PsiTreeUtil.getChildOfType(this, BeancountPushtag.class);
   }
 
 }

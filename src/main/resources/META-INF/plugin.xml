@@ -63,7 +63,7 @@
 <!--            implementation="com.outskirtslabs.beancount.features.references.BeancountReferenceContributor" />-->
         <stubElementTypeHolder class="com.outskirtslabs.beancount.psi.BeancountTypes" />
 <!--        <stubIndex implementation="com.outskirtslabs.beancount.psi.stub.index.AccountStubIndex" />-->
-<!--        <stubIndex implementation="com.outskirtslabs.beancount.psi.stub.index.CurrencySymbolStubIndex" />-->
+        <stubIndex implementation="com.outskirtslabs.beancount.psi.stub.index.CurrencySymbolStubIndex" />
         <intentionAction>
             <className>com.outskirtslabs.beancount.actions.CalcIntentionAction</className>
         </intentionAction>

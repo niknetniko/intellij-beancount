@@ -30,13 +30,13 @@ public class BeancountPushmetaImpl extends ASTWrapperPsiElement implements Beanc
   @Override
   @NotNull
   public BeancountEnd getEnd() {
-    return findNotNullChildByClass(BeancountEnd.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountEnd.class));
   }
 
   @Override
   @NotNull
   public BeancountKeyValue getKeyValue() {
-    return findNotNullChildByClass(BeancountKeyValue.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountKeyValue.class));
   }
 
 }

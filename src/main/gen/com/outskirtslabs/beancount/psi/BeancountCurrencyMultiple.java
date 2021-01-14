@@ -10,4 +10,7 @@ public interface BeancountCurrencyMultiple extends BeancountCurrencyList {
   @NotNull
   BeancountCurrencyList getCurrencyList();
 
+  @NotNull
+  BeancountCurrencySymbol getCurrencySymbol();
+
 }

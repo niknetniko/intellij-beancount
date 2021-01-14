@@ -5,6 +5,7 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.PsiElement;
 import com.intellij.lang.ASTNode;
 import com.outskirtslabs.beancount.psi.elements.BeancountElementType;
+import com.outskirtslabs.beancount.psi.elements.BeancountElementTypeFactory;
 import com.outskirtslabs.beancount.psi.impl.*;
 
 public interface BeancountTypes {
@@ -22,6 +23,7 @@ public interface BeancountTypes {
   IElementType CURRENCY_LIST = new BeancountElementType("CURRENCY_LIST");
   IElementType CURRENCY_MULTIPLE = new BeancountElementType("CURRENCY_MULTIPLE");
   IElementType CURRENCY_ONE = new BeancountElementType("CURRENCY_ONE");
+  IElementType CURRENCY_SYMBOL = BeancountElementTypeFactory.factoryCurrency("CURRENCY_SYMBOL");
   IElementType CUSTOM = new BeancountElementType("CUSTOM");
   IElementType CUSTOM_VALUE = new BeancountElementType("CUSTOM_VALUE");
   IElementType CUSTOM_VALUE_LIST = new BeancountElementType("CUSTOM_VALUE_LIST");
@@ -158,6 +160,9 @@ public interface BeancountTypes {
       }
       else if (type == CURRENCY_ONE) {
         return new BeancountCurrencyOneImpl(node);
+      }
+      else if (type == CURRENCY_SYMBOL) {
+        return new BeancountCurrencySymbolImpl(node);
       }
       else if (type == CUSTOM) {
         return new BeancountCustomImpl(node);

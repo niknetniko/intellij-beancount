@@ -1,45 +1,36 @@
 package com.outskirtslabs.beancount.psi;
 
-import java.util.HashSet;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
-
-import org.jetbrains.annotations.NotNull;
-
 import com.google.common.base.Stopwatch;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
 import com.outskirtslabs.beancount.BeancountFileType;
 import com.outskirtslabs.beancount.BeancountLanguage;
-//import com.outskirtslabs.beancount.psi.stub.index.AccountStubIndex;
-//import com.outskirtslabs.beancount.psi.stub.index.CurrencySymbolStubIndex;
-
+import com.outskirtslabs.beancount.psi.stub.index.CurrencySymbolStubIndex;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 @Slf4j
-public class BeancountFile extends PsiFileBase
-{
-    public BeancountFile(@NotNull FileViewProvider viewProvider)
-    {
+public class BeancountFile extends PsiFileBase {
+    public BeancountFile(@NotNull FileViewProvider viewProvider) {
         super(viewProvider, BeancountLanguage.INSTANCE);
     }
 
     @NotNull
     @Override
-    public FileType getFileType()
-    {
+    public FileType getFileType() {
         return BeancountFileType.INSTANCE;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Beancount File";
     }
 
-    public Stream<String> getAllAccountsStrings()
-    {
+    public Stream<String> getAllAccountsStrings() {
 
 //        HashSet<String> names = new HashSet<>();
 //        this.acceptChildren(new BeancountRecursiveVisitor()
@@ -55,8 +46,7 @@ public class BeancountFile extends PsiFileBase
         return Stream.empty();
     }
 
-    public Stream<String> getAllAccountNames()
-    {
+    public Stream<String> getAllAccountNames() {
 //        Stream<BeancountAccount> accounts = Arrays.stream(this.getChildren())
 //                                                  .peek( e -> log.info("\t " + e.getClass().getName()))
 //                                                  .filter(e -> e instanceof BeancountAccount)
@@ -100,7 +90,7 @@ public class BeancountFile extends PsiFileBase
 //        return names.stream();
 //    }
 
-//    public Stream<String> getAllAccountsCached()
+    //    public Stream<String> getAllAccountsCached()
 //    {
 //        Stopwatch stopwatch = Stopwatch.createStarted();
 //        Stream<String> distinct = AccountStubIndex.findAllAccounts(this.getProject()).stream()
@@ -109,15 +99,14 @@ public class BeancountFile extends PsiFileBase
 //        return distinct;
 //    }
 //
-//    public Stream<String> getAllCurrenciesCached()
-//    {
-//        Stopwatch stopwatch = Stopwatch.createStarted();
-//        Stream<String> distinct = CurrencySymbolStubIndex.findAllCurrencySymbols(this.getProject())
-//                                                         .stream()
-//                                                         .distinct();
-//        log.info("getAllAccountsCached complete in {}", stopwatch.elapsed(TimeUnit.MICROSECONDS));
-//        return distinct;
-//    }
+    public Stream<String> getAllCurrenciesCached() {
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        Stream<String> distinct = CurrencySymbolStubIndex.findAllCurrencySymbols(this.getProject())
+                .stream()
+                .distinct();
+        log.info("getAllAccountsCached complete in {}", stopwatch.elapsed(TimeUnit.MICROSECONDS));
+        return distinct;
+    }
 
 //    public Stream<String> getAllAccounts()
 //    {

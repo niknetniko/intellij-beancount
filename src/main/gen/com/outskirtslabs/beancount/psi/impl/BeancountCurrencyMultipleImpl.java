@@ -30,7 +30,13 @@ public class BeancountCurrencyMultipleImpl extends BeancountCurrencyListImpl imp
   @Override
   @NotNull
   public BeancountCurrencyList getCurrencyList() {
-    return findNotNullChildByClass(BeancountCurrencyList.class);
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountCurrencyList.class));
+  }
+
+  @Override
+  @NotNull
+  public BeancountCurrencySymbol getCurrencySymbol() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountCurrencySymbol.class));
   }
 
 }
