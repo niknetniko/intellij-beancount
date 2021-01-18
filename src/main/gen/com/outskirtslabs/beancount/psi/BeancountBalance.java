@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface BeancountBalance extends PsiElement {
 
   @NotNull
+  BeancountAccountSymbol getAccountSymbol();
+
+  @NotNull
   BeancountAmountTolerance getAmountTolerance();
 
   @NotNull

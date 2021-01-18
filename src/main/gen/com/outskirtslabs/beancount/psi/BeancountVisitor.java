@@ -5,8 +5,13 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 import com.outskirtslabs.beancount.psi.elements.BeancountCurrencyElement;
+import com.outskirtslabs.beancount.psi.elements.BeancountAccountElement;
 
 public class BeancountVisitor extends PsiElementVisitor {
+
+  public void visitAccountSymbol(@NotNull BeancountAccountSymbol o) {
+    visitAccountElement(o);
+  }
 
   public void visitAmount(@NotNull BeancountAmount o) {
     visitPsiElement(o);
@@ -246,6 +251,10 @@ public class BeancountVisitor extends PsiElementVisitor {
 
   public void visitUnaryPlus(@NotNull BeancountUnaryPlus o) {
     visitNumberExpr(o);
+  }
+
+  public void visitAccountElement(@NotNull BeancountAccountElement o) {
+    visitPsiElement(o);
   }
 
   public void visitCurrencyElement(@NotNull BeancountCurrencyElement o) {

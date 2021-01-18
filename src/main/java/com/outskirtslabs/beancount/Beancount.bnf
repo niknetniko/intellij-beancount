@@ -105,17 +105,17 @@ optflag ::= [ASTERISK | HASH | FLAG]
 
 price_annotation ::= incomplete_amount
 
-posting ::= INDENT optflag ACCOUNT incomplete_amount cost_spec end
-    | INDENT optflag ACCOUNT incomplete_amount cost_spec AT price_annotation end
-    | INDENT optflag ACCOUNT incomplete_amount cost_spec ATAT price_annotation end
-    | INDENT optflag ACCOUNT end
+posting ::= INDENT optflag account_symbol incomplete_amount cost_spec end
+    | INDENT optflag account_symbol incomplete_amount cost_spec AT price_annotation end
+    | INDENT optflag account_symbol incomplete_amount cost_spec ATAT price_annotation end
+    | INDENT optflag account_symbol end
 
 key_value ::= KEY key_value_value
 
 key_value_line ::= INDENT key_value end
 
 key_value_value ::= [STRING
-    | ACCOUNT
+    | account_symbol
     | DATE
     | currency_symbol
     | TAG
@@ -140,6 +140,14 @@ currency_symbol ::= CURRENCY {
     elementTypeFactory="com.outskirtslabs.beancount.psi.elements.BeancountElementTypeFactory.factoryCurrency"
 }
 
+account_symbol ::= ACCOUNT { 
+    mixin="com.outskirtslabs.beancount.psi.impl.BeancountAccountElementImpl"
+    implements="com.outskirtslabs.beancount.psi.elements.BeancountAccountElement"
+    methods=[getName setName getNameIdentifier getReference]
+    stubClass= "com.outskirtslabs.beancount.psi.stub.AccountStub"
+    elementTypeFactory="com.outskirtslabs.beancount.psi.elements.BeancountElementTypeFactory.factoryAccount"
+}
+
 currency_list ::= [currency_one | currency_multiple]
 
 currency_one ::= currency_symbol {extends=currency_list}
@@ -153,17 +161,17 @@ pushmeta ::= PUSHMETA_KEY key_value end
 
 popmeta ::= POPMETA_KEY KEY end
 
-open ::= DATE OPEN_KEY ACCOUNT currency_list? opt_booking end key_value_list?
+open ::= DATE OPEN_KEY account_symbol currency_list? opt_booking end key_value_list?
 
 opt_booking ::= STRING?
 
-close ::= DATE CLOSE_KEY ACCOUNT end key_value_list?
+close ::= DATE CLOSE_KEY account_symbol end key_value_list?
 
 commodity ::= DATE COMMODITY_KEY currency_symbol end key_value_list?
 
-pad ::= DATE PAD_KEY ACCOUNT ACCOUNT end key_value_list?
+pad ::= DATE PAD_KEY account_symbol account_symbol end key_value_list?
 
-balance ::= DATE BALANCE_KEY ACCOUNT amount_tolerance end key_value_list?
+balance ::= DATE BALANCE_KEY account_symbol amount_tolerance end key_value_list?
 
 amount ::= number_expr currency_symbol
 
@@ -195,18 +203,18 @@ event ::= DATE EVENT_KEY STRING STRING end key_value_list?
 
 query ::= DATE QUERY_KEY STRING STRING end key_value_list?
 
-note ::= DATE NOTE_KEY ACCOUNT STRING end key_value_list?
+note ::= DATE NOTE_KEY account_symbol STRING end key_value_list?
 
 filename ::= STRING
 
-document ::= DATE DOCUMENT_KEY ACCOUNT filename tags_links end key_value_list?
+document ::= DATE DOCUMENT_KEY account_symbol filename tags_links end key_value_list?
 
 custom_value ::= STRING
     | DATE
     | BOOL
     | amount
     | number_expr
-    | ACCOUNT
+    | account_symbol
 
 custom_value_list ::= custom_value*
 

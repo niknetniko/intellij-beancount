@@ -28,6 +28,12 @@ public class BeancountPostingImpl extends ASTWrapperPsiElement implements Beanco
   }
 
   @Override
+  @NotNull
+  public BeancountAccountSymbol getAccountSymbol() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountAccountSymbol.class));
+  }
+
+  @Override
   @Nullable
   public BeancountCostSpec getCostSpec() {
     return PsiTreeUtil.getChildOfType(this, BeancountCostSpec.class);

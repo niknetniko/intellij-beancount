@@ -29,6 +29,12 @@ public class BeancountDocumentImpl extends ASTWrapperPsiElement implements Beanc
 
   @Override
   @NotNull
+  public BeancountAccountSymbol getAccountSymbol() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountAccountSymbol.class));
+  }
+
+  @Override
+  @NotNull
   public BeancountEnd getEnd() {
     return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountEnd.class));
   }

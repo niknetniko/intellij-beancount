@@ -29,6 +29,12 @@ public class BeancountKeyValueValueImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @Nullable
+  public BeancountAccountSymbol getAccountSymbol() {
+    return PsiTreeUtil.getChildOfType(this, BeancountAccountSymbol.class);
+  }
+
+  @Override
+  @Nullable
   public BeancountAmount getAmount() {
     return PsiTreeUtil.getChildOfType(this, BeancountAmount.class);
   }

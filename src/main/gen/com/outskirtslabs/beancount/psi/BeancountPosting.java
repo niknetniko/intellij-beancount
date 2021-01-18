@@ -7,6 +7,9 @@ import com.intellij.psi.PsiElement;
 
 public interface BeancountPosting extends PsiElement {
 
+  @NotNull
+  BeancountAccountSymbol getAccountSymbol();
+
   @Nullable
   BeancountCostSpec getCostSpec();
 

@@ -29,6 +29,12 @@ public class BeancountBalanceImpl extends ASTWrapperPsiElement implements Beanco
 
   @Override
   @NotNull
+  public BeancountAccountSymbol getAccountSymbol() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountAccountSymbol.class));
+  }
+
+  @Override
+  @NotNull
   public BeancountAmountTolerance getAmountTolerance() {
     return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountAmountTolerance.class));
   }

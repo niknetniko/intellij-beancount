@@ -29,6 +29,12 @@ public class BeancountPadImpl extends ASTWrapperPsiElement implements BeancountP
 
   @Override
   @NotNull
+  public List<BeancountAccountSymbol> getAccountSymbolList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, BeancountAccountSymbol.class);
+  }
+
+  @Override
+  @NotNull
   public BeancountEnd getEnd() {
     return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountEnd.class));
   }

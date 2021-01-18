@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface BeancountPad extends PsiElement {
 
   @NotNull
+  List<BeancountAccountSymbol> getAccountSymbolList();
+
+  @NotNull
   BeancountEnd getEnd();
 
   @Nullable

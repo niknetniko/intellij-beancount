@@ -44,6 +44,18 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   };
 
   /* ********************************************************** */
+  // ACCOUNT
+  public static boolean account_symbol(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "account_symbol")) return false;
+    if (!nextTokenIs(b, ACCOUNT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ACCOUNT);
+    exit_section_(b, m, ACCOUNT_SYMBOL, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // number_expr currency_symbol
   public static boolean amount(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "amount")) return false;
@@ -92,13 +104,14 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DATE BALANCE_KEY ACCOUNT amount_tolerance end key_value_list?
+  // DATE BALANCE_KEY account_symbol amount_tolerance end key_value_list?
   public static boolean balance(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "balance")) return false;
     if (!nextTokenIs(b, DATE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, DATE, BALANCE_KEY, ACCOUNT);
+    r = consumeTokens(b, 0, DATE, BALANCE_KEY);
+    r = r && account_symbol(b, l + 1);
     r = r && amount_tolerance(b, l + 1);
     r = r && end(b, l + 1);
     r = r && balance_5(b, l + 1);
@@ -114,13 +127,14 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DATE CLOSE_KEY ACCOUNT end key_value_list?
+  // DATE CLOSE_KEY account_symbol end key_value_list?
   public static boolean close(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "close")) return false;
     if (!nextTokenIs(b, DATE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, DATE, CLOSE_KEY, ACCOUNT);
+    r = consumeTokens(b, 0, DATE, CLOSE_KEY);
+    r = r && account_symbol(b, l + 1);
     r = r && end(b, l + 1);
     r = r && close_4(b, l + 1);
     exit_section_(b, m, CLOSE, r);
@@ -344,7 +358,7 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   //     | BOOL
   //     | amount
   //     | number_expr
-  //     | ACCOUNT
+  //     | account_symbol
   public static boolean custom_value(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "custom_value")) return false;
     boolean r;
@@ -354,7 +368,7 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, BOOL);
     if (!r) r = amount(b, l + 1);
     if (!r) r = number_expr(b, l + 1, -1);
-    if (!r) r = consumeToken(b, ACCOUNT);
+    if (!r) r = account_symbol(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -422,13 +436,14 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DATE DOCUMENT_KEY ACCOUNT filename tags_links end key_value_list?
+  // DATE DOCUMENT_KEY account_symbol filename tags_links end key_value_list?
   public static boolean document(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "document")) return false;
     if (!nextTokenIs(b, DATE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, DATE, DOCUMENT_KEY, ACCOUNT);
+    r = consumeTokens(b, 0, DATE, DOCUMENT_KEY);
+    r = r && account_symbol(b, l + 1);
     r = r && filename(b, l + 1);
     r = r && tags_links(b, l + 1);
     r = r && end(b, l + 1);
@@ -662,7 +677,7 @@ public class BeancountParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // [STRING
-  //     | ACCOUNT
+  //     | account_symbol
   //     | DATE
   //     | currency_symbol
   //     | TAG
@@ -679,7 +694,7 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   }
 
   // STRING
-  //     | ACCOUNT
+  //     | account_symbol
   //     | DATE
   //     | currency_symbol
   //     | TAG
@@ -691,7 +706,7 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "key_value_value_0")) return false;
     boolean r;
     r = consumeToken(b, STRING);
-    if (!r) r = consumeToken(b, ACCOUNT);
+    if (!r) r = account_symbol(b, l + 1);
     if (!r) r = consumeToken(b, DATE);
     if (!r) r = currency_symbol(b, l + 1);
     if (!r) r = consumeToken(b, TAG);
@@ -723,13 +738,15 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DATE NOTE_KEY ACCOUNT STRING end key_value_list?
+  // DATE NOTE_KEY account_symbol STRING end key_value_list?
   public static boolean note(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "note")) return false;
     if (!nextTokenIs(b, DATE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, DATE, NOTE_KEY, ACCOUNT, STRING);
+    r = consumeTokens(b, 0, DATE, NOTE_KEY);
+    r = r && account_symbol(b, l + 1);
+    r = r && consumeToken(b, STRING);
     r = r && end(b, l + 1);
     r = r && note_5(b, l + 1);
     exit_section_(b, m, NOTE, r);
@@ -744,13 +761,14 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DATE OPEN_KEY ACCOUNT currency_list? opt_booking end key_value_list?
+  // DATE OPEN_KEY account_symbol currency_list? opt_booking end key_value_list?
   public static boolean open(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "open")) return false;
     if (!nextTokenIs(b, DATE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, DATE, OPEN_KEY, ACCOUNT);
+    r = consumeTokens(b, 0, DATE, OPEN_KEY);
+    r = r && account_symbol(b, l + 1);
     r = r && open_3(b, l + 1);
     r = r && opt_booking(b, l + 1);
     r = r && end(b, l + 1);
@@ -817,13 +835,15 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DATE PAD_KEY ACCOUNT ACCOUNT end key_value_list?
+  // DATE PAD_KEY account_symbol account_symbol end key_value_list?
   public static boolean pad(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "pad")) return false;
     if (!nextTokenIs(b, DATE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, DATE, PAD_KEY, ACCOUNT, ACCOUNT);
+    r = consumeTokens(b, 0, DATE, PAD_KEY);
+    r = r && account_symbol(b, l + 1);
+    r = r && account_symbol(b, l + 1);
     r = r && end(b, l + 1);
     r = r && pad_5(b, l + 1);
     exit_section_(b, m, PAD, r);
@@ -899,10 +919,10 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // INDENT optflag ACCOUNT incomplete_amount cost_spec end
-  //     | INDENT optflag ACCOUNT incomplete_amount cost_spec AT price_annotation end
-  //     | INDENT optflag ACCOUNT incomplete_amount cost_spec ATAT price_annotation end
-  //     | INDENT optflag ACCOUNT end
+  // INDENT optflag account_symbol incomplete_amount cost_spec end
+  //     | INDENT optflag account_symbol incomplete_amount cost_spec AT price_annotation end
+  //     | INDENT optflag account_symbol incomplete_amount cost_spec ATAT price_annotation end
+  //     | INDENT optflag account_symbol end
   public static boolean posting(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "posting")) return false;
     if (!nextTokenIs(b, INDENT)) return false;
@@ -916,14 +936,14 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // INDENT optflag ACCOUNT incomplete_amount cost_spec end
+  // INDENT optflag account_symbol incomplete_amount cost_spec end
   private static boolean posting_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "posting_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, INDENT);
     r = r && optflag(b, l + 1);
-    r = r && consumeToken(b, ACCOUNT);
+    r = r && account_symbol(b, l + 1);
     r = r && incomplete_amount(b, l + 1);
     r = r && cost_spec(b, l + 1);
     r = r && end(b, l + 1);
@@ -931,14 +951,14 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // INDENT optflag ACCOUNT incomplete_amount cost_spec AT price_annotation end
+  // INDENT optflag account_symbol incomplete_amount cost_spec AT price_annotation end
   private static boolean posting_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "posting_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, INDENT);
     r = r && optflag(b, l + 1);
-    r = r && consumeToken(b, ACCOUNT);
+    r = r && account_symbol(b, l + 1);
     r = r && incomplete_amount(b, l + 1);
     r = r && cost_spec(b, l + 1);
     r = r && consumeToken(b, AT);
@@ -948,14 +968,14 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // INDENT optflag ACCOUNT incomplete_amount cost_spec ATAT price_annotation end
+  // INDENT optflag account_symbol incomplete_amount cost_spec ATAT price_annotation end
   private static boolean posting_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "posting_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, INDENT);
     r = r && optflag(b, l + 1);
-    r = r && consumeToken(b, ACCOUNT);
+    r = r && account_symbol(b, l + 1);
     r = r && incomplete_amount(b, l + 1);
     r = r && cost_spec(b, l + 1);
     r = r && consumeToken(b, ATAT);
@@ -965,14 +985,14 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // INDENT optflag ACCOUNT end
+  // INDENT optflag account_symbol end
   private static boolean posting_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "posting_3")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, INDENT);
     r = r && optflag(b, l + 1);
-    r = r && consumeToken(b, ACCOUNT);
+    r = r && account_symbol(b, l + 1);
     r = r && end(b, l + 1);
     exit_section_(b, m, null, r);
     return r;

@@ -43,8 +43,8 @@
             implementationClass="com.outskirtslabs.beancount.features.completion.Condidence" />
         <fileType name="Beancount Journal" implementationClass="com.outskirtslabs.beancount.BeancountFileType"
             fieldName="INSTANCE" language="Beancount" extensions="beancount" />
-<!--        <lang.findUsagesProvider language="Beancount"-->
-<!--            implementationClass="com.outskirtslabs.beancount.features.references.BeancountFindUsagesProvider" />-->
+        <lang.findUsagesProvider language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.features.references.BeancountFindUsagesProvider" />
 <!--        <lang.formatter language="Beancount"-->
 <!--            implementationClass="com.outskirtslabs.beancount.features.formatter.BeancountFormattingModelBuilder" />-->
         <lang.commenter language="Beancount" implementationClass="com.outskirtslabs.beancount.BeancountCommenter" />
@@ -59,10 +59,10 @@
             implementationClass="com.outskirtslabs.beancount.module.BeancountModuleType" />
         <projectStructureDetector
             implementation="com.outskirtslabs.beancount.module.BeancountProjectStructureDetector" />
-<!--        <psi.referenceContributor language="Beancount"-->
-<!--            implementation="com.outskirtslabs.beancount.features.references.BeancountReferenceContributor" />-->
+        <psi.referenceContributor language="Beancount"
+            implementation="com.outskirtslabs.beancount.features.references.BeancountReferenceContributor" />
         <stubElementTypeHolder class="com.outskirtslabs.beancount.psi.BeancountTypes" />
-<!--        <stubIndex implementation="com.outskirtslabs.beancount.psi.stub.index.AccountStubIndex" />-->
+        <stubIndex implementation="com.outskirtslabs.beancount.psi.stub.index.AccountStubIndex" />
         <stubIndex implementation="com.outskirtslabs.beancount.psi.stub.index.CurrencySymbolStubIndex" />
         <intentionAction>
             <className>com.outskirtslabs.beancount.actions.CalcIntentionAction</className>

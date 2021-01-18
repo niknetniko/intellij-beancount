@@ -5,6 +5,7 @@ import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionType;
 import com.intellij.patterns.ElementPattern;
 import com.intellij.psi.PsiElement;
+import com.outskirtslabs.beancount.BeancountLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,6 +26,7 @@ public class PrefixedDirectiveCompletionProvider extends DirectiveCompletionProv
                 .afterSibling(psiElement(ERROR_ELEMENT)
                         .afterSibling(psiElement(WHITE_SPACE)
                                 .afterSibling(psiElement(DATE))))
+                .withLanguage(BeancountLanguage.INSTANCE)
         );
     }
 

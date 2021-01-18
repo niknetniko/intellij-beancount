@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface BeancountCustomValue extends PsiElement {
 
   @Nullable
+  BeancountAccountSymbol getAccountSymbol();
+
+  @Nullable
   BeancountAmount getAmount();
 
   @Nullable

@@ -7,6 +7,9 @@ import com.intellij.psi.PsiElement;
 
 public interface BeancountOpen extends PsiElement {
 
+  @NotNull
+  BeancountAccountSymbol getAccountSymbol();
+
   @Nullable
   BeancountCurrencyList getCurrencyList();
 
