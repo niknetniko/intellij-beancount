@@ -21,11 +21,10 @@ import static com.outskirtslabs.beancount.psi.BeancountTypes.DATE;
 public class PrefixedDirectiveCompletionProvider extends DirectiveCompletionProvider {
 
     public static ElementPattern<PsiElement> applicablePattern() {
-        return psiElement().withParent(
-                psiElement(DUMMY_BLOCK)
-                        .afterSibling(psiElement(ERROR_ELEMENT)
-                                .afterSibling(psiElement(WHITE_SPACE)
-                                        .afterSibling(psiElement(DATE))))
+        return psiElement().withParent(psiElement(DUMMY_BLOCK)
+                .afterSibling(psiElement(ERROR_ELEMENT)
+                        .afterSibling(psiElement(WHITE_SPACE)
+                                .afterSibling(psiElement(DATE))))
         );
     }
 
@@ -49,7 +48,7 @@ public class PrefixedDirectiveCompletionProvider extends DirectiveCompletionProv
         }
 
         var previous = parameters.getPosition().getText().replace(DUMMY_IDENTIFIER_TRIMMED, "");
-        
+
         // We might not be the first token, so get all typed text in the dummy as well.
         return errorElement.getText() + previous;
     }

@@ -39,7 +39,6 @@ public class CurrencySymbolStubIndex extends StringStubIndexExtension<BeancountC
             return Collections.emptyList();
         }
 
-        GlobalSearchScope scope = GlobalSearchScope.allScope(project);
         return StubIndex.getInstance()
                 .getAllKeys(BeancountCurrencySymbolKeyIndex.KEY, project);
     }

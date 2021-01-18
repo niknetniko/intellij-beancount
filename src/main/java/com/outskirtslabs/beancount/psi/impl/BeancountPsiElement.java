@@ -1,36 +1,28 @@
 package com.outskirtslabs.beancount.psi.impl;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
 import com.outskirtslabs.beancount.psi.BeancountVisitor;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-public class BeancountPsiElement extends ASTWrapperPsiElement
-{
+public class BeancountPsiElement extends ASTWrapperPsiElement {
 
-    public BeancountPsiElement(@NotNull final ASTNode node)
-    {
+    public BeancountPsiElement(@NotNull final ASTNode node) {
         super(node);
     }
 
     @NotNull
-    @Contract(
-        pure = true
-    )
-    public PsiReference[] getReferences()
-    {
+    @Contract(pure = true)
+    public PsiReference @NotNull [] getReferences() {
         return ReferenceProvidersRegistry.getReferencesFromProviders(this);
     }
 
-    public void accept(@NotNull PsiElementVisitor visitor)
-    {
-        if (visitor instanceof BeancountVisitor)
-        {
+    public void accept(@NotNull PsiElementVisitor visitor) {
+        if (visitor instanceof BeancountVisitor) {
             ((BeancountVisitor) visitor).visitPsiElement(this);
         } else super.accept(visitor);
     }

@@ -8,9 +8,8 @@ import com.outskirtslabs.beancount.psi.BeancountFile;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
-import static com.intellij.psi.TokenType.ERROR_ELEMENT;
-import static com.intellij.psi.TokenType.WHITE_SPACE;
-import static com.outskirtslabs.beancount.psi.BeancountTypes.MAYBE_CURRENCY;
+import static com.intellij.psi.TokenType.*;
+import static com.outskirtslabs.beancount.psi.BeancountTypes.CURRENCY;
 import static com.outskirtslabs.beancount.psi.BeancountTypes.NUMBER;
 
 
@@ -22,16 +21,24 @@ public class BeancountCurrencyCompletionProvider extends CompletionProvider<Comp
         BeancountFile file = (BeancountFile) position.getContainingFile();
         file.getAllCurrenciesCached()
                 .forEach(c -> {
-                    System.out.println("Found ");
-                    System.out.println(c);
                     resultSet.addElement(LookupElementBuilder.create(c));
                 });
 
     }
 
     public static void register(CompletionContributor contributor) {
+        // 1. For directives, such as balance
+        // 1.a. When nothing has been typed yet in a directive.
         contributor.extend(CompletionType.BASIC,
-                psiElement(MAYBE_CURRENCY)
+                psiElement()
+                        .withParent(psiElement(ERROR_ELEMENT)
+                                .afterSibling(psiElement(WHITE_SPACE)
+                                        .afterSibling(psiElement(NUMBER))))
+                , new BeancountCurrencyCompletionProvider());
+        // 1.b. When text has been typed.
+        //      For some reason, this is already "currency", even though the PSI plugin doesn't show it.
+        contributor.extend(CompletionType.BASIC,
+                psiElement(CURRENCY)
                 , new BeancountCurrencyCompletionProvider());
     }
 }
