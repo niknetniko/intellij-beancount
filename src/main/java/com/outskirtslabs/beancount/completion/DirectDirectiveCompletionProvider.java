@@ -1,4 +1,4 @@
-package com.outskirtslabs.beancount.features.completion;
+package com.outskirtslabs.beancount.completion;
 
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
@@ -13,7 +13,6 @@ import static com.intellij.patterns.PlatformPatterns.psiElement;
 import static com.intellij.psi.TokenType.ERROR_ELEMENT;
 import static com.intellij.psi.TokenType.WHITE_SPACE;
 import static com.outskirtslabs.beancount.psi.BeancountTypes.DATE;
-import static com.outskirtslabs.beancount.psi.BeancountTypes.EOL;
 
 /**
  * Provides command completion for the following position:

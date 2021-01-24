@@ -35,23 +35,24 @@
     <depends optional="true" config-file="plugin-grazie.xml">tanvd.grazi</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <colorSettingsPage
-            implementation="com.outskirtslabs.beancount.highlighting.BeancountColorSettingsPage" />
+        <colorSettingsPage implementation="com.outskirtslabs.beancount.highlighting.BeancountColorSettingsPage" />
         <completion.contributor language="Beancount"
-            implementationClass="com.outskirtslabs.beancount.features.completion.BeancountCompletionContributor" />
+            implementationClass="com.outskirtslabs.beancount.completion.BeancountCompletionContributor" />
         <completion.confidence language="Beancount"
-            implementationClass="com.outskirtslabs.beancount.features.completion.Condidence" />
+            implementationClass="com.outskirtslabs.beancount.completion.Condidence" />
         <fileType name="Beancount Journal" implementationClass="com.outskirtslabs.beancount.BeancountFileType"
             fieldName="INSTANCE" language="Beancount" extensions="beancount" />
         <lang.findUsagesProvider language="Beancount"
-            implementationClass="com.outskirtslabs.beancount.features.references.BeancountFindUsagesProvider" />
-<!--        <lang.formatter language="Beancount"-->
-<!--            implementationClass="com.outskirtslabs.beancount.features.formatter.BeancountFormattingModelBuilder" />-->
+            implementationClass="com.outskirtslabs.beancount.references.BeancountFindUsagesProvider" />
+        <lang.formatter language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.formatter.BeancountFormattingModelBuilder" />
         <lang.commenter language="Beancount" implementationClass="com.outskirtslabs.beancount.BeancountCommenter" />
         <lang.parserDefinition language="Beancount"
-            implementationClass="com.outskirtslabs.beancount.BeancountParserDefinition" />
-<!--        <lang.refactoringSupport language="Beancount"-->
-<!--            implementationClass="com.outskirtslabs.beancount.features.references.BeancountRefactoringSupportProvider" />-->
+            implementationClass="com.outskirtslabs.beancount.parser.BeancountParserDefinition" />
+        <lang.refactoringSupport language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.references.BeancountRefactoringSupportProvider" />
+        <lang.namesValidator language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.references.AccountValidator" />
         <lang.syntaxHighlighterFactory language="Beancount"
             implementationClass="com.outskirtslabs.beancount.highlighting.BeancountSyntaxHighlighterFactory" />
         <moduleBuilder builderClass="com.outskirtslabs.beancount.module.BeancountModuleBuilder" />
@@ -60,7 +61,7 @@
         <projectStructureDetector
             implementation="com.outskirtslabs.beancount.module.BeancountProjectStructureDetector" />
         <psi.referenceContributor language="Beancount"
-            implementation="com.outskirtslabs.beancount.features.references.BeancountReferenceContributor" />
+            implementation="com.outskirtslabs.beancount.references.BeancountReferenceContributor" />
         <stubElementTypeHolder class="com.outskirtslabs.beancount.psi.BeancountTypes" />
         <stubIndex implementation="com.outskirtslabs.beancount.psi.stub.index.AccountStubIndex" />
         <stubIndex implementation="com.outskirtslabs.beancount.psi.stub.index.CurrencySymbolStubIndex" />
@@ -70,6 +71,6 @@
         <spellchecker.support language="Beancount"
             implementationClass="com.outskirtslabs.beancount.spelling.SpellChecking" />
         <lang.foldingBuilder language="Beancount"
-            implementationClass="com.outskirtslabs.beancount.folding.TransactionFoldingBuilder" /> 
+            implementationClass="com.outskirtslabs.beancount.folding.TransactionFoldingBuilder" />
     </extensions>
 </idea-plugin>

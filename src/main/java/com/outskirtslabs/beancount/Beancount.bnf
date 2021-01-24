@@ -85,6 +85,10 @@ number_expr ::= literal_expr
     | unary_min
     | unary_plus
     | paren_expr
+{ 
+    implements="com.outskirtslabs.beancount.psi.elements.BeancountExprElement"
+    mixin="com.outskirtslabs.beancount.psi.impl.BeancountExprElementImpl"
+}
     
 plus_expr ::= number_expr PLUS number_expr {extends=number_expr}
 minus_expr ::= number_expr MINUS number_expr {extends=number_expr}

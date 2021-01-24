@@ -1,4 +1,4 @@
-package com.outskirtslabs.beancount.features.references;
+package com.outskirtslabs.beancount.references;
 
 import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
 import com.intellij.lang.cacheBuilder.WordsScanner;

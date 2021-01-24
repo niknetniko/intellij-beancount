@@ -1,4 +1,4 @@
-package com.outskirtslabs.beancount.features.completion;
+package com.outskirtslabs.beancount.completion;
 
 import com.intellij.openapi.diagnostic.Logger;
 import io.vavr.Tuple;

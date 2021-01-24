@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.outskirtslabs.beancount.psi.BeancountTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.outskirtslabs.beancount.psi.*;
 
-public abstract class BeancountNumberExprImpl extends ASTWrapperPsiElement implements BeancountNumberExpr {
+public abstract class BeancountNumberExprImpl extends BeancountExprElementImpl implements BeancountNumberExpr {
 
   public BeancountNumberExprImpl(@NotNull ASTNode node) {
     super(node);

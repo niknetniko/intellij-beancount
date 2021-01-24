@@ -1,4 +1,4 @@
-package com.outskirtslabs.beancount.features.references;
+package com.outskirtslabs.beancount.references;
 
 import com.intellij.lang.refactoring.RefactoringSupportProvider;
 import com.intellij.psi.PsiElement;

@@ -4,7 +4,8 @@ package com.outskirtslabs.beancount.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.outskirtslabs.beancount.psi.elements.BeancountExprElement;
 
-public interface BeancountNumberExpr extends PsiElement {
+public interface BeancountNumberExpr extends BeancountExprElement {
 
 }

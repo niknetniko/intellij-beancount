@@ -10,7 +10,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiRecursiveElementWalkingVisitor;
 import com.intellij.testFramework.ParsingTestCase;
 import com.outskirtslabs.beancount.BeancountLanguage;
-import com.outskirtslabs.beancount.BeancountParserDefinition;
+import com.outskirtslabs.beancount.parser.BeancountParserDefinition;
 
 public class BeancountParsingTest extends ParsingTestCase
 {

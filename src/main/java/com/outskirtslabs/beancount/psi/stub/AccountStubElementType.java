@@ -30,8 +30,7 @@ public class AccountStubElementType extends IStubElementType<AccountStub, Beanco
     }
 
     public void serialize(@NotNull final AccountStub stub,
-                          @NotNull final StubOutputStream dataStream) throws
-            IOException {
+                          @NotNull final StubOutputStream dataStream) throws IOException {
         dataStream.writeName(stub.getName());
     }
 

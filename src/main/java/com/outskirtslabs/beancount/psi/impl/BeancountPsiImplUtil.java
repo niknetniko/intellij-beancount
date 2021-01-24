@@ -66,8 +66,7 @@ public class BeancountPsiImplUtil {
     //
 //    //e -> Messages.showWarningDialog(element.getProject(), "Unfortunately, functionality of renaming module names has not been implemented yet.", "It's not implemented yet")
     public static PsiElement setName(BeancountAccountSymbol element, String newName) {
-        return setName(element, BeancountTypes.ACCOUNT_SYMBOL,
-                BeancountElementFactory::createAccount, newName);
+        return setName(element, BeancountTypes.ACCOUNT_SYMBOL, BeancountElementFactory::createAccount, newName);
     }
 
     private static <T extends PsiElement> PsiElement setName(T element, IElementType elementType,
@@ -75,8 +74,7 @@ public class BeancountPsiImplUtil {
         ASTNode node = element.getNode().findChildByType(elementType);
         if (node != null) {
             Optional.ofNullable(elementFactory.apply(element.getProject(), newName))
-                    .ifPresent(
-                            id -> element.getNode().replaceChild(node, id.getFirstChild().getNode()));
+                    .ifPresent(id -> element.getNode().replaceChild(node, id.getFirstChild().getNode()));
         }
         return element;
     }

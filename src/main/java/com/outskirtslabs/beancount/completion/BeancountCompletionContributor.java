@@ -1,4 +1,4 @@
-package com.outskirtslabs.beancount.features.completion;
+package com.outskirtslabs.beancount.completion;
 
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;

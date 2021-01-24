@@ -1,4 +1,4 @@
-package com.outskirtslabs.beancount;
+package com.outskirtslabs.beancount.parser;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.ParserDefinition;

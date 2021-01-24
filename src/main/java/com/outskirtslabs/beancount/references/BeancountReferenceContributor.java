@@ -1,4 +1,4 @@
-package com.outskirtslabs.beancount.features.references;
+package com.outskirtslabs.beancount.references;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.patterns.PlatformPatterns;
@@ -22,7 +22,7 @@ public class BeancountReferenceContributor extends PsiReferenceContributor {
                                                                            @NotNull ProcessingContext
                                                                                    context) {
                         var accountSymbol = (BeancountAccountSymbol) element;
-                        String value = accountSymbol.getName();
+                        String value = accountSymbol.getText();
                         if (StringUtils.isBlank(value)) {
                             return PsiReference.EMPTY_ARRAY;
                         }
