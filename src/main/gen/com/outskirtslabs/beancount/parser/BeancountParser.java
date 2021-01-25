@@ -45,6 +45,18 @@ public class BeancountParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // ACCOUNT
+  public static boolean account_definition(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "account_definition")) return false;
+    if (!nextTokenIs(b, ACCOUNT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, ACCOUNT);
+    exit_section_(b, m, ACCOUNT_DEFINITION, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // ACCOUNT
   public static boolean account_symbol(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "account_symbol")) return false;
     if (!nextTokenIs(b, ACCOUNT)) return false;
@@ -761,14 +773,14 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DATE OPEN_KEY account_symbol currency_list? opt_booking end key_value_list?
+  // DATE OPEN_KEY account_definition currency_list? opt_booking end key_value_list?
   public static boolean open(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "open")) return false;
     if (!nextTokenIs(b, DATE)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, DATE, OPEN_KEY);
-    r = r && account_symbol(b, l + 1);
+    r = r && account_definition(b, l + 1);
     r = r && open_3(b, l + 1);
     r = r && opt_booking(b, l + 1);
     r = r && end(b, l + 1);

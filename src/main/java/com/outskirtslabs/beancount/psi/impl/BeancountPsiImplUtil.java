@@ -10,13 +10,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.tree.IElementType;
-import com.outskirtslabs.beancount.psi.BeancountAccountSymbol;
 import com.outskirtslabs.beancount.psi.BeancountCurrencySymbol;
 import com.outskirtslabs.beancount.psi.BeancountTypes;
 import com.outskirtslabs.beancount.psi.elements.BeancountElementFactory;
-import com.outskirtslabs.beancount.psi.reference.BeancountAccountReference;
 import com.outskirtslabs.beancount.psi.reference.BeancountCurrencySymbolReference;
-import com.outskirtslabs.beancount.psi.stub.AccountStub;
 import com.outskirtslabs.beancount.psi.stub.CurrencySymbolStub;
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,15 +21,6 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 
 public class BeancountPsiImplUtil {
-    public static String getAccount(BeancountAccountSymbol element) {
-        ASTNode keyNode = (ASTNode) element;//element.getNode().findChildByType(BeancountTypes.ACCOUNT);
-        if (keyNode != null) {
-            // IMPORTANT: Convert embedded escaped spaces to simple spaces
-            return keyNode.getText().replaceAll("\\\\ ", " ");
-        } else {
-            return null;
-        }
-    }
 
     public static boolean nospace(PsiBuilder b, Integer l) {
         if (space(b, l)) {
@@ -50,26 +38,7 @@ public class BeancountPsiImplUtil {
         return type instanceof PsiWhiteSpace || typ2 instanceof PsiComment;
     }
 
-
-    public static String getValue(BeancountAccountSymbol element) {
-        return element.getText();
-    }
-
-    public static String getName(BeancountAccountSymbol element) {
-        AccountStub stub = element.getStub();
-        if (stub != null) {
-            return stub.getName();
-        }
-        return element.getText();
-    }
-
-    //
-//    //e -> Messages.showWarningDialog(element.getProject(), "Unfortunately, functionality of renaming module names has not been implemented yet.", "It's not implemented yet")
-    public static PsiElement setName(BeancountAccountSymbol element, String newName) {
-        return setName(element, BeancountTypes.ACCOUNT_SYMBOL, BeancountElementFactory::createAccount, newName);
-    }
-
-    private static <T extends PsiElement> PsiElement setName(T element, IElementType elementType,
+    public static <T extends PsiElement> PsiElement setName(T element, IElementType elementType,
                                                              BiFunction<Project, String, T> elementFactory, String newName) {
         ASTNode node = element.getNode().findChildByType(elementType);
         if (node != null) {
@@ -77,33 +46,6 @@ public class BeancountPsiImplUtil {
                     .ifPresent(id -> element.getNode().replaceChild(node, id.getFirstChild().getNode()));
         }
         return element;
-    }
-
-    public static PsiElement getNameIdentifier(BeancountAccountSymbol element) {
-        ASTNode node = element.getNode();
-        if (node != null) {
-            return node.getPsi();
-        } else {
-            return null;
-        }
-    }
-
-    public static PsiReference getReference(BeancountAccountSymbol element)
-    {
-        if (element == null) {
-            return null;
-        }
-
-        String value = element.getText();
-        if (element.getStub() != null) {
-            value = element.getStub().getName();
-        }
-
-        if (StringUtils.isBlank(value)) {
-            return null;
-        }
-
-        return new BeancountAccountReference(element, new TextRange(0, value.length()));
     }
 
     public static String getName(BeancountCurrencySymbol element) {

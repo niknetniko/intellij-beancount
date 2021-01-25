@@ -55,13 +55,14 @@
             implementationClass="com.outskirtslabs.beancount.references.AccountValidator" />
         <lang.syntaxHighlighterFactory language="Beancount"
             implementationClass="com.outskirtslabs.beancount.highlighting.BeancountSyntaxHighlighterFactory" />
+        <elementDescriptionProvider implementation="com.outskirtslabs.beancount.references.AccountDescriptor" />
         <moduleBuilder builderClass="com.outskirtslabs.beancount.module.BeancountModuleBuilder" />
         <moduleType id="BEANCOUNT_MODULE_TYPE"
             implementationClass="com.outskirtslabs.beancount.module.BeancountModuleType" />
         <projectStructureDetector
             implementation="com.outskirtslabs.beancount.module.BeancountProjectStructureDetector" />
-        <psi.referenceContributor language="Beancount"
-            implementation="com.outskirtslabs.beancount.references.BeancountReferenceContributor" />
+<!--        <psi.referenceContributor language="Beancount"-->
+<!--            implementation="com.outskirtslabs.beancount.references.BeancountReferenceContributor" />-->
         <stubElementTypeHolder class="com.outskirtslabs.beancount.psi.BeancountTypes" />
         <stubIndex implementation="com.outskirtslabs.beancount.psi.stub.index.AccountStubIndex" />
         <stubIndex implementation="com.outskirtslabs.beancount.psi.stub.index.CurrencySymbolStubIndex" />

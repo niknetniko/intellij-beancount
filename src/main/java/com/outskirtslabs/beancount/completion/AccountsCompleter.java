@@ -12,15 +12,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 /**
- * Implements account path name completion
+ * Implements account path name completion.
  */
 public class AccountsCompleter {
-    private static Logger LOG = Logger.getInstance(AccountsCompleter.class);
-    private static String DUMMY_IDENT = "IntellijIdeaRulezzz";
+    private static final Logger LOG = Logger.getInstance(AccountsCompleter.class);
+    private static final String DUMMY_IDENT = "IntellijIdeaRulezzz";
     private AccountTree tree;
 
     public AccountsCompleter(BeancountFile file) {
-//        this.reset(file.getAllAccounts());
         this.reset(file.getAllAccountsCached());
     }
 

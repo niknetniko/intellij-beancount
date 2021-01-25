@@ -91,7 +91,7 @@ public class BeancountBlock extends AbstractBlock {
     }
 
     private Spacing getAccountAmountSpacing(BeancountBlock accountBlock, BeancountBlock amountBlock) {
-        String accountName = ((BeancountAccountSymbol) accountBlock.getNode().getPsi()).getName();
+        String accountName = accountBlock.getNode().getPsi().getText();
         BeancountAmount amount = (BeancountAmount) amountBlock.getNode().getPsi();
         BeancountNumberExpr expr = amount.getNumberExpr();
         int decimalPad = expr.getLengthPreDecimal();

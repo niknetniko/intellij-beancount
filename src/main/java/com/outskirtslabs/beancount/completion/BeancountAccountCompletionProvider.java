@@ -11,7 +11,6 @@ import com.outskirtslabs.beancount.psi.BeancountAccountSymbol;
 import com.outskirtslabs.beancount.psi.BeancountFile;
 import com.outskirtslabs.beancount.psi.BeancountTreeUtil;
 import com.outskirtslabs.beancount.psi.BeancountTypes;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -20,12 +19,11 @@ import java.util.stream.Collectors;
 import static com.intellij.codeInsight.completion.CompletionUtilCore.DUMMY_IDENTIFIER_TRIMMED;
 import static com.outskirtslabs.beancount.psi.BeancountTreeUtil.debugTree;
 
-@Slf4j
 public class BeancountAccountCompletionProvider extends CompletionProvider<CompletionParameters> {
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters,
-                                  ProcessingContext processingContext, @NotNull CompletionResultSet resultSet) {
+                                  @NotNull ProcessingContext processingContext, @NotNull CompletionResultSet resultSet) {
         PsiElement position = parameters.getPosition();
         debugTree(position);
 
@@ -65,7 +63,6 @@ public class BeancountAccountCompletionProvider extends CompletionProvider<Compl
                     file,
                     input,
                     resultSet.withPrefixMatcher(input));
-            return;
         }
 
     }
@@ -81,11 +78,11 @@ public class BeancountAccountCompletionProvider extends CompletionProvider<Compl
         new AccountsCompleter(file)
                 .getPrefixMatches(prefix)
                 .forEach(s -> {
-                    log.info(" " + s);
+                    //log.info(" " + s);
                     resultSet
                             .addElement(LookupElementBuilder.create(s));
                 });
 
-        log.info("prefix matcher: {}", resultSet.getPrefixMatcher().getPrefix());
+        //log.info("prefix matcher: {}", resultSet.getPrefixMatcher().getPrefix());
     }
 }

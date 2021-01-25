@@ -21,13 +21,6 @@ import static com.outskirtslabs.beancount.psi.BeancountTypes.*;
 public class BeancountFormattingModelBuilder implements FormattingModelBuilder {
     private static final Logger LOG = Logger.getInstance(BeancountFormattingModelBuilder.class);
 
-
-    @Override
-    public @NotNull FormattingModel createModel(@NotNull FormattingContext formattingContext) {
-        
-        return null;
-    }
-
     @NotNull
     @Override
     public FormattingModel createModel(PsiElement element, CodeStyleSettings settings) {

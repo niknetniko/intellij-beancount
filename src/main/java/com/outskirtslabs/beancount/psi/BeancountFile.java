@@ -60,23 +60,6 @@ public class BeancountFile extends PsiFileBase {
         return names.stream();
     }
 
-    public Stream<BeancountAccountSymbol> getAllAccountElements() {
-        return getAllAccountElements(null);
-    }
-
-    public Stream<BeancountAccountSymbol> getAllAccountElements(String byName) {
-        HashSet<BeancountAccountSymbol> names = new HashSet<>();
-        this.acceptChildren(new BeancountRecursiveVisitor() {
-            @Override
-            public void visitAccountSymbol(@NotNull final BeancountAccountSymbol o) {
-                if (byName == null || byName.equals(o.getName())) {
-                    names.add(o);
-                }
-            }
-        });
-        return names.stream();
-    }
-
     public Stream<String> getAllAccountsCached() {
         Stopwatch stopwatch = Stopwatch.createStarted();
         Stream<String> distinct = AccountStubIndex.findAllAccounts(this.getProject()).stream()

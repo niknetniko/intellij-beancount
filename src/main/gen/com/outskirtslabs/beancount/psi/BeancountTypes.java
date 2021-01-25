@@ -10,7 +10,8 @@ import com.outskirtslabs.beancount.psi.impl.*;
 
 public interface BeancountTypes {
 
-  IElementType ACCOUNT_SYMBOL = BeancountElementTypeFactory.factoryAccount("ACCOUNT_SYMBOL");
+  IElementType ACCOUNT_DEFINITION = BeancountElementTypeFactory.factoryAccount("ACCOUNT_DEFINITION");
+  IElementType ACCOUNT_SYMBOL = new BeancountElementType("ACCOUNT_SYMBOL");
   IElementType AMOUNT = new BeancountElementType("AMOUNT");
   IElementType AMOUNT_TOLERANCE = new BeancountElementType("AMOUNT_TOLERANCE");
   IElementType ASTERISK_EXPR = new BeancountElementType("ASTERISK_EXPR");
@@ -126,7 +127,10 @@ public interface BeancountTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == ACCOUNT_SYMBOL) {
+      if (type == ACCOUNT_DEFINITION) {
+        return new BeancountAccountDefinitionImpl(node);
+      }
+      else if (type == ACCOUNT_SYMBOL) {
         return new BeancountAccountSymbolImpl(node);
       }
       else if (type == AMOUNT) {

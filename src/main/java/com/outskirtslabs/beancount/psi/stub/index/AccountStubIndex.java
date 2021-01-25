@@ -6,19 +6,23 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StringStubIndexExtension;
 import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.stubs.StubIndexKey;
+import com.outskirtslabs.beancount.psi.BeancountAccountDefinition;
 import com.outskirtslabs.beancount.psi.BeancountAccountSymbol;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Collections;
 
-public class AccountStubIndex extends StringStubIndexExtension<BeancountAccountSymbol> {
-    public static final int VERSION = 2;
+/**
+ * Index of account definitions, for easy and fast look-up.
+ */
+public class AccountStubIndex extends StringStubIndexExtension<BeancountAccountDefinition> {
+    public static final int VERSION = 3;
 
     public AccountStubIndex() {
     }
 
-    public static Collection<BeancountAccountSymbol> find(Project project, String accountName) {
+    public static Collection<BeancountAccountDefinition> find(Project project, String accountName) {
         if (DumbService.isDumb(project)) {
             // idea is indexing
             return Collections.emptyList();
@@ -26,11 +30,11 @@ public class AccountStubIndex extends StringStubIndexExtension<BeancountAccountS
 
         GlobalSearchScope scope = GlobalSearchScope.allScope(project);
         return StubIndex.getElements(
-                BeancountAccountKeyIndex.KEY,
+                AccountDefinitionKeyIndex.KEY,
                 accountName,
                 project,
                 scope,
-                BeancountAccountSymbol.class
+                BeancountAccountDefinition.class
         );
     }
 
@@ -40,9 +44,7 @@ public class AccountStubIndex extends StringStubIndexExtension<BeancountAccountS
             return Collections.emptyList();
         }
 
-        GlobalSearchScope scope = GlobalSearchScope.allScope(project);
-        return StubIndex.getInstance()
-                .getAllKeys(BeancountAccountKeyIndex.KEY, project);
+        return StubIndex.getInstance().getAllKeys(AccountDefinitionKeyIndex.KEY, project);
     }
 
     @Override
@@ -52,8 +54,8 @@ public class AccountStubIndex extends StringStubIndexExtension<BeancountAccountS
 
     @NotNull
     @Override
-    public StubIndexKey<String, BeancountAccountSymbol> getKey() {
-        return BeancountAccountKeyIndex.KEY;
+    public StubIndexKey<String, BeancountAccountDefinition> getKey() {
+        return AccountDefinitionKeyIndex.KEY;
     }
 
 }

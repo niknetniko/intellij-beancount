@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.intellij.codeInsight.completion.CompletionUtilCore.DUMMY_IDENTIFIER_TRIMMED;
 import static com.outskirtslabs.beancount.psi.reference.BeancountScopeProcessor.RESOLVE_CONTINUE;
 import static com.outskirtslabs.beancount.psi.reference.BeancountScopeProcessor.RESOLVE_FINISHED;
 
@@ -49,8 +50,12 @@ abstract public class BeancountReference<T extends BeancountNamedElement> extend
 
     private void init() {
         String text = myBeancountElement.getText();
-        if (text == null) return;
+        if (text == null) {
+            return;
+        }
         this.elementText = text;
+        // Strip the dummy value.
+        this.elementText = elementText.replace(DUMMY_IDENTIFIER_TRIMMED, "");
     }
 
     @Nullable
@@ -72,6 +77,7 @@ abstract public class BeancountReference<T extends BeancountNamedElement> extend
             if (StringUtils.isNotBlank(element.getName())) {
                 variants.add(LookupElementBuilder.create(element)
                         .withIcon(BeancountIcons.FILE)
+                        .withCaseSensitivity(false)
                         .withTypeText(element.getContainingFile().getName()));
             }
         }

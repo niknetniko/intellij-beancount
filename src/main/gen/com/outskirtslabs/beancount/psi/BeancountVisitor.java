@@ -6,12 +6,15 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 import com.outskirtslabs.beancount.psi.elements.BeancountExprElement;
 import com.outskirtslabs.beancount.psi.elements.BeancountCurrencyElement;
-import com.outskirtslabs.beancount.psi.elements.BeancountAccountElement;
 
 public class BeancountVisitor extends PsiElementVisitor {
 
+  public void visitAccountDefinition(@NotNull BeancountAccountDefinition o) {
+    visitAccountDefinition(o);
+  }
+
   public void visitAccountSymbol(@NotNull BeancountAccountSymbol o) {
-    visitAccountElement(o);
+    visitAccountSymbol(o);
   }
 
   public void visitAmount(@NotNull BeancountAmount o) {
@@ -252,10 +255,6 @@ public class BeancountVisitor extends PsiElementVisitor {
 
   public void visitUnaryPlus(@NotNull BeancountUnaryPlus o) {
     visitNumberExpr(o);
-  }
-
-  public void visitAccountElement(@NotNull BeancountAccountElement o) {
-    visitPsiElement(o);
   }
 
   public void visitCurrencyElement(@NotNull BeancountCurrencyElement o) {

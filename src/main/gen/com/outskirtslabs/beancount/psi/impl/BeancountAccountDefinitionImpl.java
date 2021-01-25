@@ -9,15 +9,26 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.outskirtslabs.beancount.psi.BeancountTypes.*;
 import com.outskirtslabs.beancount.psi.*;
+import com.outskirtslabs.beancount.psi.stub.AccountStub;
+import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.tree.IElementType;
 
-public class BeancountAccountSymbolImpl extends BeancountAccountSymbolMixin implements BeancountAccountSymbol {
+public class BeancountAccountDefinitionImpl extends BeancountAccountDefinitionMixin implements BeancountAccountDefinition {
 
-  public BeancountAccountSymbolImpl(@NotNull ASTNode node) {
+  public BeancountAccountDefinitionImpl(@NotNull AccountStub stub, @NotNull IStubElementType type) {
+    super(stub, type);
+  }
+
+  public BeancountAccountDefinitionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public BeancountAccountDefinitionImpl(AccountStub stub, IElementType type, ASTNode node) {
+    super(stub, type, node);
+  }
+
   public void accept(@NotNull BeancountVisitor visitor) {
-    visitor.visitAccountSymbol(this);
+    visitor.visitAccountDefinition(this);
   }
 
   @Override

@@ -29,8 +29,8 @@ public class BeancountOpenImpl extends ASTWrapperPsiElement implements Beancount
 
   @Override
   @NotNull
-  public BeancountAccountSymbol getAccountSymbol() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountAccountSymbol.class));
+  public BeancountAccountDefinition getAccountDefinition() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountAccountDefinition.class));
   }
 
   @Override

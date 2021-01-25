@@ -144,10 +144,14 @@ currency_symbol ::= CURRENCY {
     elementTypeFactory="com.outskirtslabs.beancount.psi.elements.BeancountElementTypeFactory.factoryCurrency"
 }
 
-account_symbol ::= ACCOUNT { 
-    mixin="com.outskirtslabs.beancount.psi.impl.BeancountAccountElementImpl"
-    implements="com.outskirtslabs.beancount.psi.elements.BeancountAccountElement"
-    methods=[getName setName getNameIdentifier getReference]
+account_symbol ::= ACCOUNT {
+    implements="com.outskirtslabs.beancount.psi.elements.BeancountAccountSymbol"
+    mixin="com.outskirtslabs.beancount.psi.impl.BeancountAccountSymbolMixin"
+}
+
+account_definition ::= ACCOUNT {
+    implements="com.outskirtslabs.beancount.psi.elements.BeancountAccountDefinition"
+    mixin="com.outskirtslabs.beancount.psi.impl.BeancountAccountDefinitionMixin"
     stubClass= "com.outskirtslabs.beancount.psi.stub.AccountStub"
     elementTypeFactory="com.outskirtslabs.beancount.psi.elements.BeancountElementTypeFactory.factoryAccount"
 }
@@ -165,7 +169,7 @@ pushmeta ::= PUSHMETA_KEY key_value end
 
 popmeta ::= POPMETA_KEY KEY end
 
-open ::= DATE OPEN_KEY account_symbol currency_list? opt_booking end key_value_list?
+open ::= DATE OPEN_KEY account_definition currency_list? opt_booking end key_value_list?
 
 opt_booking ::= STRING?
 

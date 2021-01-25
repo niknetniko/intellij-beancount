@@ -9,6 +9,7 @@ import com.outskirtslabs.beancount.parser.LexerAdapter;
 import com.outskirtslabs.beancount.psi.BeancountAccountSymbol;
 import com.outskirtslabs.beancount.psi.BeancountCurrencySymbol;
 import com.outskirtslabs.beancount.psi.BeancountTypes;
+import com.outskirtslabs.beancount.psi.elements.BeancountAccountDefinition;
 import com.outskirtslabs.beancount.psi.elements.BeancountNamedElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,14 +23,14 @@ public class BeancountFindUsagesProvider implements FindUsagesProvider {
     @Override
     public WordsScanner getWordsScanner() {
         return new DefaultWordsScanner(new LexerAdapter(),
-                TokenSet.create(BeancountTypes.ACCOUNT, BeancountTypes.ACCOUNT_SYMBOL, BeancountTypes.CURRENCY),
+                TokenSet.create(BeancountTypes.ACCOUNT, BeancountTypes.ACCOUNT_SYMBOL, BeancountTypes.CURRENCY, BeancountTypes.ACCOUNT_DEFINITION),
                 TokenSet.create(BeancountTypes.COMMENT),
                 TokenSet.create(BeancountTypes.STRING));
     }
 
     @Override
     public boolean canFindUsagesFor(@NotNull PsiElement psiElement) {
-        return psiElement instanceof BeancountNamedElement;
+        return psiElement instanceof BeancountNamedElement || psiElement instanceof BeancountAccountDefinition;
     }
 
     @Nullable
@@ -41,7 +42,7 @@ public class BeancountFindUsagesProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getType(@NotNull PsiElement element) {
-        if (element instanceof BeancountAccountSymbol)
+        if (element instanceof BeancountAccountDefinition)
             return "account";
         else if (element instanceof BeancountCurrencySymbol)
             return "currency symbol";
