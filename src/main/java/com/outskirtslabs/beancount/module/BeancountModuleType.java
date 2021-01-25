@@ -44,6 +44,6 @@ public class BeancountModuleType
     @NotNull
     @Override
     public Icon getNodeIcon(@Deprecated boolean b) {
-        return BeancountIcons.FILE;
+        return BeancountIcons.BEAN;
     }
 }
