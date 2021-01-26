@@ -35,7 +35,7 @@ public class BeancountFormattingModelBuilder implements FormattingModelBuilder {
                 .createFormattingModelForPsiFile(file,
                         new BeancountBlock(longestAccountLength, longestExprLength, element.getNode(),
                                 Wrap.createWrap(WrapType.NONE, false),
-                                Alignment.createAlignment(),
+                                null,
                                 createSpaceBuilder(settings)),
                         settings);
 

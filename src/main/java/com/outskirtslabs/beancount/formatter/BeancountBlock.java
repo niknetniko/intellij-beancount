@@ -64,7 +64,7 @@ public class BeancountBlock extends AbstractBlock {
     private void addChildBlocks(ASTNode child, List<Block> blocks) {
         blocks.add(new BeancountBlock(longestAccountLength,
                 longestExprPreDecimalLength, child, Wrap.createWrap(WrapType.NONE, false),
-                Alignment.createAlignment(),
+                null,
                 spacingBuilder));
     }
 
@@ -79,24 +79,30 @@ public class BeancountBlock extends AbstractBlock {
     @Override
     public boolean isIncomplete() {
         // Assume a transaction itself is always incomplete.
-        if (getNode().getElementType() == TRANSACTION) {
+        if (isTransaction()) {
             return true;
         } else {
             return false;
         }
     }
-
-    @Override
-    protected @Nullable Indent getChildIndent() {
+    
+    public boolean isTransaction() {
         if (getNode().getElementType() == TRANSACTION) {
-            return Indent.getNormalIndent();
+            return true;
         }
-        return Indent.getNoneIndent();
+        if (getNode().getElementType() == ENTRY) {
+            return getNode().getPsi(BeancountEntry.class).getTransaction() != null;
+        }
+        
+        return false;
     }
 
     @Override
-    public @NotNull ChildAttributes getChildAttributes(int newChildIndex) {
-        return super.getChildAttributes(newChildIndex);
+    protected @Nullable Indent getChildIndent() {
+        if (isTransaction()) {
+            return Indent.getNormalIndent();
+        }
+        return Indent.getNoneIndent();
     }
 
     private Spacing getAmountCurrencySpacing(BeancountBlock exprBlock, BeancountBlock currencyBlock) {
@@ -169,8 +175,9 @@ public class BeancountBlock extends AbstractBlock {
         if (myNode.getElementType().equals(BeancountTypes.CURRENCY)) {
             Option<PsiElement> sibling = BeancountTreeUtil
                     .getNonWhitespacePreviousSibling(myNode.getPsi());
-            if (sibling.isDefined() && sibling.get() instanceof BeancountNumberExpr)
+            if (sibling.isDefined() && sibling.get() instanceof BeancountNumberExpr) {
                 return AMOUNT_ALIGN;
+            }
         }
         return super.getAlignment();
     }
