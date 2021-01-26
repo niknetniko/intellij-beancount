@@ -400,7 +400,7 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (directive | entry | end | error)*
+  // (IGNORED | directive | entry | end | error)*
   public static boolean declarations(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "declarations")) return false;
     Marker m = enter_section_(b, l, _NONE_, DECLARATIONS, "<declarations>");
@@ -413,11 +413,12 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // directive | entry | end | error
+  // IGNORED | directive | entry | end | error
   private static boolean declarations_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "declarations_0")) return false;
     boolean r;
-    r = directive(b, l + 1);
+    r = consumeToken(b, IGNORED);
+    if (!r) r = directive(b, l + 1);
     if (!r) r = entry(b, l + 1);
     if (!r) r = end(b, l + 1);
     if (!r) r = consumeToken(b, ERROR);

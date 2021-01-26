@@ -17,16 +17,27 @@ public class BeancountExprElementImpl extends BeancountPsiElement implements Bea
 
     public int getLengthPostDecimal() {
         if (this instanceof BeancountLiteralExpr) {
-            if (this.getText().contains("."))
+            if (this.getText().contains(".")) {
                 return this.getText().substring(this.getText().indexOf(".")).length();
+            }
+        } else if (this instanceof BeancountUnaryMinImpl) {
+            return ((BeancountUnaryMinImpl) this).getNumberExpr().getLengthPostDecimal();
+        } else if (this instanceof BeancountUnaryPlusImpl) {
+            return ((BeancountUnaryPlusImpl) this).getNumberExpr().getLengthPostDecimal();
         }
         return 0;
     }
 
     public int getLengthPreDecimal() {
+        // TODO: this is ugly!
         if (this instanceof BeancountLiteralExpr) {
-            if (this.getText().contains("."))
+            if (this.getText().contains(".")) {
                 return this.getText().substring(0, this.getText().indexOf(".")).length();
+            }
+        } else if (this instanceof BeancountUnaryMinImpl) {
+            return ((BeancountUnaryMinImpl) this).getNumberExpr().getLengthPreDecimal() + 1;
+        } else if (this instanceof BeancountUnaryPlusImpl) {
+            return ((BeancountUnaryPlusImpl) this).getNumberExpr().getLengthPreDecimal() + 1;
         }
         return this.getTextLength();
     }

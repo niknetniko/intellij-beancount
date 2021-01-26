@@ -32,6 +32,7 @@ public class BeancountFile extends PsiFileBase {
         return "Beancount File";
     }
 
+    @Deprecated
     public Stream<String> getAllAccountsStrings() {
         var names = new HashSet<String>();
         this.acceptChildren(new BeancountRecursiveVisitor() {

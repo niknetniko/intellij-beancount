@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.formatter.common.AbstractBlock;
 import com.intellij.psi.tree.IElementType;
+import com.outskirtslabs.beancount.parser.BeancountParser;
 import com.outskirtslabs.beancount.psi.*;
 import com.outskirtslabs.beancount.psi.elements.BeancountExprElement;
 import io.vavr.control.Option;
@@ -14,7 +15,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+
+import static com.outskirtslabs.beancount.psi.BeancountTypes.*;
 
 public class BeancountBlock extends AbstractBlock {
     private final static Alignment AMOUNT_ALIGN = Alignment
@@ -34,12 +38,6 @@ public class BeancountBlock extends AbstractBlock {
         this.spacingBuilder = spacingBuilder;
     }
 
-    @NotNull
-    @Override
-    public List<Block> getSubBlocks() {
-        return super.getSubBlocks();
-    }
-
     @Override
     protected List<Block> buildChildren() {
         List<Block> blocks = new ArrayList<>();
@@ -48,7 +46,10 @@ public class BeancountBlock extends AbstractBlock {
             if (childType == TokenType.WHITE_SPACE) {
                 continue;
             }
-            if (childType == BeancountTypes.COMMENT) {
+            if (childType == END) {
+                continue;
+            }
+            if (childType == INDENT) {
                 continue;
             }
             if (child.getTextRange().isEmpty()) {
@@ -69,33 +70,72 @@ public class BeancountBlock extends AbstractBlock {
 
     @Override
     public Indent getIndent() {
+        if (getNode().getElementType() == POSTING_OR_KV_LIST || getNode().getElementType() == KEY_VALUE_LIST) {
+            return Indent.getNormalIndent();
+        }
         return Indent.getNoneIndent();
     }
 
-    private Spacing getAmountCurrencySpacing(BeancountBlock exprBlock, BeancountBlock currencyBlock) {
-        Optional<PsiElement> parent = BeancountTreeUtil
-                .findParent(exprBlock.getNode().getPsi(), e -> e instanceof BeancountTransaction);
-        if (parent.isEmpty()) {
-            return Spacing.createSpacing(1, Integer.MAX_VALUE, 0, false, 0);
+    @Override
+    public boolean isIncomplete() {
+        // Assume a transaction itself is always incomplete.
+        if (getNode().getElementType() == TRANSACTION) {
+            return true;
+        } else {
+            return false;
         }
-        BeancountTransaction transactionDir = (BeancountTransaction) parent.get();
-        int maxDecimalLengthInTransaction = io.vavr.collection.List
-                .ofAll(transactionDir.getPostingOrKvList().getPostingList())
-                .map(l -> l.getIncompleteAmount().getMaybeNumber().getNumberExpr())
-                .map(BeancountExprElement::getLengthPostDecimal)
-                .max().getOrElse(0);
+    }
 
-        BeancountNumberExpr expr = (BeancountNumberExpr) exprBlock.getNode().getPsi();
-        int padding = (maxDecimalLengthInTransaction + 1) - expr.getLengthPostDecimal();
+    @Override
+    protected @Nullable Indent getChildIndent() {
+        if (getNode().getElementType() == TRANSACTION) {
+            return Indent.getNormalIndent();
+        }
+        return Indent.getNoneIndent();
+    }
+
+    @Override
+    public @NotNull ChildAttributes getChildAttributes(int newChildIndex) {
+        return super.getChildAttributes(newChildIndex);
+    }
+
+    private Spacing getAmountCurrencySpacing(BeancountBlock exprBlock, BeancountBlock currencyBlock) {
+        BeancountNumberExpr expression;
+        var node = exprBlock.getNode();
+        if (node.getPsi() instanceof BeancountNumberExpr) {
+            expression = node.getPsi(BeancountNumberExpr.class);
+        } else {
+            expression = Objects.requireNonNull(node.getPsi(BeancountMaybeNumber.class).getNumberExpr());
+        }
+        
+        var maxNumberOfDecimals = 2;
+        
+        // The spacing between the number and the currency is calculated as follows:
+        // After the last digit of the post decimals, we want at least one space.
+        // At most we want maxNumberOfDecimals + 1 (for the point) + 1 (for the space).
+        var padding = Math.max(1, maxNumberOfDecimals + 2 - expression.getLengthPostDecimal());
         return Spacing.createSpacing(padding, padding, 0, false, 0);
+    }
+    
+    private BeancountNumberExpr getExpression(ASTNode node) {
+        if (node.getElementType() == INCOMPLETE_AMOUNT) {
+            var am = node.getPsi(BeancountIncompleteAmount.class);
+            return am.getMaybeNumber().getNumberExpr();
+        } else if (node.getElementType() == AMOUNT_TOLERANCE) {
+            var am = node.getPsi(BeancountAmountTolerance.class);
+            var list = am.getNumberExprList();
+            return list.size() >= 1 ? list.get(0) : null;
+        }
+        return null;
     }
 
     private Spacing getAccountAmountSpacing(BeancountBlock accountBlock, BeancountBlock amountBlock) {
         String accountName = accountBlock.getNode().getPsi().getText();
-        BeancountAmount amount = (BeancountAmount) amountBlock.getNode().getPsi();
-        BeancountNumberExpr expr = amount.getNumberExpr();
+        BeancountNumberExpr expr = getExpression(amountBlock.getNode());
+        if (expr == null) {
+            return Spacing.getReadOnlySpacing();
+        }
         int decimalPad = expr.getLengthPreDecimal();
-
         int targetColumn = 55;
         targetColumn = targetColumn + Math.max((2 + longestExprPreDecimalLength + 3) - targetColumn, 0);
 
@@ -111,10 +151,11 @@ public class BeancountBlock extends AbstractBlock {
             BeancountBlock bc2 = (BeancountBlock) child2;
             IElementType child1Type = bc1.getNode().getElementType();
             IElementType child2Type = bc2.getNode().getElementType();
-            if (child1Type == BeancountTypes.ACCOUNT && child2Type == BeancountTypes.AMOUNT) {
+            if (child1Type == ACCOUNT_SYMBOL && (child2Type == AMOUNT_TOLERANCE || child2Type == INCOMPLETE_AMOUNT)) {
                 return getAccountAmountSpacing(bc1, bc2);
-            } else if (bc1.getNode().getPsi() instanceof BeancountNumberExpr
-                    && child2Type == BeancountTypes.CURRENCY) {
+            } else if (child1Type == MAYBE_NUMBER && child2Type == MAYBE_CURRENCY) {
+                return getAmountCurrencySpacing(bc1, bc2);
+            } else if (child1Type == LITERAL_EXPR && child2Type == CURRENCY_SYMBOL) {
                 return getAmountCurrencySpacing(bc1, bc2);
             }
         }

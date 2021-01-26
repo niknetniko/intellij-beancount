@@ -2,8 +2,7 @@ package com.outskirtslabs.beancount.psi.elements;
 
 import com.intellij.psi.PsiElement;
 
-public interface BeancountExprElement extends PsiElement
-{
+public interface BeancountExprElement extends PsiElement {
     /**
      * Get the length of the string after the "." decimal.
      * <p>

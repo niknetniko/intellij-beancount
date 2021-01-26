@@ -92,6 +92,7 @@ public interface BeancountTypes {
   IElementType EVENT_KEY = new BeancountTokenType("EVENT_KEY");
   IElementType FLAG = new BeancountTokenType("FLAG");
   IElementType HASH = new BeancountTokenType("HASH");
+  IElementType IGNORED = new BeancountTokenType("IGNORED");
   IElementType INCLUDE_KEY = new BeancountTokenType("INCLUDE_KEY");
   IElementType INDENT = new BeancountTokenType("INDENT");
   IElementType KEY = new BeancountTokenType("KEY");

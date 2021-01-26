@@ -1,49 +1,38 @@
 package com.outskirtslabs.beancount.formatter;
 
-import com.google.common.base.Stopwatch;
 import com.intellij.formatting.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.SyntaxTraverser;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.outskirtslabs.beancount.BeancountLanguage;
-import com.outskirtslabs.beancount.completion.AccountsCompleter;
-import com.outskirtslabs.beancount.psi.*;
+import com.outskirtslabs.beancount.psi.BeancountFile;
+import com.outskirtslabs.beancount.psi.BeancountTypeUtil;
+import com.outskirtslabs.beancount.psi.BeancountTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.concurrent.TimeUnit;
+import java.util.stream.StreamSupport;
 
+import static com.intellij.openapi.util.Conditions.equalTo;
 import static com.outskirtslabs.beancount.psi.BeancountTypes.*;
 
 public class BeancountFormattingModelBuilder implements FormattingModelBuilder {
     private static final Logger LOG = Logger.getInstance(BeancountFormattingModelBuilder.class);
 
+    
     @NotNull
     @Override
+    @SuppressWarnings("UnstableApiUsage")
     public FormattingModel createModel(PsiElement element, CodeStyleSettings settings) {
-        LOG.info("createModel");
-        Stopwatch watch = Stopwatch.createStarted();
-        int longestAccountLength = -1;
-        int longestExprLength = -2;
-        if (element.getContainingFile() instanceof BeancountFile) {
-            BeancountFile file = (BeancountFile) element.getContainingFile();
-            longestAccountLength = new AccountsCompleter(file).lengthOfLongestAccount();
-            LOG.info("indexed accoutns: " + watch.elapsed(TimeUnit.SECONDS));
-            longestExprLength = BeancountTreeUtil
-                    .findMatchesRecursively(file, el -> el instanceof BeancountAmount)
-                    .map(BeancountAmount.class::cast)
-                    .map(BeancountAmount::getNumberExpr)
-                    .map(BeancountNumberExpr::getLengthPreDecimalWithAccount)
-                    .max().getOrElse(-1);
-            LOG.info("longestexpr: " + watch.elapsed(TimeUnit.SECONDS));
-
-        }
-
+        var file = element.getContainingFile();
+        int longestAccountLength = findLongestAccountLength(file);
+        int longestExprLength = findLongestExpressionLength(file);
         return FormattingModelProvider
-                .createFormattingModelForPsiFile(element.getContainingFile(),
+                .createFormattingModelForPsiFile(file,
                         new BeancountBlock(longestAccountLength, longestExprLength, element.getNode(),
                                 Wrap.createWrap(WrapType.NONE, false),
                                 Alignment.createAlignment(),
@@ -54,35 +43,63 @@ public class BeancountFormattingModelBuilder implements FormattingModelBuilder {
 
     private static SpacingBuilder createSpaceBuilder(CodeStyleSettings settings) {
         return new SpacingBuilder(settings, BeancountLanguage.INSTANCE)
-                .between(NUMBER_EXPR, CURRENCY)
-                .spaces(1)
-                .after(DATE)
-                .spaces(1)
+                // General beginning of line tokens
                 .after(BeancountTypeUtil.DIRECTIVE_KEYWORDS)
                 .spaces(1)
-                .after(POPMETA_KEY)
+                // None before dates, one after.
+                .before(DATE)
                 .none()
-                .after(POPMETA_KEY)
+                .after(DATE)
                 .spaces(1)
-                .between(UNARY_MIN, BeancountTypes.LITERAL_EXPR)
-                .none()
-                .between(UNARY_PLUS, BeancountTypes.LITERAL_EXPR)
-                .none()
-                .between(BeancountTypes.AMOUNT, BeancountTypes.COMMA)
+                .between(STRING, STRING)
                 .spaces(1)
-                .between(BeancountTypes.LCURL, BeancountTypes.COST_COMP_LIST)
+                // Minus
+                .between(MINUS, LITERAL_EXPR)
                 .none()
-                .between(BeancountTypes.COST_COMP_LIST, BeancountTypes.RCURL)
+                .between(PLUS, LITERAL_EXPR)
                 .none()
-                .between(BeancountTypes.COST_SPEC, CURRENCY)
+                .between(CURRENCY, LCURL)
                 .spaces(1)
-                .between(BeancountTypes.AT, NUMBER_EXPR)
-                .spaces(1);
+                .after(LCURL)
+                .none()
+                .before(RCURL)
+                .none();
     }
 
     @Nullable
     @Override
     public TextRange getRangeAffectingIndent(PsiFile file, int offset, ASTNode elementAtOffset) {
         return null;
+    }
+
+    /**
+     * Find the longest account length across the project.
+     * This ensures all files in the project are formatted in the same way.
+     */
+    private int findLongestAccountLength(PsiFile file) {
+        if (file instanceof BeancountFile) {
+            return ((BeancountFile) file).getAllAccountsCached()
+                    .mapToInt(String::length)
+                    .max()
+                    .orElseGet(() -> StreamSupport.stream(SyntaxTraverser.psiTraverser(file)
+                            .filterTypes(equalTo(ACCOUNT_SYMBOL))
+                            .map(PsiElement::getTextLength)
+                            .spliterator(), false)
+                            .mapToInt(i -> i)
+                            .max()
+                            .orElse(0));
+        } else {
+            return 0;
+        }
+    }
+
+    private int findLongestExpressionLength(PsiFile file) {
+        return StreamSupport.stream(SyntaxTraverser.psiTraverser(file)
+                .filterTypes(equalTo(NUMBER))
+                .map(PsiElement::getTextLength)
+                .spliterator(), false)
+                .mapToInt(i -> i)
+                .max()
+                .orElse(0);
     }
 }

@@ -142,8 +142,12 @@ FLAGS=[!&#?%PSTCURM]
  /* Lines starting with an asterisk, a colon, an hash, or a character
   * in the FLAGS characters set are ignored. This rule is inserted
   * here to give higher precedence to rules matching valid tokens. */
-^[*:#].	{ yybegin(sIGNORE); }
-^{FLAGS}.	{ yybegin(sIGNORE); }
+^[*:#].+	{ 
+  return IGNORED;
+}
+^{FLAGS}.+	{ 
+  return IGNORED;
+}
 }
 
  /* Default rule. {bf253a29a820} */
@@ -158,6 +162,7 @@ FLAGS=[!&#?%PSTCURM]
 }
 
  /* Ignore input till the newline. */
-<sIGNORE>.* {
-    yybegin(YYINITIAL);
-}
+//<sIGNORE>.* {
+//    yybegin(YYINITIAL);
+//    return IGNORED;
+//}

@@ -8,6 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.outskirtslabs.beancount.parser.BeancountParser;
@@ -16,6 +17,9 @@ import com.outskirtslabs.beancount.psi.BeancountFile;
 import com.outskirtslabs.beancount.psi.BeancountTypes;
 import com.outskirtslabs.beancount.psi.stub.BeancountStubFileElementType;
 import org.jetbrains.annotations.NotNull;
+
+import static com.outskirtslabs.beancount.psi.BeancountTypes.EOL;
+import static com.outskirtslabs.beancount.psi.BeancountTypes.INDENT;
 
 public class BeancountParserDefinition implements ParserDefinition {
     public static final TokenSet COMMENTS = TokenSet.create(BeancountTypes.COMMENT);
