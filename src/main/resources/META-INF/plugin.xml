@@ -75,5 +75,9 @@
             implementationClass="com.outskirtslabs.beancount.spelling.SpellChecking" />
         <lang.foldingBuilder language="Beancount"
             implementationClass="com.outskirtslabs.beancount.folding.TransactionFoldingBuilder" />
+        <externalAnnotator language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.annotation.BeanCheckAnnotator" />
+        <annotator language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.annotation.UnresolvedAccountAnnotator" />
     </extensions>
 </idea-plugin>
