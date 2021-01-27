@@ -142,7 +142,12 @@ public class BeancountBlock extends AbstractBlock {
             return Spacing.getReadOnlySpacing();
         }
         int decimalPad = expr.getLengthPreDecimal();
-        int targetColumn = 55;
+        // Very ugly :(
+        var doc = Objects.requireNonNull(accountBlock.getNode().getPsi().getContainingFile().getViewProvider().getDocument());
+        var offset = accountBlock.getNode().getStartOffset();
+        var line = doc.getLineNumber(offset);
+        var prev = doc.getLineEndOffset(Math.max(line - 1, 0));
+        int targetColumn = 65 - Math.max(0, (offset - prev));
         targetColumn = targetColumn + Math.max((2 + longestExprPreDecimalLength + 3) - targetColumn, 0);
 
         int padding = targetColumn - accountName.length() - decimalPad - 3;
