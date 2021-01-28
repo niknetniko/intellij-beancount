@@ -2,13 +2,15 @@ package com.outskirtslabs.beancount.psi.impl;
 
 import com.intellij.extapi.psi.StubBasedPsiElementBase;
 import com.intellij.lang.ASTNode;
+import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.util.IncorrectOperationException;
+import com.outskirtslabs.beancount.navigation.AccountSymbolPresentation;
+import com.outskirtslabs.beancount.psi.BeancountAccountDefinition;
 import com.outskirtslabs.beancount.psi.BeancountFile;
 import com.outskirtslabs.beancount.psi.BeancountRecursiveVisitor;
-import com.outskirtslabs.beancount.psi.elements.BeancountAccountDefinition;
 import com.outskirtslabs.beancount.psi.elements.BeancountElementFactory;
 import com.outskirtslabs.beancount.psi.stub.AccountStub;
 import org.jetbrains.annotations.NotNull;
@@ -66,5 +68,10 @@ public abstract class BeancountAccountDefinitionMixin extends StubBasedPsiElemen
     @Override
     public @Nullable PsiElement getNameIdentifier() {
         return this;
+    }
+
+    @Override
+    public ItemPresentation getPresentation() {
+        return new AccountSymbolPresentation(this);
     }
 }

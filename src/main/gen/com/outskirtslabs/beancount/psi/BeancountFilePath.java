@@ -5,12 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface BeancountInclude extends PsiElement {
-
-  @NotNull
-  BeancountEnd getEnd();
-
-  @NotNull
-  BeancountFilePath getFilePath();
+public interface BeancountFilePath extends com.outskirtslabs.beancount.psi.elements.BeancountFilePath {
 
 }

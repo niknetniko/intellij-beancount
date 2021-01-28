@@ -8,35 +8,22 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.outskirtslabs.beancount.psi.BeancountTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.outskirtslabs.beancount.psi.*;
 
-public class BeancountIncludeImpl extends ASTWrapperPsiElement implements BeancountInclude {
+public class BeancountFilePathImpl extends BeancountFilePathMixin implements BeancountFilePath {
 
-  public BeancountIncludeImpl(@NotNull ASTNode node) {
+  public BeancountFilePathImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull BeancountVisitor visitor) {
-    visitor.visitInclude(this);
+    visitor.visitFilePath(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof BeancountVisitor) accept((BeancountVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public BeancountEnd getEnd() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountEnd.class));
-  }
-
-  @Override
-  @NotNull
-  public BeancountFilePath getFilePath() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountFilePath.class));
   }
 
 }

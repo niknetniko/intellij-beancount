@@ -587,6 +587,18 @@ public class BeancountParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // STRING
+  public static boolean file_path(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "file_path")) return false;
+    if (!nextTokenIs(b, STRING)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, STRING);
+    exit_section_(b, m, FILE_PATH, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // STRING
   public static boolean filename(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "filename")) return false;
     if (!nextTokenIs(b, STRING)) return false;
@@ -598,13 +610,14 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // INCLUDE_KEY STRING end
+  // INCLUDE_KEY file_path end
   public static boolean include(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "include")) return false;
     if (!nextTokenIs(b, INCLUDE_KEY)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, INCLUDE_KEY, STRING);
+    r = consumeToken(b, INCLUDE_KEY);
+    r = r && file_path(b, l + 1);
     r = r && end(b, l + 1);
     exit_section_(b, m, INCLUDE, r);
     return r;

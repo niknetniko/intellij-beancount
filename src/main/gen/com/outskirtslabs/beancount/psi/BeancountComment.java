@@ -4,13 +4,8 @@ package com.outskirtslabs.beancount.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiComment;
 
-public interface BeancountInclude extends PsiElement {
-
-  @NotNull
-  BeancountEnd getEnd();
-
-  @NotNull
-  BeancountFilePath getFilePath();
+public interface BeancountComment extends PsiComment {
 
 }

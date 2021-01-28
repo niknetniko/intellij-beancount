@@ -7,7 +7,6 @@ import com.intellij.psi.stubs.StringStubIndexExtension;
 import com.intellij.psi.stubs.StubIndex;
 import com.intellij.psi.stubs.StubIndexKey;
 import com.outskirtslabs.beancount.psi.BeancountAccountDefinition;
-import com.outskirtslabs.beancount.psi.BeancountAccountSymbol;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;

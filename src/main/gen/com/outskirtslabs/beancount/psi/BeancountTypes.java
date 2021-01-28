@@ -36,6 +36,7 @@ public interface BeancountTypes {
   IElementType ENTRY = new BeancountElementType("ENTRY");
   IElementType EVENT = new BeancountElementType("EVENT");
   IElementType FILENAME = new BeancountElementType("FILENAME");
+  IElementType FILE_PATH = new BeancountElementType("FILE_PATH");
   IElementType INCLUDE = new BeancountElementType("INCLUDE");
   IElementType INCOMPLETE_AMOUNT = new BeancountElementType("INCOMPLETE_AMOUNT");
   IElementType KEY_VALUE = new BeancountElementType("KEY_VALUE");
@@ -202,6 +203,9 @@ public interface BeancountTypes {
       }
       else if (type == FILENAME) {
         return new BeancountFilenameImpl(node);
+      }
+      else if (type == FILE_PATH) {
+        return new BeancountFilePathImpl(node);
       }
       else if (type == INCLUDE) {
         return new BeancountIncludeImpl(node);

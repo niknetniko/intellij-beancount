@@ -79,5 +79,7 @@
             implementationClass="com.outskirtslabs.beancount.annotation.BeanCheckAnnotator" />
         <annotator language="Beancount"
             implementationClass="com.outskirtslabs.beancount.annotation.UnresolvedAccountAnnotator" />
+        <psi.referenceContributor language="Beancount" implementation="com.outskirtslabs.beancount.references.FileReferenceContributor" />
+        <gotoSymbolContributor implementation="com.outskirtslabs.beancount.navigation.GoToAccountSymbol" />
     </extensions>
 </idea-plugin>

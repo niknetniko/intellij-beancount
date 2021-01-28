@@ -243,7 +243,12 @@ entry ::= (transaction
 
 option ::= OPTION_KEY STRING STRING end
 
-include ::= INCLUDE_KEY STRING end
+file_path ::= STRING {
+    implements="com.outskirtslabs.beancount.psi.elements.BeancountFilePath"
+    mixin="com.outskirtslabs.beancount.psi.impl.BeancountFilePathMixin"
+}
+
+include ::= INCLUDE_KEY file_path end
 
 plugin ::= PLUGIN_KEY STRING end | PLUGIN_KEY STRING STRING end
 
