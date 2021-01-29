@@ -36,7 +36,14 @@ public class FileReferenceContributor extends PsiReferenceContributor {
 
         @Override
         public boolean acceptsTarget(@NotNull PsiElement target) {
-            return target.getParent() != null && target.getParent().getNode().getElementType() == INCLUDE;
+            if (target.getParent() == null) {
+                return false;
+            }
+            var node = target.getParent().getNode();
+            if (node == null) {
+                return false;
+            }
+            return node.getElementType() == INCLUDE;
         }
     }
 }
