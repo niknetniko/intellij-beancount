@@ -81,5 +81,7 @@
             implementationClass="com.outskirtslabs.beancount.annotation.UnresolvedAccountAnnotator" />
         <psi.referenceContributor language="Beancount" implementation="com.outskirtslabs.beancount.references.FileReferenceContributor" />
         <gotoSymbolContributor implementation="com.outskirtslabs.beancount.navigation.GoToAccountSymbol" />
+
+        <configurationType implementation="com.outskirtslabs.beancount.run.FavaRunConfigurationType" />
     </extensions>
 </idea-plugin>
