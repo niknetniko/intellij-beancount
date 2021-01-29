@@ -142,11 +142,19 @@ FLAGS=[!&#?%PSTCURM]
  /* Lines starting with an asterisk, a colon, an hash, or a character
   * in the FLAGS characters set are ignored. This rule is inserted
   * here to give higher precedence to rules matching valid tokens. */
-^[*:#].+	{ 
+// When typing, Intellij seems to do partial highlighting.
+// We thus want explicitly say we need at least one not '"' token.
+^[:#].+	{ 
+          System.out.println("Matched with generic rule...");
   return IGNORED;
 }
 ^{FLAGS}.+	{ 
+          System.out.println("Matched with flags rule...");
   return IGNORED;
+}
+^[*][ \t]*[^ \t\"].* {
+          System.out.println("Matched with special rule...");
+  return IGNORED;              
 }
 }
 
