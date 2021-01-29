@@ -1,13 +1,14 @@
 package com.outskirtslabs.beancount.references;
 
-import com.intellij.openapi.paths.PathReferenceProvider;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
 import com.intellij.util.ProcessingContext;
+import com.outskirtslabs.beancount.psi.elements.BeancountFilePath;
 import org.jetbrains.annotations.NotNull;
 
-import static com.outskirtslabs.beancount.psi.BeancountTypes.*;
+import static com.outskirtslabs.beancount.psi.BeancountTypes.FILE_PATH;
+import static com.outskirtslabs.beancount.psi.BeancountTypes.INCLUDE;
 
 /**
  * @author Niko Strijbol
@@ -26,8 +27,10 @@ public class FileReferenceContributor extends PsiReferenceContributor {
                 return new PsiReference[0];
             }
             assert element.getNode().getElementType() == FILE_PATH;
-                    
-            var ref = new FileReferenceSet(element.getText(), element, 1, this, false);
+            BeancountFilePath path = (BeancountFilePath) element;
+            var escaper = path.createLiteralTextEscaper();
+            var text = escaper.getRelevantTextRange().substring(element.getText());
+            var ref = new FileReferenceSet(text, element, 1, this, false);
             return ref.getAllReferences();
         }
 

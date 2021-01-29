@@ -213,9 +213,7 @@ query ::= DATE QUERY_KEY STRING STRING end key_value_list?
 
 note ::= DATE NOTE_KEY account_symbol STRING end key_value_list?
 
-filename ::= STRING
-
-document ::= DATE DOCUMENT_KEY account_symbol filename tags_links end key_value_list?
+document ::= DATE DOCUMENT_KEY account_symbol file_path tags_links end key_value_list?
 
 custom_value ::= STRING
     | DATE

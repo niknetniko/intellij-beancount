@@ -41,8 +41,8 @@ public class BeancountDocumentImpl extends ASTWrapperPsiElement implements Beanc
 
   @Override
   @NotNull
-  public BeancountFilename getFilename() {
-    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountFilename.class));
+  public BeancountFilePath getFilePath() {
+    return notNullChild(PsiTreeUtil.getChildOfType(this, BeancountFilePath.class));
   }
 
   @Override

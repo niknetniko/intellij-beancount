@@ -14,7 +14,7 @@ public interface BeancountDocument extends PsiElement {
   BeancountEnd getEnd();
 
   @NotNull
-  BeancountFilename getFilename();
+  BeancountFilePath getFilePath();
 
   @Nullable
   BeancountKeyValueList getKeyValueList();

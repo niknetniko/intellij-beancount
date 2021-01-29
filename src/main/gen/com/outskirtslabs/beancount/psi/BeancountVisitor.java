@@ -113,10 +113,6 @@ public class BeancountVisitor extends PsiElementVisitor {
     visitFilePath(o);
   }
 
-  public void visitFilename(@NotNull BeancountFilename o) {
-    visitPsiElement(o);
-  }
-
   public void visitInclude(@NotNull BeancountInclude o) {
     visitPsiElement(o);
   }

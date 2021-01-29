@@ -48,6 +48,9 @@ public class BeanCheckAnnotator extends ExternalAnnotator<String, List<Annotatio
         }
         var doc = Objects.requireNonNull(file.getViewProvider().getDocument());
         for (var annotationResult : annotationResults) {
+            if (annotationResult.getLine() < 0 || annotationResult.getLine() > doc.getLineCount()) {
+                continue;
+            }
             var start = doc.getLineStartOffset(annotationResult.getLine());
             var end = doc.getLineEndOffset(annotationResult.getLine());
             holder.newAnnotation(HighlightSeverity.ERROR, annotationResult.getMessage())

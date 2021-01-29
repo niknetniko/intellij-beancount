@@ -449,7 +449,7 @@ public class BeancountParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // DATE DOCUMENT_KEY account_symbol filename tags_links end key_value_list?
+  // DATE DOCUMENT_KEY account_symbol file_path tags_links end key_value_list?
   public static boolean document(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "document")) return false;
     if (!nextTokenIs(b, DATE)) return false;
@@ -457,7 +457,7 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, DATE, DOCUMENT_KEY);
     r = r && account_symbol(b, l + 1);
-    r = r && filename(b, l + 1);
+    r = r && file_path(b, l + 1);
     r = r && tags_links(b, l + 1);
     r = r && end(b, l + 1);
     r = r && document_6(b, l + 1);
@@ -594,18 +594,6 @@ public class BeancountParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, STRING);
     exit_section_(b, m, FILE_PATH, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // STRING
-  public static boolean filename(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "filename")) return false;
-    if (!nextTokenIs(b, STRING)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, STRING);
-    exit_section_(b, m, FILENAME, r);
     return r;
   }
 
