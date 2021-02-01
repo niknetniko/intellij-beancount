@@ -12,12 +12,11 @@ import static com.outskirtslabs.beancount.psi.BeancountTypes.*;
 %%
 
 //%debug
+
 %class BeancountLexer
 %implements FlexLexer
 %function advance
 %type IElementType
-%eof{  return;
-%eof}
 
 %unicode
 
@@ -32,13 +31,11 @@ LINK=\^[A-Za-z0-9\-_/.]+
 KEY=[a-z][a-zA-Z0-9\-_]+:
 
 
-ASCII=[\x00-\x7f]
 UTF_8_1=[\x80-\xbf]
 UTF_8_2=[\xc2-\xdf]{UTF_8_1}
 UTF_8_3=\xe0[\xa0-\xbf]{UTF_8_1}|[\xe1-\xec]{UTF_8_1}{UTF_8_1}|\xed[\x80-\x9f]{UTF_8_1}|[\xee-\xef]{UTF_8_1}{UTF_8_1}
 UTF_8_4=\xf0[\x90-\xbf]{UTF_8_1}{UTF_8_1}|[\xf1-\xf3]{UTF_8_1}{UTF_8_1}{UTF_8_1}|\xf4[\x80-\x8f]{UTF_8_1}{UTF_8_1}
 UTF_8_ONLY={UTF_8_2}|{UTF_8_3}|{UTF_8_4}
-UTF_8={ASCII}|{UTF_8_ONLY}
 
 ACCOUNTTYPE=([A-Z]|{UTF_8_ONLY})([A-Za-z0-9\-]|{UTF_8_ONLY})*
 ACCOUNTNAME=([A-Z0-9]|{UTF_8_ONLY})([A-Za-z0-9\-]|{UTF_8_ONLY})*
@@ -156,18 +153,23 @@ FLAGS=[!&#?%PSTCURM]
           System.out.println("Matched with special rule...");
   return IGNORED;              
 }
+
+[^] { 
+    return BAD_CHARACTER; 
+}
+
 }
 
  /* Default rule. {bf253a29a820} */
-. { 
-  yybegin(sINVALID);
-  return BAD_CHARACTER; 
-}
-
-<sINVALID>[^ \t\n\r]* {
-  yybegin(YYINITIAL);
-  return BAD_CHARACTER;
-}
+//. { 
+//  yybegin(sINVALID);
+//  return BAD_CHARACTER; 
+//}
+//
+//<sINVALID>[^ \t\n\r]* {
+//  yybegin(YYINITIAL);
+//  return BAD_CHARACTER;
+//}
 
  /* Ignore input till the newline. */
 //<sIGNORE>.* {

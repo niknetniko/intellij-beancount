@@ -24,7 +24,7 @@ import static com.outskirtslabs.beancount.psi.BeancountTypes.DATE;
  *
  * @author Niko Strijbol
  */
-public class DirectDirectiveCompletionProvider extends DirectiveCompletionProvider {
+class DirectDirectiveCompletionProvider extends DirectiveCompletionProvider {
 
     @Override
     protected @Nullable String alreadyTyped(@NotNull CompletionParameters parameters) {

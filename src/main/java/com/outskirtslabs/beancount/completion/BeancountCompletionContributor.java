@@ -14,13 +14,7 @@ import static com.outskirtslabs.beancount.psi.BeancountTypes.*;
 public class BeancountCompletionContributor extends CompletionContributor {
     public BeancountCompletionContributor() {
         // :: accounts
-        extend(
-            CompletionType.BASIC,
-            psiElement(ERROR_ELEMENT)
-                    .afterSibling(psiElement(INDENT))
-                .withLanguage(BeancountLanguage.INSTANCE),
-            new BeancountAccountCompletionProvider()
-        );
+        AccountsCompletionProvider.register(this);
 
         // :: currency
         BeancountCurrencyCompletionProvider.register(this);

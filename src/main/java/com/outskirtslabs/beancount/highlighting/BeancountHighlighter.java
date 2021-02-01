@@ -88,7 +88,6 @@ public class BeancountHighlighter extends SyntaxHighlighterBase {
             entry(BeancountTypes.STRING, STRING),
             entry(BeancountTypes.KEY, KEY),
             entry(BeancountTypes.DATE, DATE),
-            entry(BeancountTypes.ERROR, BAD_CHARACTER),
             entry(BeancountTypes.NUMBER, AMOUNT),
             entry(BeancountTypes.ASTERISK, DIRECTIVE),
             entry(BeancountTypes.HASH, DIRECTIVE)

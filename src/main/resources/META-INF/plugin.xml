@@ -39,7 +39,7 @@
         <completion.contributor language="Beancount"
             implementationClass="com.outskirtslabs.beancount.completion.BeancountCompletionContributor" />
         <completion.confidence language="Beancount"
-            implementationClass="com.outskirtslabs.beancount.completion.Condidence" />
+            implementationClass="com.outskirtslabs.beancount.completion.BeancountCompletionConfidence" />
         <fileType name="Beancount Journal" implementationClass="com.outskirtslabs.beancount.BeancountFileType"
             fieldName="INSTANCE" language="Beancount" extensions="beancount" />
         <lang.findUsagesProvider language="Beancount"

@@ -7,13 +7,14 @@ import com.intellij.util.ThreeState;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * We are very confident.
+ * 
  * @author Niko Strijbol
  */
-public class Condidence extends CompletionConfidence {
+public class BeancountCompletionConfidence extends CompletionConfidence {
 
     @Override
     public @NotNull ThreeState shouldSkipAutopopup(@NotNull PsiElement contextElement, @NotNull PsiFile psiFile, int offset) {
-//        return super.shouldSkipAutopopup(contextElement, psiFile, offset);
         return ThreeState.NO;
     }
 }

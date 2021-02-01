@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public abstract class DirectiveCompletionProvider extends CompletionProvider<CompletionParameters> {
+abstract class DirectiveCompletionProvider extends CompletionProvider<CompletionParameters> {
     private static final List<String> KEYWORDS = Lists.newArrayList(
             "*",
             "balance",

@@ -258,4 +258,4 @@ directive ::= pushtag
     | include
     | plugin
 
-declarations ::= (IGNORED | directive | entry | end | error)*
+declarations ::= (IGNORED | directive | entry | end)*

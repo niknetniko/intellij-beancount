@@ -15,7 +15,10 @@ import static com.outskirtslabs.beancount.psi.BeancountTypes.CURRENCY;
 import static com.outskirtslabs.beancount.psi.BeancountTypes.NUMBER;
 
 
-public class BeancountCurrencyCompletionProvider extends CompletionProvider<CompletionParameters> {
+/**
+ * Handle providing currency completion.
+ */
+class BeancountCurrencyCompletionProvider extends CompletionProvider<CompletionParameters> {
     @Override
     protected void addCompletions(@NotNull final CompletionParameters parameters,
                                   final @NotNull ProcessingContext context, @NotNull final CompletionResultSet resultSet) {

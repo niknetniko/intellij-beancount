@@ -19,7 +19,7 @@ import static com.outskirtslabs.beancount.psi.BeancountTypes.DATE;
 /**
  * @author Niko Strijbol
  */
-public class PrefixedDirectiveCompletionProvider extends DirectiveCompletionProvider {
+class PrefixedDirectiveCompletionProvider extends DirectiveCompletionProvider {
 
     public static ElementPattern<PsiElement> applicablePattern() {
         return psiElement().withParent(psiElement(DUMMY_BLOCK)

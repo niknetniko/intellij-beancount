@@ -88,7 +88,6 @@ public interface BeancountTypes {
   IElementType DATE = new BeancountTokenType("DATE");
   IElementType DOCUMENT_KEY = new BeancountTokenType("DOCUMENT_KEY");
   IElementType EOL = new BeancountTokenType("EOL");
-  IElementType ERROR = new BeancountTokenType("error");
   IElementType EVENT_KEY = new BeancountTokenType("EVENT_KEY");
   IElementType FLAG = new BeancountTokenType("FLAG");
   IElementType HASH = new BeancountTokenType("HASH");
