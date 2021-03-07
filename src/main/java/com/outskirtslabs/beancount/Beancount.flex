@@ -142,15 +142,12 @@ FLAGS=[!&#?%PSTCURM]
 // When typing, Intellij seems to do partial highlighting.
 // We thus want explicitly say we need at least one not '"' token.
 ^[:#].+	{ 
-          System.out.println("Matched with generic rule...");
   return IGNORED;
 }
 ^{FLAGS}.+	{ 
-          System.out.println("Matched with flags rule...");
   return IGNORED;
 }
 ^[*][ \t]*[^ \t\"].* {
-          System.out.println("Matched with special rule...");
   return IGNORED;              
 }
 
