@@ -22,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,7 +65,6 @@ public class AccountReference extends PsiPolyVariantReferenceBase<BeancountAccou
     public Object @NotNull [] getVariants() {
         var cached = AccountStubIndex.findAllAccounts(getElement().getProject())
                 .stream()
-                .filter(name -> name.contains(getElement().getCleanText()) && !name.equals(getElement().getCleanText()))
                 .distinct()
                 .flatMap(n -> AccountStubIndex.find(getElement().getProject(), n).stream())
                 .collect(Collectors.toList());
@@ -75,6 +75,7 @@ public class AccountReference extends PsiPolyVariantReferenceBase<BeancountAccou
                 variants.add(LookupElementBuilder.create(element)
                         .withIcon(BeancountIcons.FILE)
                         .withCaseSensitivity(false)
+                        .withLookupStrings(Arrays.asList(element.getName().split(":")))
                         .withTypeText(element.getContainingFile().getName()));
             }
         }

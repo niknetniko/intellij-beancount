@@ -10,6 +10,8 @@ import com.intellij.util.ProcessingContext;
 import com.outskirtslabs.beancount.psi.stub.index.AccountStubIndex;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 import static com.intellij.lang.parser.GeneratedParserUtilBase.DUMMY_BLOCK;
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 import static com.intellij.psi.TokenType.BAD_CHARACTER;
@@ -38,12 +40,7 @@ public class AccountsCompletionProvider extends CompletionProvider<CompletionPar
         }
         var reversedPrefix = new StringBuilder();
         // Get all bad character children and concat those.
-        findSiblingsBackward(parameters.getPosition(), BAD_CHARACTER, new Consumer<PsiElement>() {
-            @Override
-            public void consume(PsiElement element) {
-                reversedPrefix.append(element.getText());
-            }
-        });
+        findSiblingsBackward(parameters.getPosition(), BAD_CHARACTER, element -> reversedPrefix.append(element.getText()));
         prefix += reversedPrefix.reverse().toString();
 
         CompletionResultSet resulting;
@@ -57,7 +54,9 @@ public class AccountsCompletionProvider extends CompletionProvider<CompletionPar
         AccountStubIndex.findAllAccounts(position.getProject())
                 .stream()
                 .distinct()
-                .forEach(s -> resulting.addElement(LookupElementBuilder.create(s)));
+                .forEach(s -> resulting.addElement(LookupElementBuilder
+                        .create(s)
+                        .withLookupStrings(Arrays.asList(s.split(":")))));
     }
 
     public static void register(CompletionContributor contributor) {
