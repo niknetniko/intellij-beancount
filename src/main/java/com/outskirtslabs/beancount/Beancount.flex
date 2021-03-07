@@ -42,12 +42,16 @@ ACCOUNTNAME=([A-Z0-9]|{UTF_8_ONLY})([A-Za-z0-9\-]|{UTF_8_ONLY})*
 
 FLAGS=[!&#?%PSTCURM]
 
+// All states
 %state sIGNORE sINVALID
 
 %%
 
- /* Newlines matter. */
+// General matches that are present in all states
+;.* { return COMMENT; }
 
+
+ /* Newlines matter. */
 <YYINITIAL> {
 {NEWLINE}                 { return EOL; }
 
@@ -56,9 +60,6 @@ FLAGS=[!&#?%PSTCURM]
  * initial indent and thus group syntax elements in the grammar. */
 ^[ \t]+/[^ \t\r\n] { return INDENT; }
 [ \t\r]+ { return WHITE_SPACE; }
-
- /* Comments. */
-;.* { return COMMENT; }
       
  /* Characters with special meanings. */
 "|"		              { return PIPE; }
