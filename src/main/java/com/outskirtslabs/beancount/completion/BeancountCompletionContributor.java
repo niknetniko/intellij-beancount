@@ -22,5 +22,8 @@ public class BeancountCompletionContributor extends CompletionContributor {
         // :: directives
         DirectDirectiveCompletionProvider.register(this);
         PrefixedDirectiveCompletionProvider.register(this);
+        
+        // :: dates
+        DateCompletionProvider.register(this);
     }
 }
