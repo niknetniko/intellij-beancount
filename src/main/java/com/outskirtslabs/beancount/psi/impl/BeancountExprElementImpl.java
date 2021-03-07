@@ -6,12 +6,12 @@ import com.outskirtslabs.beancount.psi.BeancountAccountSymbol;
 import com.outskirtslabs.beancount.psi.BeancountLiteralExpr;
 import com.outskirtslabs.beancount.psi.BeancountNumberExpr;
 import com.outskirtslabs.beancount.psi.BeancountTreeUtil;
-import io.vavr.control.Option;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 public class BeancountExprElementImpl extends BeancountPsiElement implements BeancountNumberExpr {
-    public BeancountExprElementImpl(
-            @NotNull final ASTNode node) {
+    public BeancountExprElementImpl(@NotNull final ASTNode node) {
         super(node);
     }
 
@@ -46,9 +46,13 @@ public class BeancountExprElementImpl extends BeancountPsiElement implements Bea
     public int getLengthPreDecimalWithAccount() {
         int preDecimal = getLengthPreDecimal();
         PsiElement parent = getParent();
-        if (parent == null) return preDecimal;
-        Option<PsiElement> sibling = BeancountTreeUtil.getNonWhitespacePreviousSibling(parent);
-        if (sibling.isEmpty()) return preDecimal;
+        if (parent == null) {
+            return preDecimal;
+        }
+        Optional<PsiElement> sibling = BeancountTreeUtil.getNonWhitespacePreviousSibling(parent);
+        if (sibling.isEmpty()) {
+            return preDecimal;
+        }
         if (sibling.get() instanceof BeancountAccountSymbol) {
             BeancountAccountSymbol account = (BeancountAccountSymbol) sibling.get();
             return preDecimal + account.getTextLength();

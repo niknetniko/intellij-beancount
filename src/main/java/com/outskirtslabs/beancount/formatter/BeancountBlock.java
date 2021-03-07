@@ -6,10 +6,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.formatter.common.AbstractBlock;
 import com.intellij.psi.tree.IElementType;
-import com.outskirtslabs.beancount.parser.BeancountParser;
 import com.outskirtslabs.beancount.psi.*;
-import com.outskirtslabs.beancount.psi.elements.BeancountExprElement;
-import io.vavr.control.Option;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -178,9 +175,9 @@ public class BeancountBlock extends AbstractBlock {
     @Override
     public Alignment getAlignment() {
         if (myNode.getElementType().equals(BeancountTypes.CURRENCY)) {
-            Option<PsiElement> sibling = BeancountTreeUtil
+            Optional<PsiElement> sibling = BeancountTreeUtil
                     .getNonWhitespacePreviousSibling(myNode.getPsi());
-            if (sibling.isDefined() && sibling.get() instanceof BeancountNumberExpr) {
+            if (sibling.isPresent() && sibling.get() instanceof BeancountNumberExpr) {
                 return AMOUNT_ALIGN;
             }
         }

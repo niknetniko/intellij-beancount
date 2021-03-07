@@ -12,7 +12,6 @@ import com.intellij.util.containers.OrderedSet;
 import com.outskirtslabs.beancount.BeancountIcons;
 import com.outskirtslabs.beancount.psi.BeancountFile;
 import com.outskirtslabs.beancount.psi.elements.BeancountNamedElement;
-import io.vavr.collection.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -148,15 +147,16 @@ abstract public class BeancountReference<T extends BeancountNamedElement> extend
      */
     private void processResolve(@NotNull BaseScopeProcessor processor) {
         PsiFile file = myBeancountElement.getContainingFile();
-        if (!(file instanceof BeancountFile)) return;
+        if (!(file instanceof BeancountFile)) {
+            return;
+        }
         ResolveState state = createContextOnElement(myBeancountElement);
 
         // with this we have every usage of this particular elementText
         Collection<T> cachedElements = getFromCache(file.getProject(), elementText);
 
         // now we exec the processor to find which one of these elementText instances is the declaration
-        Stream.ofAll(cachedElements)
-                .find(a -> !processor.execute(a, state));
+        cachedElements.stream().filter(a -> !processor.execute(a, state));
     }
 
     /**
