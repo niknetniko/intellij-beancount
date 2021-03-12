@@ -11,7 +11,6 @@ import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.outskirtslabs.beancount.BeancountLanguage;
 import com.outskirtslabs.beancount.psi.BeancountFile;
 import com.outskirtslabs.beancount.psi.BeancountTypeUtil;
-import com.outskirtslabs.beancount.psi.BeancountTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,7 +22,6 @@ import static com.outskirtslabs.beancount.psi.BeancountTypes.*;
 public class BeancountFormattingModelBuilder implements FormattingModelBuilder {
     private static final Logger LOG = Logger.getInstance(BeancountFormattingModelBuilder.class);
 
-    
     @NotNull
     @Override
     @SuppressWarnings("UnstableApiUsage")
@@ -42,6 +40,7 @@ public class BeancountFormattingModelBuilder implements FormattingModelBuilder {
     }
 
     private static SpacingBuilder createSpaceBuilder(CodeStyleSettings settings) {
+        //settings.getCommonSettings(BeancountLanguage.INSTANCE).getIndentOptions()
         return new SpacingBuilder(settings, BeancountLanguage.INSTANCE)
                 // General beginning of line tokens
                 .after(BeancountTypeUtil.DIRECTIVE_KEYWORDS)

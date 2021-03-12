@@ -82,5 +82,7 @@
         <gotoSymbolContributor implementation="com.outskirtslabs.beancount.navigation.GoToAccountSymbol" />
 
         <configurationType implementation="com.outskirtslabs.beancount.run.FavaRunConfigurationType" />
+
+        <editor.backspaceModeOverride language="Beancount" implementationClass="com.intellij.codeInsight.editorActions.SmartBackspaceDisabler"/>
     </extensions>
 </idea-plugin>

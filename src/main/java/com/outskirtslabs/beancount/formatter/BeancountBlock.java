@@ -43,31 +43,36 @@ public class BeancountBlock extends AbstractBlock {
             if (childType == TokenType.WHITE_SPACE) {
                 continue;
             }
-            if (childType == END) {
-                continue;
-            }
+//            if (childType == END) {
+//                continue;
+//            }
             if (childType == INDENT) {
                 continue;
             }
             if (child.getTextRange().isEmpty()) {
                 continue;
             }
-
-            addChildBlocks(child, blocks);
+            
+            var block = new BeancountBlock(longestAccountLength, 
+                    longestExprPreDecimalLength, 
+                    child,
+                    Wrap.createWrap(WrapType.NONE, false),
+                    null,
+                    spacingBuilder);
+            blocks.add(block);
         }
         return blocks;
     }
 
-    private void addChildBlocks(ASTNode child, List<Block> blocks) {
-        blocks.add(new BeancountBlock(longestAccountLength,
-                longestExprPreDecimalLength, child, Wrap.createWrap(WrapType.NONE, false),
-                null,
-                spacingBuilder));
+    @Override
+    public @NotNull ChildAttributes getChildAttributes(int newChildIndex) {
+        return super.getChildAttributes(newChildIndex);
     }
+    
 
     @Override
     public Indent getIndent() {
-        if (getNode().getElementType() == POSTING_OR_KV_LIST || getNode().getElementType() == KEY_VALUE_LIST) {
+        if (getNode().getElementType() == POSTING) {
             return Indent.getNormalIndent();
         }
         return Indent.getNoneIndent();
@@ -76,15 +81,17 @@ public class BeancountBlock extends AbstractBlock {
     @Override
     public boolean isIncomplete() {
         // Assume a transaction itself is always incomplete.
-        if (isTransaction()) {
-            return true;
-        } else {
-            return false;
-        }
+//        if (getNode().getElementType() == STRING && getNode().getPsi().getParent().getNode().getElementType() == TXN_STRINGS) {
+//            return true;
+//        }
+        return true;
     }
     
     public boolean isTransaction() {
         if (getNode().getElementType() == TRANSACTION) {
+            return true;
+        }
+        if (getNode().getElementType() == TXN_STRINGS) {
             return true;
         }
         if (getNode().getElementType() == ENTRY) {
