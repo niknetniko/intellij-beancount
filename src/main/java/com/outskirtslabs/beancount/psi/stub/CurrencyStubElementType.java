@@ -9,6 +9,7 @@ import com.outskirtslabs.beancount.psi.stub.index.BeancountCurrencySymbolKeyInde
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class CurrencyStubElementType
         extends IStubElementType<CurrencySymbolStub, BeancountCurrencySymbol> {
@@ -23,7 +24,7 @@ public class CurrencyStubElementType
     @NotNull
     public CurrencySymbolStub createStub(@NotNull final BeancountCurrencySymbol psi,
                                          final StubElement parentStub) {
-        return new CurrencySymbolStubImpl(parentStub, psi.getName());
+        return new CurrencySymbolStubImpl(parentStub, Objects.requireNonNull(psi.getName()));
     }
 
     @NotNull
@@ -41,7 +42,7 @@ public class CurrencyStubElementType
     public CurrencySymbolStub deserialize(@NotNull final StubInputStream dataStream,
                                           final StubElement parentStub) throws IOException {
         final StringRef ref = dataStream.readName();
-        return new CurrencySymbolStubImpl(parentStub, ref.getString());
+        return new CurrencySymbolStubImpl(parentStub, Objects.requireNonNull(ref).getString());
     }
 
     public void indexStub(@NotNull final CurrencySymbolStub stub, @NotNull final IndexSink sink) {

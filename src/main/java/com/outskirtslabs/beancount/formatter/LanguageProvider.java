@@ -5,7 +5,6 @@ import com.intellij.application.options.CodeStyleAbstractPanel;
 import com.intellij.application.options.IndentOptionsEditor;
 import com.intellij.application.options.TabbedLanguageCodeStylePanel;
 import com.intellij.lang.Language;
-import com.intellij.openapi.util.NlsContexts;
 import com.intellij.psi.codeStyle.*;
 import com.outskirtslabs.beancount.BeancountLanguage;
 import org.jetbrains.annotations.NotNull;

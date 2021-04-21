@@ -40,11 +40,9 @@ public class StringCompletionProvider extends CompletionProvider<CompletionParam
                 .map(PsiElement::getText)
                 .map(str -> str.substring(1, str.length() - 1))
                 .distinct()
-                .forEach(s -> {
-                    resulting.addElement(LookupElementBuilder
-                            .create(s)
-                            .withInsertHandler(StringInsertHandler.INSTANCE));
-                });
+                .forEach(s -> resulting.addElement(LookupElementBuilder
+                        .create(s)
+                        .withInsertHandler(StringInsertHandler.INSTANCE)));
 
     }
 

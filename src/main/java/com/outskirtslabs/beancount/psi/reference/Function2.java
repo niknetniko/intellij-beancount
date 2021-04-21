@@ -5,6 +5,5 @@ package com.outskirtslabs.beancount.psi.reference;
  */
 @FunctionalInterface
 public interface Function2<T, T1, T2> {
-    
-    public T2 execute(T t1, T1 t2);
+    T2 execute(T t1, T1 t2);
 }

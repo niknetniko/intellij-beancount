@@ -3,12 +3,13 @@ package com.outskirtslabs.beancount.psi.reference;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.BaseScopeProcessor;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * A functional wrapper around {@link BaseScopeProcessor}
  */
-public abstract class BeancountScopeProcessor extends BaseScopeProcessor {
+public abstract class BeancountScopeProcessor implements PsiScopeProcessor {
     public static boolean RESOLVE_CONTINUE = true;
     public static boolean RESOLVE_FINISHED = false;
 

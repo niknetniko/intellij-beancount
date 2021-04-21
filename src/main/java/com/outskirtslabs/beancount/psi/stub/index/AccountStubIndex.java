@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.stream.Stream;
 
 /**
  * Index of account definitions, for easy and fast look-up.
@@ -47,19 +46,6 @@ public class AccountStubIndex extends StringStubIndexExtension<BeancountAccountD
         return StubIndex.getInstance().getAllKeys(AccountDefinitionKeyIndex.KEY, project);
     }
 
-    public static Stream<BeancountAccountDefinition> findAll(Project project) {
-        if (DumbService.isDumb(project)) {
-            // idea is indexing
-            return Stream.empty();
-        }
-
-        return StubIndex.getInstance()
-                .getAllKeys(AccountDefinitionKeyIndex.KEY, project)
-                .stream()
-                .flatMap(s -> StubIndex.getElements(AccountDefinitionKeyIndex.KEY, s, project, null, BeancountAccountDefinition.class)
-                        .stream());
-    }
-
     @Override
     public int getVersion() {
         return super.getVersion() + VERSION;
@@ -70,5 +56,4 @@ public class AccountStubIndex extends StringStubIndexExtension<BeancountAccountD
     public StubIndexKey<String, BeancountAccountDefinition> getKey() {
         return AccountDefinitionKeyIndex.KEY;
     }
-
 }

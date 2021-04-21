@@ -44,23 +44,6 @@ public class BeancountFile extends PsiFileBase {
         return names.stream();
     }
 
-    public Stream<String> getAllAccountNames() {
-//        Stream<BeancountAccountSymbol> accounts = Arrays.stream(this.getChildren())
-//                                                  .peek( e -> log.info("\t " + e.getClass().getName()))
-//                                                  .filter(e -> e instanceof BeancountAccountSymbol)
-//                                                  .map(e -> (BeancountAccountSymbol) e)
-//                                                  .distinct();
-//        return accounts;
-        HashSet<String> names = new HashSet<>();
-        this.acceptChildren(new BeancountRecursiveVisitor() {
-            @Override
-            public void visitAccountSymbol(@NotNull final BeancountAccountSymbol o) {
-                names.add(o.getText());
-            }
-        });
-        return names.stream();
-    }
-
     public Stream<String> getAllAccountsCached() {
         Stopwatch stopwatch = Stopwatch.createStarted();
         Stream<String> distinct = AccountStubIndex.findAllAccounts(this.getProject()).stream()
@@ -68,8 +51,7 @@ public class BeancountFile extends PsiFileBase {
         log.info("getAllAccountsCached complete in {}", stopwatch.elapsed(TimeUnit.MICROSECONDS));
         return distinct;
     }
-
-    //
+    
     public Stream<String> getAllCurrenciesCached() {
         Stopwatch stopwatch = Stopwatch.createStarted();
         Stream<String> distinct = CurrencySymbolStubIndex.findAllCurrencySymbols(this.getProject())
@@ -77,19 +59,5 @@ public class BeancountFile extends PsiFileBase {
                 .distinct();
         log.info("getAllAccountsCached complete in {}", stopwatch.elapsed(TimeUnit.MICROSECONDS));
         return distinct;
-    }
-
-    public Stream<String> getAllAccounts() {
-        Stopwatch stopwatch = Stopwatch.createStarted();
-        HashSet<String> names = new HashSet<>();
-        this.acceptChildren(new BeancountRecursiveVisitor() {
-            @Override
-            public void visitAccountSymbol(@NotNull final BeancountAccountSymbol o) {
-                names.add(o.getText());
-            }
-        });
-
-        log.info("getAllAccounts complete in {}", stopwatch.elapsed(TimeUnit.MICROSECONDS));
-        return names.stream();
     }
 }

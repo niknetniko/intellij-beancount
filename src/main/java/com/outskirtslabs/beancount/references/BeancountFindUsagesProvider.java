@@ -6,7 +6,6 @@ import com.intellij.lang.findUsages.FindUsagesProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.TokenSet;
 import com.outskirtslabs.beancount.parser.LexerAdapter;
-import com.outskirtslabs.beancount.psi.BeancountAccountSymbol;
 import com.outskirtslabs.beancount.psi.BeancountCurrencySymbol;
 import com.outskirtslabs.beancount.psi.BeancountTypes;
 import com.outskirtslabs.beancount.psi.elements.BeancountAccountDefinition;

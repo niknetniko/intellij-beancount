@@ -25,9 +25,7 @@ class BeancountCurrencyCompletionProvider extends CompletionProvider<CompletionP
         PsiElement position = parameters.getPosition();
         BeancountFile file = (BeancountFile) position.getContainingFile();
         file.getAllCurrenciesCached()
-                .forEach(c -> {
-                    resultSet.addElement(LookupElementBuilder.create(c));
-                });
+                .forEach(c -> resultSet.addElement(LookupElementBuilder.create(c)));
 
     }
 

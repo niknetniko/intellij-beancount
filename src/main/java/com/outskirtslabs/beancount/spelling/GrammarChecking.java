@@ -20,7 +20,6 @@ import java.util.Set;
 /**
  * @author Niko Strijbol
  */
-@SuppressWarnings("ALL")
 public class GrammarChecking implements GrammarCheckingStrategy {
 
     @Override
@@ -50,12 +49,14 @@ public class GrammarChecking implements GrammarCheckingStrategy {
         return null;
     }
 
+    @SuppressWarnings({"UnstableApiUsage", "deprecation"})
     @Nullable
     @Override
     public Set<Typo.Category> getIgnoredTypoCategories(@NotNull PsiElement psiElement, @NotNull PsiElement psiElement1) {
         return null;
     }
 
+    @SuppressWarnings({"UnstableApiUsage", "deprecation"})
     @NotNull
     @Override
     public List<ReplaceCharRule> getReplaceCharRules(@NotNull PsiElement psiElement) {
@@ -65,7 +66,6 @@ public class GrammarChecking implements GrammarCheckingStrategy {
     @NotNull
     @Override
     public LinkedHashSet<IntRange> getStealthyRanges(@NotNull PsiElement psiElement, @NotNull CharSequence charSequence) {
-        IElementType type = psiElement.getNode().getElementType();
         if (psiElement instanceof PsiComment) {
             var set = new LinkedHashSet<IntRange>();
             int location = charSequence.toString().indexOf(';');
@@ -75,6 +75,7 @@ public class GrammarChecking implements GrammarCheckingStrategy {
         return new LinkedHashSet<>();
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public boolean isTypoAccepted(@NotNull PsiElement psiElement, @NotNull IntRange intRange, @NotNull IntRange intRange1) {
         return true;

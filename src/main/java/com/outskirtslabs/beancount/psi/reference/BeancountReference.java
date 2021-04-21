@@ -8,6 +8,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.ResolveCache;
 import com.intellij.psi.scope.BaseScopeProcessor;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.util.containers.OrderedSet;
 import com.outskirtslabs.beancount.BeancountIcons;
 import com.outskirtslabs.beancount.psi.BeancountFile;
@@ -115,8 +116,8 @@ abstract public class BeancountReference<T extends BeancountNamedElement> extend
     abstract protected boolean isElementToResolve(T elementToSearch, BeancountNamedElement maybeElementDeclaration);
 
     @NotNull
-    protected BaseScopeProcessor createResolveProcessor(@NotNull Collection<ResolveResult> result,
-                                                        @NotNull T elementToResolve) {
+    protected PsiScopeProcessor createResolveProcessor(@NotNull Collection<ResolveResult> result,
+                                                       @NotNull T elementToResolve) {
         /*
              execute() is called to process every declaration encountered during the resolve,
              and returns true if the resolve needs to be continued
@@ -145,7 +146,7 @@ abstract public class BeancountReference<T extends BeancountNamedElement> extend
      * This method is the "function which walks the psi tree". Refer to the scope processor for the
      * bit that actually decides if we are done or not.
      */
-    private void processResolve(@NotNull BaseScopeProcessor processor) {
+    private void processResolve(@NotNull PsiScopeProcessor processor) {
         PsiFile file = myBeancountElement.getContainingFile();
         if (!(file instanceof BeancountFile)) {
             return;
@@ -156,7 +157,9 @@ abstract public class BeancountReference<T extends BeancountNamedElement> extend
         Collection<T> cachedElements = getFromCache(file.getProject(), elementText);
 
         // now we exec the processor to find which one of these elementText instances is the declaration
-        cachedElements.stream().filter(a -> !processor.execute(a, state));
+        cachedElements.stream().forEach(a -> {
+            processor.execute(a, state);
+        });
     }
 
     /**
