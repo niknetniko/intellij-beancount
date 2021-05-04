@@ -42,10 +42,14 @@ idea {
 intellij {
     version ideaVersion
     // always have these plugins installed
-    plugins = ['java', 'PsiViewer:211-SNAPSHOT', 'tanvd.grazi']
+    plugins = ['java', 'com.intellij.java', 'PsiViewer:211-SNAPSHOT', 'tanvd.grazi']
     downloadSources true
     pluginName 'intelliledge'
     updateSinceUntilBuild = false
+}
+
+runPluginVerifier {
+    ideVersions = ["IC-2021.1"]
 }
 
 java {
