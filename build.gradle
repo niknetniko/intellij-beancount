@@ -3,8 +3,8 @@ import org.jetbrains.grammarkit.tasks.GenerateParser
 
 plugins {
     id 'io.franzbecker.gradle-lombok' version '4.0.0'
-    id 'org.jetbrains.intellij' version '0.7.2'
-    id "org.jetbrains.grammarkit" version "2021.1.2"
+    id 'org.jetbrains.intellij' version '1.0'
+    id "org.jetbrains.grammarkit" version "2021.1.3"
     id 'java'
     id 'idea'
 }
@@ -40,11 +40,11 @@ idea {
 }
 
 intellij {
-    version ideaVersion
+    version = ideaVersion
     // always have these plugins installed
     plugins = ['java', 'com.intellij.java', 'PsiViewer:211-SNAPSHOT', 'tanvd.grazi']
-    downloadSources true
-    pluginName 'intelliledge'
+    downloadSources = true
+    pluginName = 'intelliledge'
     updateSinceUntilBuild = false
 }
 

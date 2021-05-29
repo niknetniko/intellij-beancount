@@ -8,18 +8,12 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
-import com.outskirtslabs.beancount.parser.BeancountParser;
-import com.outskirtslabs.beancount.parser.LexerAdapter;
 import com.outskirtslabs.beancount.psi.BeancountFile;
 import com.outskirtslabs.beancount.psi.BeancountTypes;
 import com.outskirtslabs.beancount.psi.stub.BeancountStubFileElementType;
 import org.jetbrains.annotations.NotNull;
-
-import static com.outskirtslabs.beancount.psi.BeancountTypes.EOL;
-import static com.outskirtslabs.beancount.psi.BeancountTypes.INDENT;
 
 public class BeancountParserDefinition implements ParserDefinition {
     public static final TokenSet COMMENTS = TokenSet.create(BeancountTypes.COMMENT);
@@ -47,15 +41,15 @@ public class BeancountParserDefinition implements ParserDefinition {
     }
 
     @Override
-    public IFileElementType getFileNodeType() {
+    public @NotNull IFileElementType getFileNodeType() {
         return BeancountStubFileElementType.INSTANCE;
     }
 
-    public PsiFile createFile(FileViewProvider viewProvider) {
+    public @NotNull PsiFile createFile(@NotNull FileViewProvider viewProvider) {
         return new BeancountFile(viewProvider);
     }
 
-    public SpaceRequirements spaceExistenceTypeBetweenTokens(ASTNode left, ASTNode right) {
+    public @NotNull SpaceRequirements spaceExistenceTypeBetweenTokens(ASTNode left, ASTNode right) {
         return SpaceRequirements.MAY;
     }
 
