@@ -23,7 +23,7 @@ public class UnresolvedAccountAnnotator implements Annotator {
         if (element.getNode().getElementType() != ACCOUNT_SYMBOL) {
             return;
         }
-        
+
         // We have an account. Instead of doing fancy things to resolve the reference, just
         // resolve it.
         var references = PsiReferenceService.getService().getReferences(element, PsiReferenceService.Hints.NO_HINTS);
@@ -38,16 +38,17 @@ public class UnresolvedAccountAnnotator implements Annotator {
         }
 
         ResolveResult[] results = ((PsiPolyVariantReference) reference).multiResolve(false);
-        
+
         if (Arrays.stream(results).noneMatch(ResolveResult::isValidResult)) {
            addAnnotation(element, holder);
         }
     }
-    
+
     private static void addAnnotation(PsiElement element, AnnotationHolder holder) {
         holder.newAnnotation(HighlightSeverity.ERROR, "Unknown account")
                 .range(element)
                 .highlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL)
+                .withFix(new DefineAccountQuickFix(element))
                 .create();
     }
 }
