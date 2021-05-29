@@ -86,5 +86,7 @@
         <configurationType implementation="com.outskirtslabs.beancount.run.FavaRunConfigurationType" />
 
         <editor.backspaceModeOverride language="Beancount" implementationClass="com.intellij.codeInsight.editorActions.SmartBackspaceDisabler"/>
+        <annotator language="Beancount"
+            implementationClass="com.outskirtslabs.beancount.annotation.TransactionZeroesAnnotator" />
     </extensions>
 </idea-plugin>

@@ -51,6 +51,12 @@ public class BeanCheckAnnotator extends ExternalAnnotator<String, List<Annotatio
             if (annotationResult.getLine() < 0 || annotationResult.getLine() > doc.getLineCount()) {
                 continue;
             }
+
+            // Some checks have built-in support, so ignore those.
+            if (annotationResult.getMessage().startsWith("Transaction does not balance:")) {
+                continue;
+            }
+
             var start = doc.getLineStartOffset(annotationResult.getLine());
             var end = doc.getLineEndOffset(annotationResult.getLine());
             holder.newAnnotation(HighlightSeverity.ERROR, annotationResult.getMessage())
