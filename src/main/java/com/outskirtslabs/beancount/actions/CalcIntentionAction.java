@@ -17,8 +17,14 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.text.DecimalFormat;
 
+/**
+ * Allow calculation of an expression in the code.
+ */
 public class CalcIntentionAction implements IntentionAction, Iconable {
+
+    private static final DecimalFormat numberFormat = new DecimalFormat("#.00");
 
     @Override
     public @IntentionName @NotNull String getText() {
@@ -52,7 +58,7 @@ public class CalcIntentionAction implements IntentionAction, Iconable {
         if (Math.ceil(value) == value) {
             result = Integer.toString((int) value);
         } else {
-            result = Double.toString(value);
+            result = numberFormat.format(value);
         }
         final int start = selectionModel.getSelectionStart();
         final int end = selectionModel.getSelectionEnd();
