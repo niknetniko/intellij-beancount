@@ -39,16 +39,27 @@ public class UnresolvedAccountAnnotator implements Annotator {
 
         ResolveResult[] results = ((PsiPolyVariantReference) reference).multiResolve(false);
 
-        if (Arrays.stream(results).noneMatch(ResolveResult::isValidResult)) {
+        var amountOfValid = Arrays.stream(results).filter(ResolveResult::isValidResult).count();
+
+        if (amountOfValid == 0) {
            addAnnotation(element, holder);
+        } else if (amountOfValid > 1) {
+            addDuplicateAnnotation(element, holder);
         }
     }
 
     private static void addAnnotation(PsiElement element, AnnotationHolder holder) {
-        holder.newAnnotation(HighlightSeverity.ERROR, "Unknown account")
+        holder.newAnnotation(HighlightSeverity.ERROR, "Unknown account " + element.getText())
                 .range(element)
                 .highlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL)
                 .withFix(new DefineAccountQuickFix(element))
+                .create();
+    }
+
+    private static void addDuplicateAnnotation(PsiElement element, AnnotationHolder holder) {
+        // TODO: add fix to navigate to declarations.
+        holder.newAnnotation(HighlightSeverity.ERROR, "Duplicate account declaration for " + element.getText())
+                .range(element)
                 .create();
     }
 }

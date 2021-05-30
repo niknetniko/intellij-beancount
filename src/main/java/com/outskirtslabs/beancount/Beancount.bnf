@@ -18,7 +18,7 @@
   parserImports=[
     'static com.outskirtslabs.beancount.psi.impl.BeancountPsiImplUtil.*'
   ]
-  
+
   tokens=[
 //    INDENT="regexp:^[ \t]+/[^ \t\r\n]"
 //    EOL="regexp:(\r\n|\r|\n)"        /* End-of-line */
@@ -85,11 +85,11 @@ number_expr ::= literal_expr
     | unary_min
     | unary_plus
     | paren_expr
-{ 
+{
     implements="com.outskirtslabs.beancount.psi.elements.BeancountExprElement"
     mixin="com.outskirtslabs.beancount.psi.impl.BeancountExprElementImpl"
 }
-    
+
 plus_expr ::= number_expr PLUS number_expr {extends=number_expr}
 minus_expr ::= number_expr MINUS number_expr {extends=number_expr}
 asterisk_expr ::= number_expr ASTERISK number_expr {extends=number_expr}
@@ -127,7 +127,7 @@ key_value_value ::= [STRING
     | NONE
     | number_expr
     | amount]
-    
+
 posting_or_kv_list ::= (INDENT end
     | INDENT tags_links end
     | key_value_line

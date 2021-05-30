@@ -40,11 +40,11 @@ public class TransactionZeroesAnnotator implements Annotator {
                 .map(expression -> new BigDecimal(expression.getText()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+        // As a text range.
         // The sum is not zero, so add an error highlight.
         if (sumOfTransaction.compareTo(BigDecimal.ZERO) != 0) {
             holder.newAnnotation(HighlightSeverity.ERROR, "Transaction does not balance: " + sumOfTransaction)
-                    .range(element)
-                    .highlightType(ProblemHighlightType.GENERIC_ERROR_OR_WARNING)
+                    .range(((BeancountTransaction) element).getTxnStrings().getTextRange())
                     .needsUpdateOnTyping(true)
                     .create();
         }

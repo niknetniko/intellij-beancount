@@ -10,19 +10,17 @@ import com.intellij.pom.Navigatable;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.IncorrectOperationException;
-import com.outskirtslabs.beancount.psi.*;
-import com.outskirtslabs.beancount.psi.elements.BeancountAccountSymbol;
+import com.outskirtslabs.beancount.psi.BeancountAccountDefinition;
+import com.outskirtslabs.beancount.psi.BeancountEntry;
+import com.outskirtslabs.beancount.psi.BeancountFile;
+import com.outskirtslabs.beancount.psi.BeancountRecursiveVisitor;
 import com.outskirtslabs.beancount.psi.elements.BeancountElementFactory;
 import com.outskirtslabs.beancount.psi.stub.index.AccountStubIndex;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Collectors;
-
-import static com.outskirtslabs.beancount.psi.BeancountTypes.DATE;
 
 /**
  * Allows defining an account directly.
@@ -31,7 +29,7 @@ import static com.outskirtslabs.beancount.psi.BeancountTypes.DATE;
  */
 public class DefineAccountQuickFix extends BaseIntentionAction {
 
-    private PsiElement element;
+    private final PsiElement element;
 
     public DefineAccountQuickFix(PsiElement element) {
         this.element = element;
@@ -65,9 +63,9 @@ public class DefineAccountQuickFix extends BaseIntentionAction {
             PsiElement dateElement = this.element.getParent().getParent().getParent().getFirstChild();
             String date;
             if (dateElement != null) {
-                date = LocalDate.parse(dateElement.getText()).minusDays(1).toString();
+                date = dateElement.getText();
             } else {
-                date = "1996-04-18";
+                date = "2000-01-01";
             }
 
             WriteCommandAction.writeCommandAction(project).run(() -> {
@@ -79,8 +77,6 @@ public class DefineAccountQuickFix extends BaseIntentionAction {
                     element = parent.addAfter(element, entry);
                     var navigationElement = element.getNavigationElement();
                     if (navigationElement instanceof Navigatable) {
-                        System.out.println("Navigating...?");
-                        System.out.println("Can actually navigate?" + ((Navigatable) navigationElement).canNavigate());
                         ((Navigatable) navigationElement).navigate(true);
                     }
                 } else {
