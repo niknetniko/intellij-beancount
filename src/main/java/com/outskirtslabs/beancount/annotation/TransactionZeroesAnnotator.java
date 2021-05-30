@@ -37,7 +37,14 @@ public class TransactionZeroesAnnotator implements Annotator {
                 .map(BeancountIncompleteAmount::getMaybeNumber)
                 .map(BeancountMaybeNumber::getNumberExpr)
                 .filter(Objects::nonNull)
-                .map(expression -> new BigDecimal(expression.getText()))
+                .map(expression -> {
+                    try {
+                        return new BigDecimal(expression.getText());
+                    } catch (Exception e) {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         // As a text range.
