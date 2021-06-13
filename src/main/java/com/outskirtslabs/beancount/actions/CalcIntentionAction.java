@@ -70,7 +70,11 @@ public class CalcIntentionAction implements IntentionAction, Iconable {
         final int start = selectionModel.getSelectionStart();
         final int end = selectionModel.getSelectionEnd();
         document.replaceString(start, end, result);
+        var position = selectionModel.getSelectionEndPosition();
         selectionModel.removeSelection();
+        if (position != null) {
+            editor.getCaretModel().moveToVisualPosition(position);
+        }
     }
 
     @Override
