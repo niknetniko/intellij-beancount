@@ -18,13 +18,20 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * Allow calculation of an expression in the code.
  */
 public class CalcIntentionAction implements IntentionAction, Iconable {
 
-    private static final DecimalFormat numberFormat = new DecimalFormat("#.00");
+    private static final NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.ROOT);
+
+    static {{
+        numberFormat.setMaximumFractionDigits(2);
+        numberFormat.setMinimumFractionDigits(2);
+    }}
 
     @Override
     public @IntentionName @NotNull String getText() {
